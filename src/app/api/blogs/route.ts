@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { autoSeed } from '@/lib/seed'
 
 export async function GET(request: NextRequest) {
   try {
+    // Auto-seed if database is empty
+    await autoSeed()
     const { searchParams } = new URL(request.url)
     const highlight = searchParams.get('highlight')
     const all = searchParams.get('all')
