@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Mail, Instagram, MessageCircle, Youtube, ExternalLink } from 'lucide-react'
+import { Mail, Instagram, MessageCircle, Youtube, ExternalLink, Heart } from 'lucide-react'
 
 const contacts = [
   {
@@ -9,40 +9,47 @@ const contacts = [
     label: 'Email',
     value: 'ftrn@students.isi.ac.id',
     href: 'mailto:ftrn@students.isi.ac.id',
+    color: 'from-matcha/20 to-matcha-dark/10',
   },
   {
     icon: Instagram,
     label: 'Instagram',
     value: '@ftrn.isijogja',
     href: 'https://instagram.com/ftrn.isijogja',
+    color: 'from-sakura/20 to-sakura/5',
   },
   {
     icon: MessageCircle,
     label: 'WhatsApp',
     value: '+62 882-1244-7588 (Dinda)',
     href: 'https://wa.me/6288212447588',
+    color: 'from-matcha/20 to-matcha-dark/10',
   },
   {
     icon: Youtube,
     label: 'YouTube',
     value: 'FTRN ISI Yogyakarta',
     href: 'https://youtube.com',
+    color: 'from-sakura/20 to-sakura/5',
   },
 ]
 
 export default function KontakPage() {
   return (
-    <div className="px-6 pt-10 pb-6">
+    <div className="px-6 pt-8 pb-6">
       {/* Profile */}
       <div className="text-center mb-10">
-        <div className="w-16 h-16 rounded-full bg-matcha/10 mx-auto mb-5 flex items-center justify-center">
-          <span className="text-matcha-light text-lg font-light">F</span>
+        <div className="icon-circle w-20 h-20 mx-auto mb-5 flex items-center justify-center green-glow">
+          <span className="green-gradient text-2xl font-bold">F</span>
         </div>
-        <h2 className="text-xl font-light text-kinari/80 tracking-wide">FTRN #5</h2>
-        <p className="text-xs text-suri mt-2 tracking-wider">
+        <h2 className="text-2xl font-bold text-kinari">
+          FTRN
+          <span className="green-gradient ml-1 font-light">#5</span>
+        </h2>
+        <p className="text-xs text-matcha-light/50 mt-2 font-semibold tracking-widest uppercase">
           Festival Tari Tradisional Nasional
         </p>
-        <p className="text-[10px] text-kinari/15 mt-1 tracking-widest">
+        <p className="text-xs text-kinari/25 mt-1 font-medium">
           ISI Yogyakarta
         </p>
       </div>
@@ -51,12 +58,12 @@ export default function KontakPage() {
       <div className="zen-divider mb-8" />
 
       {/* Contact label */}
-      <p className="text-[10px] tracking-[0.25em] text-matcha-light/40 uppercase mb-4">
+      <p className="text-[11px] font-bold tracking-[0.2em] text-matcha-light uppercase mb-4">
         Hubungi Kami
       </p>
 
       {/* Contact list */}
-      <div className="space-y-2">
+      <div className="space-y-3">
         {contacts.map((contact) => {
           const Icon = contact.icon
           return (
@@ -65,17 +72,17 @@ export default function KontakPage() {
               href={contact.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group"
+              className="group block"
             >
-              <div className="glass-zen-card px-5 py-4 flex items-center gap-4 group-hover:border-matcha/15">
-                <div className="w-9 h-9 rounded-full bg-matcha/8 flex items-center justify-center shrink-0">
-                  <Icon className="w-4 h-4 text-matcha-light/50" />
+              <div className="glass-zen-card px-5 py-4 flex items-center gap-4">
+                <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${contact.color} border border-kinari/[0.08] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300`}>
+                  <Icon className="w-5 h-5 text-matcha-light/60" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-kinari/70 font-light">{contact.label}</p>
-                  <p className="text-xs text-kinari/25 mt-0.5 truncate tracking-wide">{contact.value}</p>
+                  <p className="text-sm text-kinari/80 font-semibold">{contact.label}</p>
+                  <p className="text-xs text-kinari/35 mt-0.5 truncate font-medium">{contact.value}</p>
                 </div>
-                <ExternalLink className="w-3 h-3 text-kinari/[0.06] group-hover:text-matcha-light/30 transition-colors duration-500 shrink-0" />
+                <ExternalLink className="w-3.5 h-3.5 text-kinari/[0.08] group-hover:text-matcha-light/40 transition-colors duration-300 shrink-0" />
               </div>
             </a>
           )
@@ -83,12 +90,14 @@ export default function KontakPage() {
       </div>
 
       {/* Quote */}
-      <div className="mt-10 text-center">
-        <p className="text-xs text-kinari/15 italic leading-loose tracking-wide">
+      <div className="mt-10 text-center glass-zen-card p-6">
+        <Heart className="w-4 h-4 text-sakura/40 mx-auto mb-3" />
+        <p className="text-xs text-kinari/50 font-medium leading-loose italic">
           Tari adalah bahasa jiwa,<br />
-          yang menghubungkan kita dengan budaya dan tradisi
+          yang menghubungkan kita dengan<br />
+          budaya dan tradisi
         </p>
-        <p className="text-[9px] text-kinari/10 mt-3 tracking-widest">— FTRN #5</p>
+        <p className="text-[10px] text-matcha-light/25 mt-3 font-bold tracking-widest">— FTRN #5</p>
       </div>
     </div>
   )

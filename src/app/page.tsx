@@ -54,21 +54,21 @@ export default function Page() {
       {/* Nature ambient blobs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <div
-          className="absolute top-[-5%] left-[10%] w-[600px] h-[600px] rounded-full opacity-[0.08] animate-float-1"
+          className="absolute top-[-5%] left-[10%] w-[600px] h-[600px] rounded-full opacity-[0.1] animate-float-1"
           style={{
             background: 'radial-gradient(circle, #6B8F5E 0%, #3D5A3A 40%, transparent 70%)',
             filter: 'blur(80px)',
           }}
         />
         <div
-          className="absolute bottom-[5%] right-[5%] w-[500px] h-[500px] rounded-full opacity-[0.06] animate-float-2"
+          className="absolute bottom-[5%] right-[5%] w-[500px] h-[500px] rounded-full opacity-[0.08] animate-float-2"
           style={{
             background: 'radial-gradient(circle, #9BB592 0%, #4A6B42 40%, transparent 70%)',
             filter: 'blur(90px)',
           }}
         />
         <div
-          className="absolute top-[40%] left-[50%] w-[400px] h-[400px] rounded-full opacity-[0.04] animate-float-1"
+          className="absolute top-[40%] left-[50%] w-[400px] h-[400px] rounded-full opacity-[0.05] animate-float-1"
           style={{
             background: 'radial-gradient(circle, #D4A0A0 0%, transparent 60%)',
             filter: 'blur(70px)',
@@ -84,17 +84,18 @@ export default function Page() {
             onClick={view === 'admin' ? handleBack : handleLogoTap}
             className="flex items-center gap-3 group"
           >
-            <div className="w-8 h-8 rounded-full bg-matcha/20 flex items-center justify-center group-hover:bg-matcha/30 transition-colors duration-500">
-              <span className="text-matcha-light text-xs font-semibold">F</span>
+            <div className="icon-circle w-9 h-9 flex items-center justify-center group-hover:shadow-[0_0_20px_rgba(124,154,114,0.2)] transition-shadow duration-500">
+              <span className="green-gradient text-sm font-bold">F</span>
             </div>
-            <span className="text-kinari/80 text-sm font-medium tracking-wide">
-              {view === 'admin' ? 'Admin' : 'FTRN #5'}
+            <span className="text-kinari font-semibold text-sm tracking-wide">
+              {view === 'admin' ? 'Admin' : 'FTRN'}
+              <span className="text-matcha-light ml-1 font-light">#5</span>
             </span>
           </button>
           {view === 'detail' && (
             <button
               onClick={handleBack}
-              className="text-matcha-light/60 text-xs tracking-wider hover:text-matcha-light transition-colors duration-300"
+              className="cta-button px-3 py-1.5 text-xs font-medium"
             >
               ← Kembali
             </button>
@@ -108,10 +109,10 @@ export default function Page() {
           {view === 'admin' ? (
             <motion.div
               key="admin"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
               className="pb-28"
             >
               <AdminPage onBack={handleBack} />
@@ -119,10 +120,10 @@ export default function Page() {
           ) : view === 'detail' && selectedBlogId ? (
             <motion.div
               key="detail"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
               className="pb-28"
             >
               <BlogDetail blogId={selectedBlogId} onBack={handleBack} />
@@ -130,10 +131,10 @@ export default function Page() {
           ) : (
             <motion.div
               key={activeTab}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35 }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
               className="pb-28"
             >
               {activeTab === 'beranda' && (
@@ -159,16 +160,18 @@ export default function Page() {
                 <button
                   key={tab.id}
                   onClick={() => handleTabChange(tab.id)}
-                  className="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-opacity duration-300"
+                  className="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-all duration-300"
                 >
-                  <Icon
-                    className={`w-5 h-5 transition-all duration-500 ${
-                      isActive ? 'text-matcha-light' : 'text-kinari/20'
-                    }`}
-                    strokeWidth={isActive ? 1.8 : 1.2}
-                  />
-                  <span className={`text-[9px] tracking-widest transition-colors duration-500 ${
-                    isActive ? 'text-matcha-light/60' : 'text-kinari/15'
+                  <div className={`p-1.5 rounded-xl transition-all duration-300 ${isActive ? 'bg-matcha/15 green-glow-soft' : ''}`}>
+                    <Icon
+                      className={`w-5 h-5 transition-all duration-300 ${
+                        isActive ? 'text-matcha-light' : 'text-kinari/25'
+                      }`}
+                      strokeWidth={isActive ? 2 : 1.2}
+                    />
+                  </div>
+                  <span className={`text-[10px] font-medium tracking-wide transition-all duration-300 ${
+                    isActive ? 'text-matcha-light' : 'text-kinari/20'
                   }`}>
                     {tab.label}
                   </span>

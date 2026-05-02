@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Tag, Calendar } from 'lucide-react'
+import { Tag, Calendar, ArrowLeft } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 
 interface Blog {
@@ -39,7 +39,7 @@ export default function BlogDetail({ blogId, onBack }: BlogDetailProps) {
   if (loading) {
     return (
       <div className="px-6 py-10 space-y-4 animate-pulse">
-        <div className="h-7 bg-kinari/[0.03] rounded w-3/4" />
+        <div className="h-8 bg-kinari/[0.04] rounded w-3/4" />
         <div className="h-3 bg-kinari/[0.02] rounded w-1/3" />
         <div className="mt-8 space-y-3">
           {[1,2,3,4].map(i => <div key={i} className="h-4 bg-kinari/[0.02] rounded" style={{width: `${90-i*10}%`}} />)}
@@ -51,9 +51,9 @@ export default function BlogDetail({ blogId, onBack }: BlogDetailProps) {
   if (!blog) {
     return (
       <div className="py-20 text-center">
-        <p className="text-kinari/20 text-sm">Artikel tidak ditemukan</p>
-        <button onClick={onBack} className="text-matcha-light/40 text-xs mt-3 hover:text-matcha-light transition-colors">
-          Kembali
+        <p className="text-kinari/30 text-sm font-semibold">Artikel tidak ditemukan</p>
+        <button onClick={onBack} className="cta-button px-4 py-2 text-xs font-semibold mt-4 inline-flex items-center gap-1.5">
+          <ArrowLeft className="w-3 h-3" /> Kembali
         </button>
       </div>
     )
@@ -63,27 +63,27 @@ export default function BlogDetail({ blogId, onBack }: BlogDetailProps) {
     <div className="px-6 py-8">
       {/* Cover */}
       {blog.coverImage && (
-        <div className="rounded-2xl overflow-hidden mb-6">
-          <img src={blog.coverImage} alt={blog.title} className="w-full h-52 object-cover" />
+        <div className="rounded-2xl overflow-hidden mb-6 green-glow-soft">
+          <img src={blog.coverImage} alt={blog.title} className="w-full h-56 object-cover" />
         </div>
       )}
 
       {/* Meta */}
       <div className="flex items-center gap-3 mb-4">
         {blog.category && (
-          <span className="flex items-center gap-1.5 text-[9px] tracking-[0.2em] text-matcha/40 uppercase">
+          <span className="badge-matcha px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase inline-flex items-center gap-1.5">
             <Tag className="w-2.5 h-2.5" />
             {blog.category}
           </span>
         )}
-        <span className="flex items-center gap-1.5 text-[10px] text-kinari/15 tracking-wider">
-          <Calendar className="w-2.5 h-2.5" />
+        <span className="flex items-center gap-1.5 text-[11px] text-kinari/30 font-medium">
+          <Calendar className="w-3 h-3" />
           {formatDate(blog.createdAt)}
         </span>
       </div>
 
       {/* Title */}
-      <h1 className="text-2xl font-light text-kinari/90 leading-relaxed tracking-wide mb-2">
+      <h1 className="text-2xl font-bold text-kinari leading-snug mb-2">
         {blog.title}
       </h1>
 

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Search, ChevronRight } from 'lucide-react'
+import { Search, ChevronRight, FileText } from 'lucide-react'
 
 interface Blog {
   id: string
@@ -54,19 +54,23 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
   return (
     <div className="px-6 pt-8 pb-6">
       {/* Title */}
-      <h2 className="text-xl font-light text-kinari/80 tracking-wide mb-6">
-        Blog<span className="text-matcha-light/40 ml-2 text-sm">Artikel</span>
-      </h2>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-kinari">
+          Blog
+          <span className="green-gradient ml-2 text-lg">Artikel</span>
+        </h2>
+        <p className="text-xs text-kinari/30 mt-1 font-medium">Temukan informasi terbaru seputar FTRN #5</p>
+      </div>
 
       {/* Search */}
       <div className="glass-zen-input flex items-center gap-3 px-4 py-3 mb-5">
-        <Search className="w-4 h-4 text-kinari/15 shrink-0" />
+        <Search className="w-4 h-4 text-matcha-light/40 shrink-0" />
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Cari artikel..."
-          className="bg-transparent text-sm text-kinari/70 placeholder:text-kinari/15 outline-none flex-1 tracking-wide"
+          className="bg-transparent text-sm text-kinari/70 placeholder:text-kinari/20 outline-none flex-1 font-medium"
         />
       </div>
 
@@ -76,10 +80,10 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`px-4 py-1.5 rounded-full text-[11px] tracking-wider whitespace-nowrap transition-all duration-500 ${
+            className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-wide whitespace-nowrap transition-all duration-300 ${
               activeCategory === cat
-                ? 'bg-matcha/20 text-matcha-light border border-matcha/20'
-                : 'text-kinari/20 border border-kinari/[0.05] hover:border-kinari/10 hover:text-kinari/30'
+                ? 'badge-matcha'
+                : 'text-kinari/25 border border-kinari/[0.06] hover:border-matcha/20 hover:text-kinari/40'
             }`}
           >
             {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -92,43 +96,51 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="glass-zen-card p-5 animate-pulse">
-              <div className="h-4 bg-kinari/[0.03] rounded w-2/3 mb-3" />
+              <div className="h-4 bg-kinari/[0.04] rounded w-2/3 mb-3" />
               <div className="h-3 bg-kinari/[0.02] rounded w-full" />
             </div>
           ))}
         </div>
       ) : filtered.length === 0 ? (
         <div className="py-16 text-center">
-          <p className="text-kinari/15 text-sm">Artikel tidak ditemukan</p>
+          <div className="icon-circle w-14 h-14 mx-auto mb-3 flex items-center justify-center">
+            <FileText className="w-5 h-5 text-matcha-light/30" />
+          </div>
+          <p className="text-kinari/30 text-sm font-semibold">Artikel tidak ditemukan</p>
+          <p className="text-kinari/15 text-xs mt-1 font-medium">Coba kata kunci lain</p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {filtered.map((blog) => (
             <button
               key={blog.id}
               onClick={() => onBlogClick(blog.id)}
               className="w-full text-left group"
             >
-              <div className="glass-zen-card px-5 py-4 flex items-center gap-4 group-hover:border-matcha/15">
+              <div className="glass-zen-card px-5 py-4 flex items-center gap-4">
                 <div className="flex-1 min-w-0">
-                  {blog.category && (
-                    <span className="text-[9px] tracking-[0.2em] text-matcha/40 uppercase">
-                      {blog.category}
-                    </span>
-                  )}
-                  <h3 className="text-sm font-light text-kinari/75 leading-relaxed mt-0.5">
+                  <div className="flex items-center gap-2 mb-2">
+                    {blog.category && (
+                      <span className="badge-matcha px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
+                        {blog.category}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-sm font-semibold text-kinari/80 leading-snug">
                     {blog.title}
                   </h3>
                   {blog.excerpt && (
-                    <p className="text-xs text-kinari/20 mt-1 line-clamp-1 leading-relaxed">
+                    <p className="text-xs text-kinari/30 mt-1.5 line-clamp-1 font-medium leading-relaxed">
                       {blog.excerpt}
                     </p>
                   )}
-                  <p className="text-[10px] text-kinari/15 mt-2 tracking-wider">
+                  <p className="text-[11px] text-kinari/20 mt-2 font-medium">
                     {timeAgo(blog.createdAt)}
                   </p>
                 </div>
-                <ChevronRight className="w-3.5 h-3.5 text-kinari/[0.06] group-hover:text-matcha-light/30 transition-colors duration-500 shrink-0" />
+                <div className="p-1.5 rounded-lg bg-matcha/5 group-hover:bg-matcha/10 transition-colors duration-300 shrink-0">
+                  <ChevronRight className="w-4 h-4 text-kinari/10 group-hover:text-matcha-light transition-colors duration-300" />
+                </div>
               </div>
             </button>
           ))}

@@ -104,9 +104,9 @@
 /* ============ Nature Background ============ */
 .nature-bg {
   background:
-    radial-gradient(ellipse at 20% 50%, rgba(107, 143, 94, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(155, 181, 146, 0.1) 0%, transparent 40%),
-    radial-gradient(ellipse at 60% 80%, rgba(74, 107, 66, 0.12) 0%, transparent 45%),
+    radial-gradient(ellipse at 20% 50%, rgba(107, 143, 94, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(155, 181, 146, 0.12) 0%, transparent 40%),
+    radial-gradient(ellipse at 60% 80%, rgba(74, 107, 66, 0.14) 0%, transparent 45%),
     linear-gradient(180deg, #1a2e1a 0%, #1e3520 30%, #223a24 60%, #1a2e1a 100%);
   min-height: 100vh;
 }
@@ -225,6 +225,7 @@
     0 4px 16px -4px rgba(0, 0, 0, 0.15);
   transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
   position: relative;
+  overflow: hidden;
 }
 
 .glass-zen-card::before {
@@ -249,13 +250,13 @@
     rgba(245, 240, 232, 0.06) 50%,
     rgba(245, 240, 232, 0.11) 100%
   );
-  border-color: rgba(124, 154, 114, 0.3);
+  border-color: rgba(124, 154, 114, 0.35);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.04),
-    0 8px 24px -4px rgba(0, 0, 0, 0.2),
-    0 0 12px rgba(124, 154, 114, 0.08);
-  transform: translateY(-1px);
+    0 8px 28px -4px rgba(0, 0, 0, 0.25),
+    0 0 20px rgba(124, 154, 114, 0.12);
+  transform: translateY(-2px);
 }
 
 .glass-zen-input {
@@ -282,6 +283,116 @@
     0 2px 12px -2px rgba(0, 0, 0, 0.15);
 }
 
+/* ============ Accent Gradient ============ */
+.green-gradient {
+  background: linear-gradient(135deg, #7C9A72 0%, #A8C5A0 50%, #6B8F5E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.green-glow {
+  box-shadow: 0 0 20px rgba(124, 154, 114, 0.25), 0 0 60px rgba(124, 154, 114, 0.08);
+}
+
+.green-glow-soft {
+  box-shadow: 0 0 12px rgba(124, 154, 114, 0.15);
+}
+
+/* ============ Headline Card ============ */
+.headline-card {
+  background: linear-gradient(
+    135deg,
+    rgba(124, 154, 114, 0.18) 0%,
+    rgba(245, 240, 232, 0.06) 40%,
+    rgba(155, 181, 146, 0.12) 100%
+  );
+  backdrop-filter: blur(50px) saturate(180%) brightness(1.06);
+  -webkit-backdrop-filter: blur(50px) saturate(180%) brightness(1.06);
+  border: 1px solid rgba(124, 154, 114, 0.25);
+  border-radius: 1.25rem;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+    0 8px 32px -8px rgba(0, 0, 0, 0.2),
+    0 0 30px rgba(124, 154, 114, 0.08);
+  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.headline-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 30%,
+    transparent 70%,
+    rgba(124, 154, 114, 0.05) 100%
+  );
+  pointer-events: none;
+}
+
+.headline-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(124, 154, 114, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  animation: headline-shimmer 8s ease-in-out infinite;
+}
+
+@keyframes headline-shimmer {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(5%, 3%); }
+}
+
+.headline-card:hover {
+  border-color: rgba(124, 154, 114, 0.4);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+    0 12px 40px -8px rgba(0, 0, 0, 0.25),
+    0 0 40px rgba(124, 154, 114, 0.15);
+  transform: translateY(-2px);
+}
+
+/* ============ CTA Button ============ */
+.cta-button {
+  background: linear-gradient(135deg, rgba(124, 154, 114, 0.3) 0%, rgba(107, 143, 94, 0.2) 100%);
+  border: 1px solid rgba(124, 154, 114, 0.3);
+  color: #A8C5A0;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 12px -2px rgba(124, 154, 114, 0.15);
+}
+
+.cta-button:hover {
+  background: linear-gradient(135deg, rgba(124, 154, 114, 0.4) 0%, rgba(107, 143, 94, 0.3) 100%);
+  border-color: rgba(124, 154, 114, 0.5);
+  box-shadow: 0 4px 20px -2px rgba(124, 154, 114, 0.25);
+  transform: translateY(-1px);
+}
+
+/* ============ Badge ============ */
+.badge-matcha {
+  background: linear-gradient(135deg, rgba(124, 154, 114, 0.25) 0%, rgba(107, 143, 94, 0.15) 100%);
+  border: 1px solid rgba(124, 154, 114, 0.2);
+  color: #A8C5A0;
+  border-radius: 9999px;
+}
+
+.badge-urgent {
+  background: linear-gradient(135deg, rgba(212, 160, 160, 0.25) 0%, rgba(196, 91, 91, 0.15) 100%);
+  border: 1px solid rgba(212, 160, 160, 0.2);
+  color: #D4A0A0;
+  border-radius: 9999px;
+}
+
 /* ============ Nature Floating Elements ============ */
 @keyframes float-gentle {
   0%, 100% { transform: translate(0, 0) scale(1); }
@@ -300,9 +411,21 @@
   50% { transform: rotate(1deg); }
 }
 
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .animate-float-1 { animation: float-gentle 30s ease-in-out infinite; }
 .animate-float-2 { animation: float-gentle-2 35s ease-in-out infinite; }
 .animate-sway { animation: sway 8s ease-in-out infinite; }
+.animate-pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
 
 /* ============ Scrollbar - Invisible ============ */
 ::-webkit-scrollbar { width: 0px; height: 0px; }
@@ -311,38 +434,43 @@
 
 /* ============ Markdown Content ============ */
 .markdown-content {
-  color: rgba(245, 240, 232, 0.82);
+  color: rgba(245, 240, 232, 0.85);
   line-height: 1.9;
   font-size: 0.9375rem;
   letter-spacing: 0.01em;
 }
 
 .markdown-content h1 {
-  font-size: 1.625rem;
-  font-weight: 600;
+  font-size: 1.75rem;
+  font-weight: 700;
   color: #F5F0E8;
   margin-bottom: 1rem;
   margin-top: 2rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
 .markdown-content h2 {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 600;
-  color: rgba(245, 240, 232, 0.9);
+  color: rgba(245, 240, 232, 0.95);
   margin-bottom: 0.75rem;
   margin-top: 1.5rem;
 }
 
 .markdown-content h3 {
-  font-size: 1.0625rem;
-  font-weight: 500;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: #A8C5A0;
   margin-bottom: 0.5rem;
   margin-top: 1.25rem;
 }
 
 .markdown-content p { margin-bottom: 1rem; }
+
+.markdown-content strong {
+  color: #A8C5A0;
+  font-weight: 600;
+}
 
 .markdown-content a {
   color: #9BB592;
@@ -361,26 +489,30 @@
 .markdown-content li { margin-bottom: 0.375rem; }
 
 .markdown-content blockquote {
-  border-left: 2px solid rgba(124, 154, 114, 0.4);
+  border-left: 3px solid rgba(124, 154, 114, 0.5);
   padding-left: 1rem;
   margin: 1.25rem 0;
-  color: rgba(245, 240, 232, 0.5);
+  color: rgba(245, 240, 232, 0.6);
   font-style: italic;
+  background: rgba(124, 154, 114, 0.05);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.75rem 1rem;
 }
 
 .markdown-content code {
-  background: rgba(245, 240, 232, 0.06);
+  background: rgba(245, 240, 232, 0.08);
   padding: 0.15rem 0.4rem;
   border-radius: 6px;
   font-size: 0.8125rem;
 }
 
 .markdown-content pre {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.3);
   padding: 1rem;
   border-radius: 12px;
   overflow-x: auto;
   margin-bottom: 1rem;
+  border: 1px solid rgba(245, 240, 232, 0.06);
 }
 
 .markdown-content pre code { background: none; padding: 0; }
@@ -392,7 +524,7 @@
 }
 
 .markdown-content hr {
-  border-color: rgba(245, 240, 232, 0.06);
+  border-color: rgba(245, 240, 232, 0.08);
   margin: 2rem 0;
 }
 
@@ -403,14 +535,15 @@
 }
 
 .markdown-content th, .markdown-content td {
-  border: 1px solid rgba(245, 240, 232, 0.08);
+  border: 1px solid rgba(245, 240, 232, 0.1);
   padding: 0.5rem 0.75rem;
   text-align: left;
 }
 
 .markdown-content th {
-  background: rgba(245, 240, 232, 0.03);
-  font-weight: 500;
+  background: rgba(124, 154, 114, 0.1);
+  font-weight: 600;
+  color: #A8C5A0;
 }
 
 /* ============ Blog Editor Styling ============ */
@@ -432,5 +565,13 @@
 /* ============ Zen Divider ============ */
 .zen-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(245, 240, 232, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(124, 154, 114, 0.2), transparent);
+}
+
+/* ============ Icon Container ============ */
+.icon-circle {
+  background: linear-gradient(135deg, rgba(124, 154, 114, 0.2) 0%, rgba(107, 143, 94, 0.1) 100%);
+  border: 1px solid rgba(124, 154, 114, 0.15);
+  border-radius: 9999px;
+  box-shadow: 0 0 12px rgba(124, 154, 114, 0.08);
 }
