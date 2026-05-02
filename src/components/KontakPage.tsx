@@ -1,111 +1,83 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'framer-motion'
 import { Mail, Instagram, MessageCircle, Youtube, ExternalLink } from 'lucide-react'
-import LiquidGlass from './LiquidGlass'
 
 const contacts = [
   {
-    icon: <Mail className="w-6 h-6" />,
+    icon: Mail,
     label: 'Email',
     value: 'ftrn@students.isi.ac.id',
     href: 'mailto:ftrn@students.isi.ac.id',
-    color: 'from-forest-600 to-forest-500',
   },
   {
-    icon: <Instagram className="w-6 h-6" />,
+    icon: Instagram,
     label: 'Instagram',
     value: '@ftrn.isijogja',
     href: 'https://instagram.com/ftrn.isijogja',
-    color: 'from-purple-600 to-pink-500',
   },
   {
-    icon: <MessageCircle className="w-6 h-6" />,
+    icon: MessageCircle,
     label: 'WhatsApp',
     value: '+62 882-1244-7588 (Dinda)',
     href: 'https://wa.me/6288212447588',
-    color: 'from-green-600 to-green-400',
   },
   {
-    icon: <Youtube className="w-6 h-6" />,
+    icon: Youtube,
     label: 'YouTube',
     value: 'FTRN ISI Yogyakarta',
     href: 'https://youtube.com',
-    color: 'from-red-600 to-red-400',
   },
 ]
 
 export default function KontakPage() {
   return (
-    <div className="min-h-[calc(100vh-4rem)] px-4 sm:px-6 py-8 max-w-4xl mx-auto">
-      {/* Header */}
-      <motion.div
-        className="text-center mb-12"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className="text-3xl sm:text-4xl font-bold text-forest-200 mb-3">
-          Kontak Kami
-        </h1>
-        <p className="text-forest-400/60 text-sm">
-          Hubungi kami untuk informasi lebih lanjut tentang FTRN #5
+    <div className="divide-y divide-ios-separator">
+      {/* Profile header - IG profile style */}
+      <div className="px-4 pt-6 pb-4 text-center">
+        <div className="w-16 h-16 rounded-full bg-accent-green-dim mx-auto mb-3 flex items-center justify-center">
+          <span className="text-accent-green font-bold text-lg">F5</span>
+        </div>
+        <h2 className="text-lg font-semibold text-white">FTRN #5</h2>
+        <p className="text-sm text-ios-secondary mt-0.5">
+          Festival Tari Tradisional Nasional
         </p>
-      </motion.div>
+        <p className="text-xs text-ios-tertiary mt-1">ISI Yogyakarta</p>
+      </div>
 
-      {/* Contact Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {contacts.map((contact, index) => (
-          <motion.div
-            key={contact.label}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
-          >
+      {/* Contact list - iOS Settings style */}
+      <div>
+        {contacts.map((contact) => {
+          const Icon = contact.icon
+          return (
             <a
+              key={contact.label}
               href={contact.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="block"
+              className="flex items-center gap-3 px-4 py-3 active:bg-ios-card transition-colors"
             >
-              <LiquidGlass hover className="p-6 group">
-                <div className="flex items-start gap-4">
-                  <div
-                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${contact.color} flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    {contact.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-semibold text-forest-300 mb-1">
-                      {contact.label}
-                    </h3>
-                    <p className="text-forest-400/60 text-sm break-all">
-                      {contact.value}
-                    </p>
-                  </div>
-                  <ExternalLink className="w-4 h-4 text-forest-500/30 group-hover:text-forest-400 transition-colors duration-300 shrink-0 mt-1" />
-                </div>
-              </LiquidGlass>
+              <div className="w-8 h-8 rounded-lg bg-white/[0.07] flex items-center justify-center">
+                <Icon className="w-4 h-4 text-accent-green" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[15px] text-white">{contact.label}</p>
+                <p className="text-xs text-ios-secondary truncate">{contact.value}</p>
+              </div>
+              <ExternalLink className="w-3.5 h-3.5 text-ios-tertiary shrink-0" />
             </a>
-          </motion.div>
-        ))}
+          )
+        })}
       </div>
 
-      {/* Decorative Section */}
-      <motion.div
-        className="mt-16 text-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6, duration: 0.5 }}
-      >
-        <LiquidGlass variant="subtle" className="p-8 max-w-lg mx-auto">
-          <p className="text-forest-400/50 text-sm leading-relaxed italic">
+      {/* Info section */}
+      <div className="p-4">
+        <div className="glass-card p-4">
+          <p className="text-xs text-ios-secondary leading-relaxed text-center italic">
             &ldquo;Tari adalah bahasa jiwa yang menghubungkan kita dengan budaya dan tradisi nenek moyang.&rdquo;
           </p>
-          <p className="text-forest-500/40 text-xs mt-3">— FTRN #5, ISI Yogyakarta</p>
-        </LiquidGlass>
-      </motion.div>
+        </div>
+      </div>
     </div>
   )
 }

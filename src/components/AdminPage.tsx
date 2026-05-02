@@ -1,12 +1,8 @@
 'use client'
 
 import React, { useEffect, useState, useCallback } from 'react'
-import { motion } from 'framer-motion'
-import { Lock, Plus, Pencil, Trash2, ArrowLeft, LogOut, FileText } from 'lucide-react'
-import LiquidGlass from './LiquidGlass'
+import { Plus, Pencil, Trash2, ArrowLeft, LogOut, FileText } from 'lucide-react'
 import BlogEditor from './BlogEditor'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 
 interface Blog {
@@ -24,7 +20,11 @@ interface Blog {
   updatedAt: string
 }
 
-export default function AdminPage() {
+interface AdminPageProps {
+  onBack: () => void
+}
+
+export default function AdminPage({ onBack }: AdminPageProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
   const [loginLoading, setLoginLoading] = useState(false)
@@ -34,12 +34,9 @@ export default function AdminPage() {
   const [isCreating, setIsCreating] = useState(false)
   const [token, setToken] = useState<string | null>(null)
 
-  // Check for existing token on mount
   useEffect(() => {
     const savedToken = localStorage.getItem('ftrn_admin_token')
-    if (savedToken) {
-      verifyToken(savedToken)
-    }
+    if (savedToken) verifyToken(savedToken)
   }, [])
 
   const verifyToken = async (t: string) => {
@@ -93,6 +90,7 @@ export default function AdminPage() {
     setBlogs([])
     setEditingBlog(null)
     setIsCreating(false)
+    onBack()
   }
 
   const fetchAllBlogs = async (t?: string) => {
@@ -103,35 +101,23 @@ export default function AdminPage() {
       const res = await fetch('/api/blogs?all=true', {
         headers: { Authorization: `Bearer ${authToken}` },
       })
-      if (res.ok) {
-        const data = await res.json()
-        setBlogs(data)
-      }
+      if (res.ok) setBlogs(await res.json())
     } catch {
-      // silently fail
+      // silent
     } finally {
       setBlogsLoading(false)
     }
   }
 
   const handleCreateBlog = useCallback(async (data: {
-    title: string
-    slug: string
-    content: string
-    excerpt?: string
-    coverImage?: string
-    isHighlight: boolean
-    highlightType?: string
-    category?: string
-    published: boolean
+    title: string; slug: string; content: string; excerpt?: string
+    coverImage?: string; isHighlight: boolean; highlightType?: string
+    category?: string; published: boolean
   }) => {
     try {
       const res = await fetch('/api/blogs', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(data),
       })
       if (res.ok) {
@@ -148,24 +134,15 @@ export default function AdminPage() {
   }, [token])
 
   const handleUpdateBlog = useCallback(async (data: {
-    title: string
-    slug: string
-    content: string
-    excerpt?: string
-    coverImage?: string
-    isHighlight: boolean
-    highlightType?: string
-    category?: string
-    published: boolean
+    title: string; slug: string; content: string; excerpt?: string
+    coverImage?: string; isHighlight: boolean; highlightType?: string
+    category?: string; published: boolean
   }) => {
     if (!editingBlog) return
     try {
       const res = await fetch(`/api/blogs/${editingBlog.id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(data),
       })
       if (res.ok) {
@@ -182,7 +159,7 @@ export default function AdminPage() {
   }, [editingBlog, token])
 
   const handleDeleteBlog = async (blogId: string) => {
-    if (!confirm('Apakah Anda yakin ingin menghapus blog ini?')) return
+    if (!confirm('Hapus blog ini?')) return
     try {
       const res = await fetch(`/api/blogs/${blogId}`, {
         method: 'DELETE',
@@ -202,57 +179,53 @@ export default function AdminPage() {
   // Login Gate
   if (!isAuthenticated) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-sm"
-        >
-          <LiquidGlass variant="glow" className="p-8">
-            <div className="text-center mb-6">
-              <Lock className="w-10 h-10 text-forest-500 mx-auto mb-4" />
-              <h2 className="text-xl font-bold text-forest-200">Admin Panel</h2>
-              <p className="text-forest-400/60 text-sm mt-1">Masukkan password untuk mengakses</p>
+      <div className="flex items-center justify-center min-h-[60vh] px-4">
+        <div className="w-full max-w-xs">
+          <div className="glass-card p-6">
+            <div className="text-center mb-5">
+              <div className="w-12 h-12 rounded-2xl bg-accent-green-dim mx-auto mb-3 flex items-center justify-center">
+                <span className="text-accent-green font-bold">A</span>
+              </div>
+              <h2 className="text-base font-semibold text-white">Admin Panel</h2>
+              <p className="text-xs text-ios-secondary mt-1">Masukkan password</p>
             </div>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <Input
+            <form onSubmit={handleLogin} className="space-y-3">
+              <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
-                className="bg-white/5 border-white/10 text-forest-200 placeholder:text-forest-500/40 focus:border-forest-500/50 text-center"
+                className="w-full bg-white/[0.07] border-0 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-ios-tertiary outline-none focus:ring-1 focus:ring-accent-green/50"
               />
-              <Button
+              <button
                 type="submit"
                 disabled={loginLoading}
-                className="w-full bg-gradient-to-r from-forest-600 to-forest-500 text-forest-900 hover:from-forest-500 hover:to-forest-400 font-semibold"
+                className="w-full bg-accent-green text-black font-semibold text-sm py-2.5 rounded-xl active:opacity-80 transition-opacity disabled:opacity-50"
               >
                 {loginLoading ? 'Memverifikasi...' : 'Masuk'}
-              </Button>
+              </button>
             </form>
-          </LiquidGlass>
-        </motion.div>
+          </div>
+        </div>
       </div>
     )
   }
 
-  // Blog Editor View
+  // Editor View
   if (isCreating || editingBlog) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] px-4 sm:px-6 py-8 max-w-7xl mx-auto">
-        <div className="flex items-center gap-3 mb-6">
-          <Button
-            variant="ghost"
+      <div className="pb-4">
+        <div className="flex items-center gap-2 px-4 py-3">
+          <button
             onClick={() => { setIsCreating(false); setEditingBlog(null) }}
-            className="text-forest-400 hover:text-forest-300 hover:bg-white/5"
+            className="flex items-center gap-1 text-accent-green text-sm active:opacity-60"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-4 h-4" />
             Kembali
-          </Button>
-          <h2 className="text-lg font-semibold text-forest-200">
-            {isCreating ? 'Buat Blog Baru' : 'Edit Blog'}
-          </h2>
+          </button>
+          <span className="text-sm font-medium text-white">
+            {isCreating ? 'Buat Baru' : 'Edit'}
+          </span>
         </div>
         <BlogEditor
           blog={editingBlog}
@@ -265,126 +238,78 @@ export default function AdminPage() {
 
   // Admin Dashboard
   return (
-    <div className="min-h-[calc(100vh-4rem)] px-4 sm:px-6 py-8 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-forest-200 flex items-center gap-3">
-            <FileText className="w-7 h-7 text-forest-500" />
-            Blog Management
-          </h1>
-          <p className="text-forest-400/60 text-sm mt-1">Kelola semua blog FTRN #5</p>
+    <div>
+      {/* Action bar */}
+      <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-2">
+          <FileText className="w-4 h-4 text-accent-green" />
+          <span className="text-sm font-medium text-white">Blog Management</span>
+          <span className="text-xs text-ios-tertiary">({blogs.length})</span>
         </div>
-        <div className="flex items-center gap-3">
-          <Button
+        <div className="flex items-center gap-2">
+          <button
             onClick={() => setIsCreating(true)}
-            className="bg-gradient-to-r from-forest-600 to-forest-500 text-forest-900 hover:from-forest-500 hover:to-forest-400 font-semibold"
+            className="flex items-center gap-1 bg-accent-green text-black text-xs font-semibold px-3 py-1.5 rounded-lg active:opacity-80"
           >
-            <Plus className="w-4 h-4 mr-2" />
-            Blog Baru
-          </Button>
-          <Button
-            variant="ghost"
+            <Plus className="w-3.5 h-3.5" />
+            Baru
+          </button>
+          <button
             onClick={handleLogout}
-            className="text-forest-400 hover:text-forest-300 hover:bg-white/5"
+            className="p-1.5 text-ios-tertiary active:text-white"
           >
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
-          </Button>
+            <LogOut className="w-4 h-4" />
+          </button>
         </div>
       </div>
 
-      {/* Blog Table */}
-      <LiquidGlass variant="strong" className="overflow-hidden">
-        {blogsLoading ? (
-          <div className="p-8 space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-14 bg-white/5 rounded animate-pulse" />
-            ))}
-          </div>
-        ) : blogs.length === 0 ? (
-          <div className="p-12 text-center">
-            <FileText className="w-12 h-12 text-forest-500/20 mx-auto mb-4" />
-            <p className="text-forest-400/60">Belum ada blog</p>
-            <Button
-              onClick={() => setIsCreating(true)}
-              variant="ghost"
-              className="mt-4 text-forest-500 hover:text-forest-400"
-            >
-              Buat blog pertama
-            </Button>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-white/10">
-                  <th className="text-left p-4 text-xs font-semibold text-forest-400 uppercase tracking-wider">Judul</th>
-                  <th className="text-left p-4 text-xs font-semibold text-forest-400 uppercase tracking-wider hidden sm:table-cell">Kategori</th>
-                  <th className="text-left p-4 text-xs font-semibold text-forest-400 uppercase tracking-wider hidden md:table-cell">Highlight</th>
-                  <th className="text-left p-4 text-xs font-semibold text-forest-400 uppercase tracking-wider">Status</th>
-                  <th className="text-right p-4 text-xs font-semibold text-forest-400 uppercase tracking-wider">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {blogs.map((blog) => (
-                  <tr key={blog.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                    <td className="p-4">
-                      <div>
-                        <p className="text-forest-200 font-medium text-sm line-clamp-1">{blog.title}</p>
-                        <p className="text-forest-500/40 text-xs font-mono mt-0.5">{blog.slug}</p>
-                      </div>
-                    </td>
-                    <td className="p-4 hidden sm:table-cell">
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-forest-300/70 capitalize">
-                        {blog.category || '-'}
-                      </span>
-                    </td>
-                    <td className="p-4 hidden md:table-cell">
-                      {blog.isHighlight ? (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-forest-500/20 text-forest-400 capitalize">
-                          {blog.highlightType || 'Ya'}
-                        </span>
-                      ) : (
-                        <span className="text-xs text-forest-500/30">-</span>
-                      )}
-                    </td>
-                    <td className="p-4">
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        blog.published
-                          ? 'bg-green-500/20 text-green-400'
-                          : 'bg-yellow-500/20 text-yellow-400'
-                      }`}>
-                        {blog.published ? 'Published' : 'Draft'}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setEditingBlog(blog)}
-                          className="text-forest-400 hover:text-forest-300 hover:bg-white/10 h-8 w-8 p-0"
-                        >
-                          <Pencil className="w-3.5 h-3.5" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDeleteBlog(blog.id)}
-                          className="text-red-400/70 hover:text-red-400 hover:bg-red-500/10 h-8 w-8 p-0"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </LiquidGlass>
+      {/* Blog list - iOS settings style */}
+      {blogsLoading ? (
+        <div className="divide-y divide-ios-separator">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="p-4 animate-pulse">
+              <div className="h-4 bg-white/5 rounded w-2/3 mb-2" />
+              <div className="h-3 bg-white/5 rounded w-1/3" />
+            </div>
+          ))}
+        </div>
+      ) : blogs.length === 0 ? (
+        <div className="p-12 text-center">
+          <p className="text-ios-secondary text-sm">Belum ada blog</p>
+        </div>
+      ) : (
+        <div className="divide-y divide-ios-separator">
+          {blogs.map((blog) => (
+            <div key={blog.id} className="flex items-center px-4 py-3 gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-white font-medium line-clamp-1">{blog.title}</p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  {blog.category && (
+                    <span className="text-[10px] text-accent-green capitalize">{blog.category}</span>
+                  )}
+                  <span className={`text-[10px] ${blog.published ? 'text-accent-green' : 'text-yellow-500'}`}>
+                    {blog.published ? 'Published' : 'Draft'}
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 shrink-0">
+                <button
+                  onClick={() => setEditingBlog(blog)}
+                  className="p-2 active:bg-white/10 rounded-lg"
+                >
+                  <Pencil className="w-3.5 h-3.5 text-ios-secondary" />
+                </button>
+                <button
+                  onClick={() => handleDeleteBlog(blog.id)}
+                  className="p-2 active:bg-white/10 rounded-lg"
+                >
+                  <Trash2 className="w-3.5 h-3.5 text-red-400/70" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
