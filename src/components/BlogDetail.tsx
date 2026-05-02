@@ -51,9 +51,9 @@ export default function BlogDetail({ blogId, onBack }: BlogDetailProps) {
   if (!blog) {
     return (
       <div className="py-20 text-center">
-        <p className="text-kinari/20 text-sm">記事が見つかりません</p>
+        <p className="text-kinari/20 text-sm">Artikel tidak ditemukan</p>
         <button onClick={onBack} className="text-matcha-light/40 text-xs mt-3 hover:text-matcha-light transition-colors">
-          もどる
+          Kembali
         </button>
       </div>
     )

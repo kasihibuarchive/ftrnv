@@ -77,7 +77,7 @@ export default function Page() {
         />
       </div>
 
-      {/* Header — Zen minimal */}
+      {/* Header */}
       <header className="glass-zen-header sticky top-0 z-50">
         <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <button
@@ -85,10 +85,10 @@ export default function Page() {
             className="flex items-center gap-3 group"
           >
             <div className="w-8 h-8 rounded-full bg-matcha/20 flex items-center justify-center group-hover:bg-matcha/30 transition-colors duration-500">
-              <span className="text-matcha-light text-xs font-medium">葉</span>
+              <span className="text-matcha-light text-xs font-semibold">F</span>
             </div>
             <span className="text-kinari/80 text-sm font-medium tracking-wide">
-              {view === 'admin' ? '管理' : 'FTRN #5'}
+              {view === 'admin' ? 'Admin' : 'FTRN #5'}
             </span>
           </button>
           {view === 'detail' && (
@@ -96,7 +96,7 @@ export default function Page() {
               onClick={handleBack}
               className="text-matcha-light/60 text-xs tracking-wider hover:text-matcha-light transition-colors duration-300"
             >
-              ← もどる
+              ← Kembali
             </button>
           )}
         </div>
@@ -148,7 +148,7 @@ export default function Page() {
         </AnimatePresence>
       </main>
 
-      {/* Bottom Nav — Zen minimal */}
+      {/* Bottom Nav */}
       {view !== 'admin' && (
         <nav className="glass-zen-nav fixed bottom-0 left-0 right-0 z-50">
           <div className="max-w-2xl mx-auto flex items-center justify-around h-16">

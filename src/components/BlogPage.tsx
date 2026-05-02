@@ -18,13 +18,13 @@ interface BlogPageProps {
   onBlogClick: (blogId: string) => void
 }
 
-const categories = ['すべて', 'pendaftaran', 'informasi', 'juklak', 'umum']
+const categories = ['Semua', 'pendaftaran', 'informasi', 'juklak', 'umum']
 
 export default function BlogPage({ onBlogClick }: BlogPageProps) {
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const [activeCategory, setActiveCategory] = useState('すべて')
+  const [activeCategory, setActiveCategory] = useState('Semua')
 
   useEffect(() => { fetchBlogs() }, [])
 
@@ -37,16 +37,17 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
 
   const filtered = blogs.filter((b) => {
     const matchSearch = !search || b.title.toLowerCase().includes(search.toLowerCase())
-    const matchCat = activeCategory === 'すべて' || b.category === activeCategory
+    const matchCat = activeCategory === 'Semua' || b.category === activeCategory
     return matchSearch && matchCat
   })
 
   const timeAgo = (dateStr: string) => {
     const diff = Date.now() - new Date(dateStr).getTime()
     const days = Math.floor(diff / 86400000)
-    if (days === 0) return 'きょう'
-    if (days === 1) return 'きのう'
-    if (days < 7) return `${days}日前`
+    if (days === 0) return 'Hari ini'
+    if (days === 1) return 'Kemarin'
+    if (days < 7) return `${days} hari lalu`
+    if (days < 30) return `${Math.floor(days / 7)} minggu lalu`
     return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })
   }
 
@@ -54,7 +55,7 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
     <div className="px-6 pt-8 pb-6">
       {/* Title */}
       <h2 className="text-xl font-light text-kinari/80 tracking-wide mb-6">
-        ブログ<span className="text-matcha-light/40 ml-2 text-sm">Articles</span>
+        Blog<span className="text-matcha-light/40 ml-2 text-sm">Artikel</span>
       </h2>
 
       {/* Search */}
@@ -64,7 +65,7 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="さがす..."
+          placeholder="Cari artikel..."
           className="bg-transparent text-sm text-kinari/70 placeholder:text-kinari/15 outline-none flex-1 tracking-wide"
         />
       </div>
@@ -98,7 +99,7 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
         </div>
       ) : filtered.length === 0 ? (
         <div className="py-16 text-center">
-          <p className="text-kinari/15 text-sm">記事が見つかりません</p>
+          <p className="text-kinari/15 text-sm">Artikel tidak ditemukan</p>
         </div>
       ) : (
         <div className="space-y-2">

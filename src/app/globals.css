@@ -42,7 +42,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Japanese Nature Palette */
+  /* Nature Palette */
   --color-matcha: #7C9A72;
   --color-matcha-light: #A8C5A0;
   --color-matcha-dark: #4A6B42;
@@ -110,62 +110,175 @@
   min-height: 100vh;
 }
 
-/* ============ Japanese Liquid Glass ============ */
+/* ============ LIQUID GLASS — Real Glassmorphism ============ */
 .glass-zen {
-  background: rgba(245, 240, 232, 0.06);
-  backdrop-filter: blur(40px) saturate(120%);
-  -webkit-backdrop-filter: blur(40px) saturate(120%);
-  border: 1px solid rgba(245, 240, 232, 0.08);
+  background: linear-gradient(
+    135deg,
+    rgba(245, 240, 232, 0.12) 0%,
+    rgba(245, 240, 232, 0.06) 50%,
+    rgba(245, 240, 232, 0.10) 100%
+  );
+  backdrop-filter: blur(60px) saturate(180%) brightness(1.05);
+  -webkit-backdrop-filter: blur(60px) saturate(180%) brightness(1.05);
+  border: 1px solid rgba(245, 240, 232, 0.18);
   border-radius: 1.25rem;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.05),
+    0 8px 32px -8px rgba(0, 0, 0, 0.25),
+    0 0 0 0.5px rgba(245, 240, 232, 0.06);
+  position: relative;
+}
+
+.glass-zen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  pointer-events: none;
 }
 
 .glass-zen-strong {
-  background: rgba(245, 240, 232, 0.1);
-  backdrop-filter: blur(50px) saturate(140%);
-  -webkit-backdrop-filter: blur(50px) saturate(140%);
-  border: 1px solid rgba(245, 240, 232, 0.12);
+  background: linear-gradient(
+    135deg,
+    rgba(245, 240, 232, 0.18) 0%,
+    rgba(245, 240, 232, 0.08) 50%,
+    rgba(245, 240, 232, 0.14) 100%
+  );
+  backdrop-filter: blur(80px) saturate(200%) brightness(1.08);
+  -webkit-backdrop-filter: blur(80px) saturate(200%) brightness(1.08);
+  border: 1px solid rgba(245, 240, 232, 0.22);
   border-radius: 1.25rem;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.06),
+    0 12px 40px -8px rgba(0, 0, 0, 0.3),
+    0 0 0 0.5px rgba(245, 240, 232, 0.08);
+  position: relative;
+}
+
+.glass-zen-strong::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 35%,
+    transparent 65%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  pointer-events: none;
 }
 
 .glass-zen-nav {
-  background: rgba(26, 46, 26, 0.7);
-  backdrop-filter: blur(50px) saturate(150%);
-  -webkit-backdrop-filter: blur(50px) saturate(150%);
-  border-top: 1px solid rgba(245, 240, 232, 0.06);
+  background: linear-gradient(
+    180deg,
+    rgba(26, 46, 26, 0.65) 0%,
+    rgba(26, 46, 26, 0.85) 100%
+  );
+  backdrop-filter: blur(60px) saturate(180%) brightness(1.05);
+  -webkit-backdrop-filter: blur(60px) saturate(180%) brightness(1.05);
+  border-top: 1px solid rgba(245, 240, 232, 0.12);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+    0 -4px 20px -4px rgba(0, 0, 0, 0.2);
 }
 
 .glass-zen-header {
-  background: rgba(26, 46, 26, 0.65);
-  backdrop-filter: blur(50px) saturate(150%);
-  -webkit-backdrop-filter: blur(50px) saturate(150%);
-  border-bottom: 1px solid rgba(245, 240, 232, 0.06);
+  background: linear-gradient(
+    180deg,
+    rgba(26, 46, 26, 0.6) 0%,
+    rgba(26, 46, 26, 0.8) 100%
+  );
+  backdrop-filter: blur(60px) saturate(180%) brightness(1.05);
+  -webkit-backdrop-filter: blur(60px) saturate(180%) brightness(1.05);
+  border-bottom: 1px solid rgba(245, 240, 232, 0.12);
+  box-shadow:
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.04),
+    0 4px 20px -4px rgba(0, 0, 0, 0.2);
 }
 
 .glass-zen-card {
-  background: rgba(245, 240, 232, 0.05);
-  backdrop-filter: blur(30px) saturate(120%);
-  -webkit-backdrop-filter: blur(30px) saturate(120%);
-  border: 1px solid rgba(245, 240, 232, 0.07);
+  background: linear-gradient(
+    135deg,
+    rgba(245, 240, 232, 0.09) 0%,
+    rgba(245, 240, 232, 0.04) 50%,
+    rgba(245, 240, 232, 0.07) 100%
+  );
+  backdrop-filter: blur(50px) saturate(170%) brightness(1.04);
+  -webkit-backdrop-filter: blur(50px) saturate(170%) brightness(1.04);
+  border: 1px solid rgba(245, 240, 232, 0.14);
   border-radius: 1rem;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.04),
+    0 4px 16px -4px rgba(0, 0, 0, 0.15);
   transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  position: relative;
+}
+
+.glass-zen-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  pointer-events: none;
 }
 
 .glass-zen-card:hover {
-  background: rgba(245, 240, 232, 0.08);
-  border-color: rgba(124, 154, 114, 0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(245, 240, 232, 0.14) 0%,
+    rgba(245, 240, 232, 0.06) 50%,
+    rgba(245, 240, 232, 0.11) 100%
+  );
+  border-color: rgba(124, 154, 114, 0.3);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.04),
+    0 8px 24px -4px rgba(0, 0, 0, 0.2),
+    0 0 12px rgba(124, 154, 114, 0.08);
+  transform: translateY(-1px);
 }
 
 .glass-zen-input {
-  background: rgba(245, 240, 232, 0.05);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(245, 240, 232, 0.08);
+  background: linear-gradient(
+    135deg,
+    rgba(245, 240, 232, 0.07) 0%,
+    rgba(245, 240, 232, 0.03) 100%
+  );
+  backdrop-filter: blur(40px) saturate(150%);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  border: 1px solid rgba(245, 240, 232, 0.12);
   border-radius: 0.75rem;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.04),
+    0 2px 8px -2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .glass-zen-input:focus {
-  border-color: rgba(124, 154, 114, 0.4);
-  box-shadow: 0 0 0 3px rgba(124, 154, 114, 0.08);
+  border-color: rgba(124, 154, 114, 0.45);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+    0 0 0 3px rgba(124, 154, 114, 0.1),
+    0 2px 12px -2px rgba(0, 0, 0, 0.15);
 }
 
 /* ============ Nature Floating Elements ============ */
@@ -190,12 +303,12 @@
 .animate-float-2 { animation: float-gentle-2 35s ease-in-out infinite; }
 .animate-sway { animation: sway 8s ease-in-out infinite; }
 
-/* ============ Scrollbar - Invisible Zen ============ */
+/* ============ Scrollbar - Invisible ============ */
 ::-webkit-scrollbar { width: 0px; height: 0px; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* ============ Markdown Content - Zen Style ============ */
+/* ============ Markdown Content ============ */
 .markdown-content {
   color: rgba(245, 240, 232, 0.82);
   line-height: 1.9;
@@ -318,5 +431,5 @@
 /* ============ Zen Divider ============ */
 .zen-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(245, 240, 232, 0.06), transparent);
+  background: linear-gradient(90deg, transparent, rgba(245, 240, 232, 0.1), transparent);
 }

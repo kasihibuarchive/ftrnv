@@ -122,10 +122,10 @@ export default function AdminPage({ onBack }: AdminPageProps) {
         <div className="w-full max-w-xs">
           <div className="glass-zen-strong p-8 text-center">
             <div className="w-14 h-14 rounded-full bg-matcha/10 mx-auto mb-5 flex items-center justify-center">
-              <span className="text-matcha-light text-lg font-light">管</span>
+              <span className="text-matcha-light text-lg font-light">A</span>
             </div>
-            <h2 className="text-sm font-light text-kinari/70 tracking-wider mb-1">管理パネル</h2>
-            <p className="text-[10px] text-kinari/20 tracking-wider mb-6">Admin Panel</p>
+            <h2 className="text-sm font-light text-kinari/70 tracking-wider mb-1">Panel Admin</h2>
+            <p className="text-[10px] text-kinari/20 tracking-wider mb-6">Kelola Blog FTRN #5</p>
             <form onSubmit={handleLogin} className="space-y-3">
               <input
                 type="password"
@@ -139,7 +139,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
                 disabled={loginLoading}
                 className="w-full bg-matcha/20 text-matcha-light text-sm py-3 rounded-xl tracking-wider hover:bg-matcha/30 transition-colors duration-500 disabled:opacity-40"
               >
-                {loginLoading ? '...' : '入る'}
+                {loginLoading ? '...' : 'Masuk'}
               </button>
             </form>
           </div>
@@ -157,10 +157,10 @@ export default function AdminPage({ onBack }: AdminPageProps) {
             onClick={() => { setIsCreating(false); setEditingBlog(null) }}
             className="text-matcha-light/40 text-xs tracking-wider hover:text-matcha-light transition-colors duration-300"
           >
-            ← もどる
+            ← Kembali
           </button>
           <span className="text-xs text-kinari/30 tracking-wider">
-            {isCreating ? '新規作成' : '編集'}
+            {isCreating ? 'Buat Baru' : 'Edit'}
           </span>
         </div>
         <BlogEditor
@@ -177,8 +177,8 @@ export default function AdminPage({ onBack }: AdminPageProps) {
     <div className="px-6 pt-8 pb-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-light text-kinari/70 tracking-wide">ブログ管理</h2>
-          <p className="text-[10px] text-kinari/15 tracking-wider mt-0.5">{blogs.length} 記事</p>
+          <h2 className="text-lg font-light text-kinari/70 tracking-wide">Kelola Blog</h2>
+          <p className="text-[10px] text-kinari/15 tracking-wider mt-0.5">{blogs.length} artikel</p>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -186,7 +186,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
             className="flex items-center gap-1.5 bg-matcha/15 text-matcha-light text-[11px] tracking-wider px-3.5 py-2 rounded-xl hover:bg-matcha/25 transition-colors duration-500"
           >
             <Plus className="w-3.5 h-3.5" />
-            新規
+            Baru
           </button>
           <button onClick={handleLogout} className="p-2 text-kinari/10 hover:text-kinari/30 transition-colors duration-300">
             <LogOut className="w-4 h-4" />
@@ -200,7 +200,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
         </div>
       ) : blogs.length === 0 ? (
         <div className="py-16 text-center">
-          <p className="text-kinari/15 text-sm">まだ記事がありません</p>
+          <p className="text-kinari/15 text-sm">Belum ada artikel</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -211,7 +211,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
                 <div className="flex items-center gap-2 mt-1">
                   {blog.category && <span className="text-[9px] text-matcha/30 tracking-wider">{blog.category}</span>}
                   <span className={`text-[9px] tracking-wider ${blog.published ? 'text-matcha-light/40' : 'text-sakura/40'}`}>
-                    {blog.published ? '公開' : '下書き'}
+                    {blog.published ? 'Terbit' : 'Draft'}
                   </span>
                 </div>
               </div>

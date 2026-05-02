@@ -33,17 +33,17 @@ const contacts = [
 export default function KontakPage() {
   return (
     <div className="px-6 pt-10 pb-6">
-      {/* Profile — Zen */}
+      {/* Profile */}
       <div className="text-center mb-10">
         <div className="w-16 h-16 rounded-full bg-matcha/10 mx-auto mb-5 flex items-center justify-center">
-          <span className="text-matcha-light text-lg font-light">葉</span>
+          <span className="text-matcha-light text-lg font-light">F</span>
         </div>
         <h2 className="text-xl font-light text-kinari/80 tracking-wide">FTRN #5</h2>
         <p className="text-xs text-suri mt-2 tracking-wider">
           Festival Tari Tradisional Nasional
         </p>
         <p className="text-[10px] text-kinari/15 mt-1 tracking-widest">
-          ISI ヨグヤカルタ
+          ISI Yogyakarta
         </p>
       </div>
 
@@ -52,10 +52,10 @@ export default function KontakPage() {
 
       {/* Contact label */}
       <p className="text-[10px] tracking-[0.25em] text-matcha-light/40 uppercase mb-4">
-        連絡先 — Contact
+        Hubungi Kami
       </p>
 
-      {/* Contact list — Zen rows */}
+      {/* Contact list */}
       <div className="space-y-2">
         {contacts.map((contact) => {
           const Icon = contact.icon
@@ -82,11 +82,11 @@ export default function KontakPage() {
         })}
       </div>
 
-      {/* Zen quote */}
+      {/* Quote */}
       <div className="mt-10 text-center">
         <p className="text-xs text-kinari/15 italic leading-loose tracking-wide">
-          踊りは魂の言語であり、<br />
-          私たちを文化と伝統に結びつける
+          Tari adalah bahasa jiwa,<br />
+          yang menghubungkan kita dengan budaya dan tradisi
         </p>
         <p className="text-[9px] text-kinari/10 mt-3 tracking-widest">— FTRN #5</p>
       </div>

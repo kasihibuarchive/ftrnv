@@ -45,9 +45,10 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
   const timeAgo = (dateStr: string) => {
     const diff = Date.now() - new Date(dateStr).getTime()
     const days = Math.floor(diff / 86400000)
-    if (days === 0) return 'きょう'
-    if (days === 1) return 'きのう'
-    if (days < 7) return `${days}日前`
+    if (days === 0) return 'Hari ini'
+    if (days === 1) return 'Kemarin'
+    if (days < 7) return `${days} hari lalu`
+    if (days < 30) return `${Math.floor(days / 7)} minggu lalu`
     return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })
   }
 
@@ -66,7 +67,7 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
 
   return (
     <div className="px-6 pt-10 pb-6">
-      {/* Hero — Zen breathing space */}
+      {/* Hero */}
       <div className="mb-12">
         <p className="text-matcha-light/40 text-[10px] tracking-[0.3em] uppercase mb-3">
           Festival Tari Tradisional Nasional
@@ -75,7 +76,7 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
           FTRN<span className="text-matcha-light ml-2">#5</span>
         </h1>
         <p className="text-suri text-sm mt-3 leading-relaxed max-w-sm">
-          メラワン ケカヤan ブダヤ タリ トラディシオナル インドネシア
+          Merawat kekayaan budaya tari tradisional Indonesia
         </p>
         <div className="zen-divider mt-8" />
       </div>
@@ -84,7 +85,7 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
       {headline && (
         <div className="mb-10">
           <p className="text-[10px] tracking-[0.25em] text-matcha-light/40 uppercase mb-4">
-            おしらせ
+            Pengumuman
           </p>
           <button
             onClick={() => onBlogClick(headline.id)}
@@ -117,7 +118,7 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
       {featured.length > 0 && (
         <div>
           <p className="text-[10px] tracking-[0.25em] text-matcha-light/40 uppercase mb-4">
-            あたらしい
+            Terbaru
           </p>
           <div className="space-y-3">
             {featured.map((blog) => (
@@ -151,7 +152,7 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
       {/* Empty */}
       {!headline && featured.length === 0 && (
         <div className="py-20 text-center">
-          <p className="text-suri/50 text-sm">まだ おしらせ が ありません</p>
+          <p className="text-suri/50 text-sm">Belum ada pengumuman</p>
         </div>
       )}
     </div>
