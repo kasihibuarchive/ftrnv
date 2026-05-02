@@ -107,9 +107,9 @@ export default function KontakPage() {
       <div className="mt-10 text-center glass-zen-card p-6">
         <Heart className="w-4 h-4 text-sakura/40 mx-auto mb-3" />
         <p className="text-xs text-kinari/50 font-medium leading-loose italic">
-          Teater adalah bahasa jiwa,<br />
-          yang menghubungkan kita dengan<br />
-          budaya dan tradisi
+          Sampai jumpa di,<br />
+          Festival Teater Remaja Nusantara #5<br />
+          2026
         </p>
         <p className="text-[10px] text-matcha-light/25 mt-3 font-bold tracking-widest">— FTRN #5</p>
       </div>
