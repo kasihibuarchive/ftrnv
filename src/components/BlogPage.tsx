@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { Search, ChevronRight, FileText } from 'lucide-react'
+import { proxyImageUrl } from '@/lib/image-proxy'
 
 interface Blog {
   id: string
@@ -117,29 +118,41 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
               onClick={() => onBlogClick(blog.id)}
               className="w-full text-left group"
             >
-              <div className="glass-zen-card px-5 py-4 flex items-center gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    {blog.category && (
-                      <span className="badge-matcha px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
-                        {blog.category}
-                      </span>
-                    )}
+              <div className="glass-zen-card overflow-hidden">
+                {blog.coverImage && (
+                  <div className="relative w-full h-28 overflow-hidden">
+                    <img
+                      src={proxyImageUrl(blog.coverImage)}
+                      alt={blog.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   </div>
-                  <h3 className="text-sm font-semibold text-kinari/80 leading-snug">
-                    {blog.title}
-                  </h3>
-                  {blog.excerpt && (
-                    <p className="text-xs text-kinari/30 mt-1.5 line-clamp-1 font-medium leading-relaxed">
-                      {blog.excerpt}
+                )}
+                <div className="px-5 py-4 flex items-center gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      {blog.category && (
+                        <span className="badge-matcha px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
+                          {blog.category}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-sm font-semibold text-kinari/80 leading-snug">
+                      {blog.title}
+                    </h3>
+                    {blog.excerpt && (
+                      <p className="text-xs text-kinari/30 mt-1.5 line-clamp-1 font-medium leading-relaxed">
+                        {blog.excerpt}
+                      </p>
+                    )}
+                    <p className="text-[11px] text-kinari/20 mt-2 font-medium">
+                      {timeAgo(blog.createdAt)}
                     </p>
-                  )}
-                  <p className="text-[11px] text-kinari/20 mt-2 font-medium">
-                    {timeAgo(blog.createdAt)}
-                  </p>
-                </div>
-                <div className="p-1.5 rounded-lg bg-matcha/5 group-hover:bg-matcha/10 transition-colors duration-300 shrink-0">
-                  <ChevronRight className="w-4 h-4 text-kinari/10 group-hover:text-matcha-light transition-colors duration-300" />
+                  </div>
+                  <div className="p-1.5 rounded-lg bg-matcha/5 group-hover:bg-matcha/10 transition-colors duration-300 shrink-0">
+                    <ChevronRight className="w-4 h-4 text-kinari/10 group-hover:text-matcha-light transition-colors duration-300" />
+                  </div>
                 </div>
               </div>
             </button>

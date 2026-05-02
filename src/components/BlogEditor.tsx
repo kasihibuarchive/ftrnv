@@ -7,6 +7,7 @@ import {
   List, ListOrdered, Quote, Code
 } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
+import { proxyImageUrl } from '@/lib/image-proxy'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import {
@@ -200,7 +201,14 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
           <div>
             <div className="px-3 py-2 text-[9px] text-kinari/10 tracking-[0.2em] uppercase border-b border-kinari/[0.03]">Pratinjau</div>
             <div className="h-[400px] overflow-y-auto no-scrollbar p-3">
-              <div className="markdown-content"><ReactMarkdown>{content || '*Mulai menulis...'}</ReactMarkdown></div>
+              <div className="markdown-content"><ReactMarkdown
+                components={{
+                  img: ({ src, alt, ...props }) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={proxyImageUrl(src)} alt={alt} {...props} />
+                  ),
+                }}
+              >{content || '*Mulai menulis...'}</ReactMarkdown></div>
             </div>
           </div>
         </div>

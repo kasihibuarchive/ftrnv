@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { ChevronRight, Sparkles, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
+import { proxyImageUrl } from '@/lib/image-proxy'
 
 interface Blog {
   id: string
@@ -104,7 +105,7 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
               {headline.coverImage && (
                 <div className="relative w-full h-44 overflow-hidden">
                   <img
-                    src={headline.coverImage}
+                    src={proxyImageUrl(headline.coverImage)}
                     alt={headline.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
@@ -165,7 +166,7 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
                   {blog.coverImage && (
                     <div className="relative w-full h-32 overflow-hidden">
                       <img
-                        src={blog.coverImage}
+                        src={proxyImageUrl(blog.coverImage)}
                         alt={blog.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />

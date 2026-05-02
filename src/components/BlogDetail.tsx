@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { Tag, Calendar, ArrowLeft } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
+import { proxyImageUrl } from '@/lib/image-proxy'
 
 interface Blog {
   id: string
@@ -64,7 +65,7 @@ export default function BlogDetail({ blogId, onBack }: BlogDetailProps) {
       {/* Cover */}
       {blog.coverImage && (
         <div className="rounded-2xl overflow-hidden mb-6 green-glow-soft">
-          <img src={blog.coverImage} alt={blog.title} className="w-full h-56 object-cover" />
+          <img src={proxyImageUrl(blog.coverImage)} alt={blog.title} className="w-full h-56 object-cover" />
         </div>
       )}
 
@@ -92,7 +93,14 @@ export default function BlogDetail({ blogId, onBack }: BlogDetailProps) {
 
       {/* Content */}
       <div className="markdown-content">
-        <ReactMarkdown>{blog.content}</ReactMarkdown>
+        <ReactMarkdown
+          components={{
+            img: ({ src, alt, ...props }) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={proxyImageUrl(src)} alt={alt} {...props} />
+            ),
+          }}
+        >{blog.content}</ReactMarkdown>
       </div>
     </div>
   )
