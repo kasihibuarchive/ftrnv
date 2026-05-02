@@ -40,12 +40,12 @@ export default function KontakPage() {
     <div className="px-6 pt-8 pb-6">
       {/* Profile */}
       <div className="text-center mb-10">
-        <div className="icon-circle w-20 h-20 mx-auto mb-5 flex items-center justify-center green-glow">
+        <div className="icon-circle w-16 h-16 mx-auto mb-5 flex items-center justify-center green-glow">
           <Image
             src="/ftrn-logo.png"
             alt="FTRN"
-            width={48}
-            height={48}
+            width={36}
+            height={36}
             className="object-contain"
             style={{ filter: 'brightness(0) invert(1)' }}
           />
@@ -54,8 +54,8 @@ export default function KontakPage() {
           <Image
             src="/ftrn-text.png"
             alt="FTRN #5"
-            width={140}
-            height={48}
+            width={110}
+            height={38}
             className="object-contain mx-auto"
             style={{ filter: 'brightness(0) invert(1)' }}
           />

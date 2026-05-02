@@ -85,12 +85,12 @@ export default function Page() {
             onClick={view === 'admin' ? handleBack : handleLogoTap}
             className="flex items-center gap-3 group"
           >
-            <div className="w-9 h-9 flex items-center justify-center group-hover:shadow-[0_0_20px_rgba(124,154,114,0.2)] transition-shadow duration-500">
+            <div className="w-8 h-8 flex items-center justify-center group-hover:shadow-[0_0_20px_rgba(124,154,114,0.2)] transition-shadow duration-500">
               <Image
                 src="/ftrn-logo.png"
                 alt="FTRN"
-                width={36}
-                height={36}
+                width={28}
+                height={28}
                 className="object-contain"
                 style={{ filter: 'brightness(0) invert(1)' }}
               />
@@ -101,8 +101,8 @@ export default function Page() {
               <Image
                 src="/ftrn-text.png"
                 alt="FTRN #5"
-                width={80}
-                height={28}
+                width={60}
+                height={22}
                 className="object-contain"
                 style={{ filter: 'brightness(0) invert(1)' }}
               />

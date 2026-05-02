@@ -78,8 +78,8 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
           <Image
             src="/ftrn-text.png"
             alt="FTRN #5"
-            width={180}
-            height={60}
+            width={140}
+            height={48}
             className="object-contain"
             style={{ filter: 'brightness(0) invert(1)' }}
           />
