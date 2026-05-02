@@ -1,7 +1,5 @@
-import { db } from '@/lib/db'
+import { NextResponse } from 'next/server'
 import { createClient } from '@libsql/client'
-
-let seeded = false
 
 const CREATE_BLOG_TABLE = `
   CREATE TABLE IF NOT EXISTS Blog (
@@ -29,37 +27,12 @@ const CREATE_ADMIN_SESSION_TABLE = `
   )
 `
 
-async function ensureTables() {
-  try {
-    const libsql = createClient({
-      url: process.env.TURSO_DATABASE_URL!,
-      authToken: process.env.TURSO_AUTH_TOKEN!,
-    })
-    await libsql.execute(CREATE_BLOG_TABLE)
-    await libsql.execute(CREATE_ADMIN_SESSION_TABLE)
-  } catch (error) {
-    console.error('Failed to ensure tables:', error)
-  }
-}
-
-export async function autoSeed() {
-  if (seeded) return
-  seeded = true
-
-  try {
-    // First, ensure tables exist
-    await ensureTables()
-
-    const existing = await db.blog.findFirst()
-    if (existing) return
-
-    await db.blog.createMany({
-      data: [
-        {
-          id: 'clxpendaftaran001',
-          title: 'Pendaftaran FTRN #5 Dibuka!!',
-          slug: 'pendaftaran-ftrn-5-dibuka',
-          content: `# Pendaftaran FTRN #5 Dibuka!!
+const SEED_BLOGS = [
+  {
+    id: 'clxpendaftaran001',
+    title: 'Pendaftaran FTRN #5 Dibuka!!',
+    slug: 'pendaftaran-ftrn-5-dibuka',
+    content: `# Pendaftaran FTRN #5 Dibuka!!
 
 🎉 **Festival Tari Tradisional Nasional ke-5** telah resmi dibuka!
 
@@ -89,17 +62,17 @@ FTRN (Festival Tari Tradisional Nasional) adalah ajang tahunan yang diselenggara
 > Jangan lewatkan kesempatan untuk berpartisipasi dalam festival tari tradisional terbesar di ISI Yogyakarta!
 
 Hubungi kami untuk informasi lebih lanjut. Mari bersama merayakan kekayaan budaya tari Nusantara! 🌿`,
-          excerpt: 'Festival Tari Tradisional Nasional ke-5 telah resmi dibuka! Segera daftarkan diri Anda dan komunitas tari Anda.',
-          isHighlight: true,
-          highlightType: 'headline',
-          category: 'pendaftaran',
-          published: true,
-        },
-        {
-          id: 'clxinformasi002',
-          title: 'Informasi Seputar FTRN #5',
-          slug: 'informasi-seputar-ftrn-5',
-          content: `# Informasi Seputar FTRN #5
+    excerpt: 'Festival Tari Tradisional Nasional ke-5 telah resmi dibuka! Segera daftarkan diri Anda dan komunitas tari Anda.',
+    isHighlight: 1,
+    highlightType: 'headline',
+    category: 'pendaftaran',
+    published: 1,
+  },
+  {
+    id: 'clxinformasi002',
+    title: 'Informasi Seputar FTRN #5',
+    slug: 'informasi-seputar-ftrn-5',
+    content: `# Informasi Seputar FTRN #5
 
 Berikut adalah informasi penting yang perlu Anda ketahui tentang Festival Tari Tradisional Nasional ke-5.
 
@@ -132,17 +105,17 @@ Untuk informasi lebih lanjut, silakan hubungi:
 - WhatsApp: +62 882-1244-7588 (Dinda)
 
 > FTRN #5 mengajak kita semua untuk menjaga dan melestarikan warisan budaya tari Nusantara. 🌿`,
-          excerpt: 'Informasi lengkap seputar Festival Tari Tradisional Nasional ke-5: tema, kategori, lokasi, dan cara menghubungi panitia.',
-          isHighlight: true,
-          highlightType: 'featured',
-          category: 'informasi',
-          published: true,
-        },
-        {
-          id: 'clxjuklak003',
-          title: 'Juklak FTRN #5',
-          slug: 'juklak-ftrn-5',
-          content: `# Juklak FTRN #5 (Petunjuk Pelaksanaan)
+    excerpt: 'Informasi lengkap seputar Festival Tari Tradisional Nasional ke-5: tema, kategori, lokasi, dan cara menghubungi panitia.',
+    isHighlight: 1,
+    highlightType: 'featured',
+    category: 'informasi',
+    published: 1,
+  },
+  {
+    id: 'clxjuklak003',
+    title: 'Juklak FTRN #5',
+    slug: 'juklak-ftrn-5',
+    content: `# Juklak FTRN #5 (Petunjuk Pelaksanaan)
 
 Berikut adalah petunjuk pelaksanaan untuk peserta Festival Tari Tradisional Nasional ke-5.
 
@@ -195,19 +168,79 @@ Penilaian dilakukan oleh dewan juri yang kompeten di bidang seni tari, meliputi 
 Untuk pertanyaan lebih lanjut, silakan hubungi panitia melalui kontak yang tersedia.
 
 *Petunjuk pelaksanaan ini dapat berubah sewaktu-waktu. Pantau terus informasi terbaru dari FTRN #5.* 🌿`,
-          excerpt: 'Petunjuk pelaksanaan lengkap untuk peserta FTRN #5: ketentuan umum, kategori, syarat, penilaian, dan timeline penting.',
-          isHighlight: true,
-          highlightType: 'featured',
-          category: 'juklak',
-          published: true,
-        },
+    excerpt: 'Petunjuk pelaksanaan lengkap untuk peserta FTRN #5: ketentuan umum, kategori, syarat, penilaian, dan timeline penting.',
+    isHighlight: 1,
+    highlightType: 'featured',
+    category: 'juklak',
+    published: 1,
+  },
+]
+
+async function runSetup() {
+  const libsql = createClient({
+    url: process.env.TURSO_DATABASE_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN!,
+  })
+
+  // Create tables
+  await libsql.execute(CREATE_BLOG_TABLE)
+  await libsql.execute(CREATE_ADMIN_SESSION_TABLE)
+
+  // Check if data already exists
+  const existing = await libsql.execute('SELECT id FROM Blog LIMIT 1')
+  if (existing.rows.length > 0) {
+    const count = (await libsql.execute('SELECT COUNT(*) as count FROM Blog')).rows[0].count
+    return { message: 'Tables exist and data already seeded', blogCount: count, isNew: false }
+  }
+
+  // Seed data
+  const now = new Date().toISOString()
+
+  for (const blog of SEED_BLOGS) {
+    await libsql.execute({
+      sql: `INSERT INTO Blog (id, title, slug, content, excerpt, isHighlight, highlightType, category, published, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        blog.id,
+        blog.title,
+        blog.slug,
+        blog.content,
+        blog.excerpt,
+        blog.isHighlight,
+        blog.highlightType,
+        blog.category,
+        blog.published,
+        now,
+        now,
       ],
     })
+  }
 
-    console.log('Auto-seed: 3 blogs created')
+  const count = (await libsql.execute('SELECT COUNT(*) as count FROM Blog')).rows[0].count
+  return { message: 'Setup complete! Tables created and data seeded.', blogCount: count, isNew: true }
+}
+
+export async function POST() {
+  try {
+    const result = await runSetup()
+    return NextResponse.json(result)
   } catch (error) {
-    console.error('Auto-seed failed:', error)
-    // Reset seeded flag so it can be retried
-    seeded = false
+    console.error('Setup failed:', error)
+    return NextResponse.json({
+      error: 'Setup failed',
+      details: error instanceof Error ? error.message : String(error),
+    }, { status: 500 })
+  }
+}
+
+export async function GET() {
+  try {
+    const result = await runSetup()
+    return NextResponse.json(result)
+  } catch (error) {
+    console.error('Setup failed:', error)
+    return NextResponse.json({
+      error: 'Setup failed',
+      details: error instanceof Error ? error.message : String(error),
+    }, { status: 500 })
   }
 }
