@@ -36,7 +36,7 @@ FTRN (Festival Teater Remaja Nusantara) adalah ajang tahunan yang diselenggaraka
 
 Hubungi kami untuk informasi lebih lanjut. Mari bersama merayakan kekayaan budaya teater Nusantara! 🌿`,
     excerpt: 'Festival Teater Remaja Nusantara ke-5 telah resmi dibuka! Segera daftarkan diri Anda dan komunitas teater Anda.',
-    coverImage: '/cover-pendaftaran.png',
+    coverImage: '/cover-pendaftaran.jpg',
     isHighlight: 1,
     highlightType: 'headline',
     category: 'pendaftaran',
@@ -79,7 +79,7 @@ Untuk informasi lebih lanjut, silakan hubungi:
 
 > FTRN #5 mengajak kita semua untuk menjaga dan melestarikan warisan budaya teater Nusantara. 🌿`,
     excerpt: 'Informasi lengkap seputar Festival Teater Remaja Nusantara ke-5: tema, kategori, lokasi, dan cara menghubungi panitia.',
-    coverImage: '/cover-informasi.png',
+    coverImage: '/cover-informasi.jpg',
     isHighlight: 1,
     highlightType: 'featured',
     category: 'informasi',
@@ -142,7 +142,7 @@ Untuk pertanyaan lebih lanjut, silakan hubungi panitia melalui kontak yang terse
 
 *Petunjuk pelaksanaan ini dapat berubah sewaktu-waktu. Pantau terus informasi terbaru dari FTRN #5.* 🌿`,
     excerpt: 'Petunjuk pelaksanaan lengkap untuk peserta FTRN #5: ketentuan umum, kategori, syarat, penilaian, dan timeline penting.',
-    coverImage: '/cover-juklak.png',
+    coverImage: '/cover-juklak.jpg',
     isHighlight: 1,
     highlightType: 'featured',
     category: 'juklak',

@@ -57,7 +57,7 @@ export async function autoSeed() {
       data: [
         {
           id: 'clxpendaftaran001',
-          coverImage: '/cover-pendaftaran.png',
+          coverImage: '/cover-pendaftaran.jpg',
           title: 'Pendaftaran FTRN #5 Dibuka!!',
           slug: 'pendaftaran-ftrn-5-dibuka',
           content: `# Pendaftaran FTRN #5 Dibuka!!
@@ -98,7 +98,7 @@ Hubungi kami untuk informasi lebih lanjut. Mari bersama merayakan kekayaan buday
         },
         {
           id: 'clxinformasi002',
-          coverImage: '/cover-informasi.png',
+          coverImage: '/cover-informasi.jpg',
           title: 'Informasi Seputar FTRN #5',
           slug: 'informasi-seputar-ftrn-5',
           content: `# Informasi Seputar FTRN #5
@@ -142,7 +142,7 @@ Untuk informasi lebih lanjut, silakan hubungi:
         },
         {
           id: 'clxjuklak003',
-          coverImage: '/cover-juklak.png',
+          coverImage: '/cover-juklak.jpg',
           title: 'Juklak FTRN #5',
           slug: 'juklak-ftrn-5',
           content: `# Juklak FTRN #5 (Petunjuk Pelaksanaan)
