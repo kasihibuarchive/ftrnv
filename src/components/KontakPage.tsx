@@ -29,7 +29,7 @@ const contacts = [
     icon: Youtube,
     label: 'YouTube',
     value: 'FTRN ISI Yogyakarta',
-    href: 'https://youtube.com',
+    href: 'https://youtube.com/@ftrnisiyogyakarta2655',
     color: 'from-sakura/20 to-sakura/5',
   },
 ]
