@@ -1,0 +1,382 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Nature Ecological Colors */
+  --color-forest-900: #0d2818;
+  --color-forest-800: #1a472a;
+  --color-forest-700: #2d6a4f;
+  --color-forest-600: #40916c;
+  --color-forest-500: #52b788;
+  --color-forest-400: #74c69d;
+  --color-forest-300: #95d5b2;
+  --color-forest-200: #b7e4c7;
+  --color-forest-100: #d8f3dc;
+  --color-earthy-brown: #8B7355;
+  --color-warm-cream: #faf3e0;
+  --color-nature-glow: #52b788;
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: #0d2818;
+  --foreground: #d8f3dc;
+  --card: rgba(255, 255, 255, 0.08);
+  --card-foreground: #d8f3dc;
+  --popover: rgba(13, 40, 24, 0.95);
+  --popover-foreground: #d8f3dc;
+  --primary: #52b788;
+  --primary-foreground: #0d2818;
+  --secondary: rgba(255, 255, 255, 0.1);
+  --secondary-foreground: #95d5b2;
+  --muted: rgba(255, 255, 255, 0.06);
+  --muted-foreground: #74c69d;
+  --accent: rgba(82, 183, 136, 0.2);
+  --accent-foreground: #95d5b2;
+  --destructive: #e74c3c;
+  --border: rgba(255, 255, 255, 0.15);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #52b788;
+  --chart-1: #52b788;
+  --chart-2: #74c69d;
+  --chart-3: #40916c;
+  --chart-4: #95d5b2;
+  --chart-5: #2d6a4f;
+  --sidebar: rgba(13, 40, 24, 0.9);
+  --sidebar-foreground: #d8f3dc;
+  --sidebar-primary: #52b788;
+  --sidebar-primary-foreground: #0d2818;
+  --sidebar-accent: rgba(82, 183, 136, 0.2);
+  --sidebar-accent-foreground: #95d5b2;
+  --sidebar-border: rgba(255, 255, 255, 0.15);
+  --sidebar-ring: #52b788;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-forest-900 text-foreground;
+    min-height: 100vh;
+  }
+}
+
+/* ============ Liquid Glass Utility Classes ============ */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 1rem;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.liquid-glass-strong {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 1rem;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.liquid-glass-subtle {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.liquid-glass-glow {
+  background: rgba(82, 183, 136, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(82, 183, 136, 0.3);
+  border-radius: 1rem;
+  box-shadow: 
+    0 8px 32px rgba(82, 183, 136, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* ============ Organic Blob Animations ============ */
+@keyframes blob-float-1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(30px, -50px) scale(1.1) rotate(5deg);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.9) rotate(-3deg);
+  }
+  75% {
+    transform: translate(20px, 40px) scale(1.05) rotate(2deg);
+  }
+}
+
+@keyframes blob-float-2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(-40px, 30px) scale(1.15) rotate(-5deg);
+  }
+  50% {
+    transform: translate(30px, -40px) scale(0.95) rotate(4deg);
+  }
+  75% {
+    transform: translate(-20px, -20px) scale(1.05) rotate(-2deg);
+  }
+}
+
+@keyframes blob-float-3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(50px, 30px) scale(1.1);
+  }
+  66% {
+    transform: translate(-30px, -50px) scale(0.9);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(82, 183, 136, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(82, 183, 136, 0.4), 0 0 80px rgba(82, 183, 136, 0.1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-blob-1 {
+  animation: blob-float-1 20s ease-in-out infinite;
+}
+
+.animate-blob-2 {
+  animation: blob-float-2 25s ease-in-out infinite;
+}
+
+.animate-blob-3 {
+  animation: blob-float-3 30s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* ============ Nature Gradient Background ============ */
+.nature-bg {
+  background: linear-gradient(135deg, #0d2818 0%, #1a472a 25%, #2d6a4f 50%, #1a472a 75%, #0d2818 100%);
+  min-height: 100vh;
+}
+
+/* ============ Custom Scrollbar - Nature Theme ============ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(13, 40, 24, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(82, 183, 136, 0.3);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(82, 183, 136, 0.5);
+}
+
+/* ============ Markdown Content Styling ============ */
+.markdown-content {
+  color: #d8f3dc;
+  line-height: 1.8;
+}
+
+.markdown-content h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #95d5b2;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+.markdown-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #74c69d;
+  margin-bottom: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.markdown-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #52b788;
+  margin-bottom: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.markdown-content p {
+  margin-bottom: 1rem;
+}
+
+.markdown-content a {
+  color: #52b788;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.markdown-content a:hover {
+  color: #74c69d;
+}
+
+.markdown-content ul, .markdown-content ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-content li {
+  margin-bottom: 0.25rem;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid #52b788;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #74c69d;
+  font-style: italic;
+}
+
+.markdown-content code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.markdown-content pre {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.markdown-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.markdown-content hr {
+  border-color: rgba(255, 255, 255, 0.15);
+  margin: 2rem 0;
+}
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.markdown-content th, .markdown-content td {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.markdown-content th {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+}
+
+/* ============ Blog Editor Styling ============ */
+.blog-editor textarea {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #d8f3dc;
+  font-family: var(--font-geist-mono), monospace;
+  resize: none;
+}
+
+.blog-editor textarea:focus {
+  border-color: rgba(82, 183, 136, 0.5);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(82, 183, 136, 0.2);
+}

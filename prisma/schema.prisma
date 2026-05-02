@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Blog {
+  id            String   @id @default(cuid())
+  title         String
+  slug          String   @unique
+  content       String   // Markdown content (Obsidian-style)
+  excerpt       String?  // Short description for card preview
+  coverImage    String?  // URL for cover image
+  isHighlight   Boolean  @default(false) // Show on Beranda
+  highlightType String?  // "headline" | "featured" | null
+  category      String?  // e.g., "pendaftaran", "informasi", "juklak", "umum"
+  published     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model AdminSession {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
