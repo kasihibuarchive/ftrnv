@@ -10,13 +10,18 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "FTRN #5 — Festival Tari Tradisional Nasional",
-  description: "Festival Tari Tradisional Nasional ke-5 · ISI Yogyakarta",
+  title: "FTRN #5 — Festival Teater Remaja Nusantara",
+  description: "Festival Teater Remaja Nusantara ke-5 · ISI Yogyakarta",
   authors: [{ name: "FTRN ISI Yogyakarta" }],
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
   openGraph: {
-    title: "FTRN #5 — Festival Tari Tradisional Nasional",
-    description: "Festival Tari Tradisional Nasional ke-5 · ISI Yogyakarta",
+    title: "FTRN #5 — Festival Teater Remaja Nusantara",
+    description: "Festival Teater Remaja Nusantara ke-5 · ISI Yogyakarta",
     type: "website",
+    images: ["/ftrn-logo.png"],
   },
 };
 

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { ChevronRight, Sparkles, ArrowRight } from 'lucide-react'
+import Image from 'next/image'
 
 interface Blog {
   id: string
@@ -71,14 +72,20 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
       <div className="mb-10">
         <div className="badge-matcha px-3 py-1 inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-widest uppercase mb-4">
           <Sparkles className="w-3 h-3" />
-          Festival Tari Tradisional Nasional
+          Festival Teater Remaja Nusantara
         </div>
-        <h1 className="text-4xl font-bold text-kinari leading-tight mb-3">
-          FTRN
-          <span className="green-gradient ml-2">#5</span>
-        </h1>
+        <div className="mb-3">
+          <Image
+            src="/ftrn-text.png"
+            alt="FTRN #5"
+            width={180}
+            height={60}
+            className="object-contain"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
+        </div>
         <p className="text-suri text-sm leading-relaxed max-w-sm font-medium">
-          Merawat kekayaan budaya tari tradisional Indonesia
+          Merawat kekayaan budaya teater remaja Indonesia
         </p>
         <div className="zen-divider mt-8" />
       </div>

@@ -3,6 +3,7 @@
 import React, { useState, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Home as HomeIcon, BookOpen, Phone } from 'lucide-react'
+import Image from 'next/image'
 import BerandaPage from '@/components/BerandaPage'
 import BlogPage from '@/components/BlogPage'
 import KontakPage from '@/components/KontakPage'
@@ -84,13 +85,28 @@ export default function Page() {
             onClick={view === 'admin' ? handleBack : handleLogoTap}
             className="flex items-center gap-3 group"
           >
-            <div className="icon-circle w-9 h-9 flex items-center justify-center group-hover:shadow-[0_0_20px_rgba(124,154,114,0.2)] transition-shadow duration-500">
-              <span className="green-gradient text-sm font-bold">F</span>
+            <div className="w-9 h-9 flex items-center justify-center group-hover:shadow-[0_0_20px_rgba(124,154,114,0.2)] transition-shadow duration-500">
+              <Image
+                src="/ftrn-logo.png"
+                alt="FTRN"
+                width={36}
+                height={36}
+                className="object-contain"
+                style={{ filter: 'brightness(0) invert(1)' }}
+              />
             </div>
-            <span className="text-kinari font-semibold text-sm tracking-wide">
-              {view === 'admin' ? 'Admin' : 'FTRN'}
-              <span className="text-matcha-light ml-1 font-light">#5</span>
-            </span>
+            {view === 'admin' ? (
+              <span className="text-kinari font-semibold text-sm tracking-wide">Admin</span>
+            ) : (
+              <Image
+                src="/ftrn-text.png"
+                alt="FTRN #5"
+                width={80}
+                height={28}
+                className="object-contain"
+                style={{ filter: 'brightness(0) invert(1)' }}
+              />
+            )}
           </button>
           {view === 'detail' && (
             <button

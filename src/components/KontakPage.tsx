@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Mail, Instagram, MessageCircle, Youtube, ExternalLink, Heart } from 'lucide-react'
+import Image from 'next/image'
 
 const contacts = [
   {
@@ -40,14 +41,27 @@ export default function KontakPage() {
       {/* Profile */}
       <div className="text-center mb-10">
         <div className="icon-circle w-20 h-20 mx-auto mb-5 flex items-center justify-center green-glow">
-          <span className="green-gradient text-2xl font-bold">F</span>
+          <Image
+            src="/ftrn-logo.png"
+            alt="FTRN"
+            width={48}
+            height={48}
+            className="object-contain"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
         </div>
-        <h2 className="text-2xl font-bold text-kinari">
-          FTRN
-          <span className="green-gradient ml-1 font-light">#5</span>
-        </h2>
+        <div className="mb-2">
+          <Image
+            src="/ftrn-text.png"
+            alt="FTRN #5"
+            width={140}
+            height={48}
+            className="object-contain mx-auto"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
+        </div>
         <p className="text-xs text-matcha-light/50 mt-2 font-semibold tracking-widest uppercase">
-          Festival Tari Tradisional Nasional
+          Festival Teater Remaja Nusantara
         </p>
         <p className="text-xs text-kinari/25 mt-1 font-medium">
           ISI Yogyakarta
@@ -93,7 +107,7 @@ export default function KontakPage() {
       <div className="mt-10 text-center glass-zen-card p-6">
         <Heart className="w-4 h-4 text-sakura/40 mx-auto mb-3" />
         <p className="text-xs text-kinari/50 font-medium leading-loose italic">
-          Tari adalah bahasa jiwa,<br />
+          Teater adalah bahasa jiwa,<br />
           yang menghubungkan kita dengan<br />
           budaya dan tradisi
         </p>

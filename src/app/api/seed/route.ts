@@ -7,11 +7,11 @@ const SEED_BLOGS = [
     slug: 'pendaftaran-ftrn-5-dibuka',
     content: `# Pendaftaran FTRN #5 Dibuka!!
 
-🎉 **Festival Tari Tradisional Nasional ke-5** telah resmi dibuka!
+🎉 **Festival Teater Remaja Nusantara ke-5** telah resmi dibuka!
 
 ## Tentang FTRN #5
 
-FTRN (Festival Tari Tradisional Nasional) adalah ajang tahunan yang diselenggarakan oleh Institut Seni Indonesia (ISI) Yogyakarta untuk melestarikan dan mengembangkan seni tari tradisional Indonesia.
+FTRN (Festival Teater Remaja Nusantara) adalah ajang tahunan yang diselenggarakan oleh Institut Seni Indonesia (ISI) Yogyakarta untuk melestarikan dan mengembangkan seni teater remaja Indonesia.
 
 ## Cara Mendaftar
 
@@ -21,7 +21,7 @@ FTRN (Festival Tari Tradisional Nasional) adalah ajang tahunan yang diselenggara
 
 ## Persyaratan
 
-- Peserta merupakan mahasiswa aktif atau komunitas tari
+- Peserta merupakan mahasiswa aktif atau komunitas teater
 - Mengisi formulir pendaftaran dengan lengkap
 - Menyerahkan dokumen yang diperlukan
 
@@ -32,10 +32,10 @@ FTRN (Festival Tari Tradisional Nasional) adalah ajang tahunan yang diselenggara
 - **Technical meeting**: Segera diumumkan
 - **Pelaksanaan FTRN #5**: Segera diumumkan
 
-> Jangan lewatkan kesempatan untuk berpartisipasi dalam festival tari tradisional terbesar di ISI Yogyakarta!
+> Jangan lewatkan kesempatan untuk berpartisipasi dalam festival teater remaja terbesar di ISI Yogyakarta!
 
-Hubungi kami untuk informasi lebih lanjut. Mari bersama merayakan kekayaan budaya tari Nusantara! 🌿`,
-    excerpt: 'Festival Tari Tradisional Nasional ke-5 telah resmi dibuka! Segera daftarkan diri Anda dan komunitas tari Anda.',
+Hubungi kami untuk informasi lebih lanjut. Mari bersama merayakan kekayaan budaya teater Nusantara! 🌿`,
+    excerpt: 'Festival Teater Remaja Nusantara ke-5 telah resmi dibuka! Segera daftarkan diri Anda dan komunitas teater Anda.',
     isHighlight: 1,
     highlightType: 'headline',
     category: 'pendaftaran',
@@ -46,23 +46,23 @@ Hubungi kami untuk informasi lebih lanjut. Mari bersama merayakan kekayaan buday
     slug: 'informasi-seputar-ftrn-5',
     content: `# Informasi Seputar FTRN #5
 
-Berikut adalah informasi penting yang perlu Anda ketahui tentang Festival Tari Tradisional Nasional ke-5.
+Berikut adalah informasi penting yang perlu Anda ketahui tentang Festival Teater Remaja Nusantara ke-5.
 
 ## Apa itu FTRN?
 
-FTRN adalah singkatan dari **Festival Tari Tradisional Nasional**, sebuah ajang prestisius yang mempertemukan para penari dan koreografer dari berbagai daerah di Indonesia.
+FTRN adalah singkatan dari **Festival Teater Remaja Nusantara**, sebuah ajang prestisius yang mempertemukan para pemeran teater dan sutradara dari berbagai daerah di Indonesia.
 
 ## Tema FTRN #5
 
-Tema FTRN #5 mengangkat nilai-nilai **kearifan lokal** dan **keberlanjutan budaya** dalam konteks modern. Melalui festival ini, kami berharap tari tradisional Indonesia tetap hidup dan berkembang di tengah arus globalisasi.
+Tema FTRN #5 mengangkat nilai-nilai **kearifan lokal** dan **keberlanjutan budaya** dalam konteks modern. Melalui festival ini, kami berharap teater remaja Indonesia tetap hidup dan berkembang di tengah arus globalisasi.
 
-## Kategori Pertandingan
+## Kategori Pertunjukan
 
-### Tari Tradisional Murni
-Pertunjukan tari yang mempertahankan keaslian bentuk dan gerakan tradisional dari daerah asalnya.
+### Teater Tradisional Murni
+Pertunjukan teater yang mempertahankan keaslian bentuk dan gerakan tradisional dari daerah asalnya.
 
-### Tari Kreasi Baru
-Karya tari baru yang mengambil inspirasi dari gerak dan nilai tradisional dengan sentuhan kontemporer.
+### Teater Kreasi Baru
+Karya teater baru yang mengambil inspirasi dari gerak dan nilai tradisional dengan sentuhan kontemporer.
 
 ## Lokasi
 
@@ -76,8 +76,8 @@ Untuk informasi lebih lanjut, silakan hubungi:
 - Instagram: @ftrn.isijogja
 - WhatsApp: +62 882-1244-7588 (Dinda)
 
-> FTRN #5 mengajak kita semua untuk menjaga dan melestarikan warisan budaya tari Nusantara. 🌿`,
-    excerpt: 'Informasi lengkap seputar Festival Tari Tradisional Nasional ke-5: tema, kategori, lokasi, dan cara menghubungi panitia.',
+> FTRN #5 mengajak kita semua untuk menjaga dan melestarikan warisan budaya teater Nusantara. 🌿`,
+    excerpt: 'Informasi lengkap seputar Festival Teater Remaja Nusantara ke-5: tema, kategori, lokasi, dan cara menghubungi panitia.',
     isHighlight: 1,
     highlightType: 'featured',
     category: 'informasi',
@@ -88,24 +88,24 @@ Untuk informasi lebih lanjut, silakan hubungi:
     slug: 'juklak-ftrn-5',
     content: `# Juklak FTRN #5 (Petunjuk Pelaksanaan)
 
-Berikut adalah petunjuk pelaksanaan untuk peserta Festival Tari Tradisional Nasional ke-5.
+Berikut adalah petunjuk pelaksanaan untuk peserta Festival Teater Remaja Nusantara ke-5.
 
 ## Ketentuan Umum
 
-1. Peserta merupakan perorangan atau kelompok dari institusi pendidikan atau komunitas tari
+1. Peserta merupakan perorangan atau kelompok dari institusi pendidikan atau komunitas teater
 2. Setiap peserta wajib mendaftar sesuai dengan prosedur yang telah ditentukan
 3. Peserta wajib mematuhi seluruh peraturan yang berlaku selama pelaksanaan festival
 
 ## Kategori dan Syarat
 
-### Tari Tradisional Murni
+### Teater Tradisional Murni
 
 - **Durasi**: 5-15 menit
 - **Peserta**: Minimum 3 orang
 - **Musik**: Menggunakan iringan musik tradisional (live atau rekaman)
-- **Kostum**: Menggunakan kostum tradisional sesuai daerah asal tari
+- **Kostum**: Menggunakan kostum tradisional sesuai daerah asal teater
 
-### Tari Kreasi Baru
+### Teater Kreasi Baru
 
 - **Durasi**: 5-12 menit
 - **Peserta**: Minimum 3 orang
@@ -114,7 +114,7 @@ Berikut adalah petunjuk pelaksanaan untuk peserta Festival Tari Tradisional Nasi
 
 ## Penilaian
 
-Penilaian dilakukan oleh dewan juri yang kompeten di bidang seni tari, meliputi aspek:
+Penilaian dilakukan oleh dewan juri yang kompeten di bidang seni teater, meliputi aspek:
 
 | Aspek | Bobot |
 |-------|-------|
