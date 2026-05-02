@@ -1,20 +1,11 @@
 import { NextResponse } from 'next/server'
-import { db } from '@/lib/db'
+import { getTurso } from '@/lib/turso'
 
-export async function POST() {
-  try {
-    // Check if seed data already exists
-    const existing = await db.blog.findMany()
-    if (existing.length > 0) {
-      return NextResponse.json({ message: 'Seed data already exists', count: existing.length })
-    }
-
-    // Seed 1: Headline - Pendaftaran
-    const blog1 = await db.blog.create({
-      data: {
-        title: 'Pendaftaran FTRN #5 Dibuka!!',
-        slug: 'pendaftaran-ftrn-5-dibuka',
-        content: `# Pendaftaran FTRN #5 Dibuka!!
+const SEED_BLOGS = [
+  {
+    title: 'Pendaftaran FTRN #5 Dibuka!!',
+    slug: 'pendaftaran-ftrn-5-dibuka',
+    content: `# Pendaftaran FTRN #5 Dibuka!!
 
 🎉 **Festival Tari Tradisional Nasional ke-5** telah resmi dibuka!
 
@@ -44,20 +35,16 @@ FTRN (Festival Tari Tradisional Nasional) adalah ajang tahunan yang diselenggara
 > Jangan lewatkan kesempatan untuk berpartisipasi dalam festival tari tradisional terbesar di ISI Yogyakarta!
 
 Hubungi kami untuk informasi lebih lanjut. Mari bersama merayakan kekayaan budaya tari Nusantara! 🌿`,
-        excerpt: 'Festival Tari Tradisional Nasional ke-5 telah resmi dibuka! Segera daftarkan diri Anda dan komunitas tari Anda.',
-        isHighlight: true,
-        highlightType: 'headline',
-        category: 'pendaftaran',
-        published: true,
-      },
-    })
-
-    // Seed 2: Featured - Informasi
-    const blog2 = await db.blog.create({
-      data: {
-        title: 'Informasi Seputar FTRN #5',
-        slug: 'informasi-seputar-ftrn-5',
-        content: `# Informasi Seputar FTRN #5
+    excerpt: 'Festival Tari Tradisional Nasional ke-5 telah resmi dibuka! Segera daftarkan diri Anda dan komunitas tari Anda.',
+    isHighlight: 1,
+    highlightType: 'headline',
+    category: 'pendaftaran',
+    published: 1,
+  },
+  {
+    title: 'Informasi Seputar FTRN #5',
+    slug: 'informasi-seputar-ftrn-5',
+    content: `# Informasi Seputar FTRN #5
 
 Berikut adalah informasi penting yang perlu Anda ketahui tentang Festival Tari Tradisional Nasional ke-5.
 
@@ -90,20 +77,16 @@ Untuk informasi lebih lanjut, silakan hubungi:
 - WhatsApp: +62 882-1244-7588 (Dinda)
 
 > FTRN #5 mengajak kita semua untuk menjaga dan melestarikan warisan budaya tari Nusantara. 🌿`,
-        excerpt: 'Informasi lengkap seputar Festival Tari Tradisional Nasional ke-5: tema, kategori, lokasi, dan cara menghubungi panitia.',
-        isHighlight: true,
-        highlightType: 'featured',
-        category: 'informasi',
-        published: true,
-      },
-    })
-
-    // Seed 3: Featured - Juklak
-    const blog3 = await db.blog.create({
-      data: {
-        title: 'Juklak FTRN #5',
-        slug: 'juklak-ftrn-5',
-        content: `# Juklak FTRN #5 (Petunjuk Pelaksanaan)
+    excerpt: 'Informasi lengkap seputar Festival Tari Tradisional Nasional ke-5: tema, kategori, lokasi, dan cara menghubungi panitia.',
+    isHighlight: 1,
+    highlightType: 'featured',
+    category: 'informasi',
+    published: 1,
+  },
+  {
+    title: 'Juklak FTRN #5',
+    slug: 'juklak-ftrn-5',
+    content: `# Juklak FTRN #5 (Petunjuk Pelaksanaan)
 
 Berikut adalah petunjuk pelaksanaan untuk peserta Festival Tari Tradisional Nasional ke-5.
 
@@ -156,17 +139,50 @@ Penilaian dilakukan oleh dewan juri yang kompeten di bidang seni tari, meliputi 
 Untuk pertanyaan lebih lanjut, silakan hubungi panitia melalui kontak yang tersedia.
 
 *Petunjuk pelaksanaan ini dapat berubah sewaktu-waktu. Pantau terus informasi terbaru dari FTRN #5.* 🌿`,
-        excerpt: 'Petunjuk pelaksanaan lengkap untuk peserta FTRN #5: ketentuan umum, kategori, syarat, penilaian, dan timeline penting.',
-        isHighlight: true,
-        highlightType: 'featured',
-        category: 'juklak',
-        published: true,
-      },
-    })
+    excerpt: 'Petunjuk pelaksanaan lengkap untuk peserta FTRN #5: ketentuan umum, kategori, syarat, penilaian, dan timeline penting.',
+    isHighlight: 1,
+    highlightType: 'featured',
+    category: 'juklak',
+    published: 1,
+  },
+]
+
+export async function POST() {
+  try {
+    const turso = getTurso()
+
+    // Check if seed data already exists
+    const existing = await turso.execute('SELECT id FROM Blog LIMIT 1')
+    if (existing.rows.length > 0) {
+      const count = (await turso.execute('SELECT COUNT(*) as count FROM Blog')).rows[0].count
+      return NextResponse.json({ message: 'Seed data already exists', count })
+    }
+
+    const now = new Date().toISOString()
+
+    for (const blog of SEED_BLOGS) {
+      await turso.execute({
+        sql: `INSERT INTO Blog (title, slug, content, excerpt, isHighlight, highlightType, category, published, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        args: [
+          blog.title,
+          blog.slug,
+          blog.content,
+          blog.excerpt,
+          blog.isHighlight,
+          blog.highlightType,
+          blog.category,
+          blog.published,
+          now,
+          now,
+        ],
+      })
+    }
+
+    const count = (await turso.execute('SELECT COUNT(*) as count FROM Blog')).rows[0].count
 
     return NextResponse.json({
       message: 'Seed data created successfully',
-      blogs: [blog1.id, blog2.id, blog3.id],
+      blogCount: count,
     })
   } catch (error) {
     console.error('Error seeding database:', error)

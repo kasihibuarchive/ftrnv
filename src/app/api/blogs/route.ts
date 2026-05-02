@@ -1,31 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/db'
-import { autoSeed } from '@/lib/seed'
+import { getTurso, rowToBlog } from '@/lib/turso'
 
 export async function GET(request: NextRequest) {
   try {
-    // Auto-seed if database is empty
-    await autoSeed()
+    const turso = getTurso()
     const { searchParams } = new URL(request.url)
     const highlight = searchParams.get('highlight')
     const all = searchParams.get('all')
     const authHeader = request.headers.get('Authorization')
 
-    let where: Record<string, unknown> = {}
+    let sql = 'SELECT * FROM Blog'
+    const conditions: string[] = []
+    const args: unknown[] = []
 
     // If not admin requesting all, only show published
     if (all !== 'true' || !authHeader) {
-      where.published = true
+      conditions.push('published = 1')
     }
 
     if (highlight === 'true') {
-      where.isHighlight = true
+      conditions.push('isHighlight = 1')
     }
 
-    const blogs = await db.blog.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-    })
+    if (conditions.length > 0) {
+      sql += ' WHERE ' + conditions.join(' AND ')
+    }
+
+    sql += ' ORDER BY createdAt DESC'
+
+    const result = await turso.execute({ sql, args })
+    const blogs = result.rows.map(row => rowToBlog(row as Record<string, unknown>))
 
     return NextResponse.json(blogs)
   } catch (error) {
@@ -36,14 +40,22 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const turso = getTurso()
     const authHeader = request.headers.get('Authorization')
     if (!authHeader) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const token = authHeader.replace('Bearer ', '')
-    const session = await db.adminSession.findUnique({ where: { token } })
-    if (!session || session.expiresAt < new Date()) {
+    const sessionResult = await turso.execute({
+      sql: 'SELECT * FROM AdminSession WHERE token = ?',
+      args: [token],
+    })
+    if (sessionResult.rows.length === 0) {
+      return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 })
+    }
+    const session = sessionResult.rows[0] as Record<string, unknown>
+    if (new Date(session.expiresAt as string) < new Date()) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 })
     }
 
@@ -55,26 +67,46 @@ export async function POST(request: NextRequest) {
     }
 
     // Check for duplicate slug
-    const existing = await db.blog.findUnique({ where: { slug } })
-    if (existing) {
+    const existing = await turso.execute({
+      sql: 'SELECT id FROM Blog WHERE slug = ?',
+      args: [slug],
+    })
+    if (existing.rows.length > 0) {
       return NextResponse.json({ error: 'A blog with this slug already exists' }, { status: 400 })
     }
 
-    const blog = await db.blog.create({
-      data: {
+    const now = new Date().toISOString()
+    const isHighlightVal = isHighlight ? 1 : 0
+    const publishedVal = published ? 1 : 0
+
+    const result = await turso.execute({
+      sql: `INSERT INTO Blog (title, slug, content, excerpt, coverImage, isHighlight, highlightType, category, published, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
         title,
         slug,
         content,
-        excerpt: excerpt || null,
-        coverImage: coverImage || null,
-        isHighlight: isHighlight || false,
-        highlightType: highlightType || null,
-        category: category || null,
-        published: published || false,
-      },
+        excerpt || null,
+        coverImage || null,
+        isHighlightVal,
+        highlightType || null,
+        category || null,
+        publishedVal,
+        now,
+        now,
+      ],
     })
 
-    return NextResponse.json(blog, { status: 201 })
+    // Get the created blog
+    const newBlog = await turso.execute({
+      sql: 'SELECT * FROM Blog WHERE slug = ?',
+      args: [slug],
+    })
+
+    if (newBlog.rows.length > 0) {
+      return NextResponse.json(rowToBlog(newBlog.rows[0] as Record<string, unknown>), { status: 201 })
+    }
+
+    return NextResponse.json({ id: result.rowsAffected, message: 'Blog created' }, { status: 201 })
   } catch (error) {
     console.error('Error creating blog:', error)
     return NextResponse.json({ error: 'Failed to create blog' }, { status: 500 })

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/db'
+import { getTurso } from '@/lib/turso'
 
 const ADMIN_PASSWORD = 'ftrn5admin'
 
@@ -17,11 +17,10 @@ export async function POST(request: NextRequest) {
     const expiresAt = new Date()
     expiresAt.setHours(expiresAt.getHours() + 24) // 24 hour expiry
 
-    await db.adminSession.create({
-      data: {
-        token,
-        expiresAt,
-      },
+    const turso = getTurso()
+    await turso.execute({
+      sql: 'INSERT INTO AdminSession (token, expiresAt) VALUES (?, ?)',
+      args: [token, expiresAt.toISOString()],
     })
 
     return NextResponse.json({ token, expiresAt })
