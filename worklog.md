@@ -3,27 +3,27 @@
 ---
 Task ID: 1-7
 Agent: Main Agent
-Task: Redesign FTRN #5 website to Instagram-style UI with iOS liquid glass
+Task: Redesign FTRN #5 to Japanese minimalist zen + liquid glass + nature background
 
 Work Log:
-- Completely redesigned globals.css with iOS-style liquid glass (blur 40px, saturate 180%), black background, green accent #30D158
-- Rebuilt page.tsx with IG-style bottom tab bar (3 tabs: Beranda, Blog, Kontak), sticky glass header, max-w-lg centered content
-- Rebuilt BerandaPage as IG feed with iOS separator lines, headline card with green accent bar, simple list cards
-- Rebuilt BlogPage with IG-style search bar, category pills (horizontal scroll), feed-style blog list
-- Rebuilt KontakPage with IG profile header, iOS Settings-style contact rows
-- Rebuilt BlogDetail with clean iOS article view
-- Rebuilt AdminPage with iOS-style login gate, settings-style blog list
-- Rebuilt BlogEditor with iOS-style inputs, glass-card containers, green accent buttons
-- Removed unused components: Navbar.tsx, NatureBackground.tsx, LiquidGlass.tsx
-- Fixed Home/HomeIcon naming conflict that caused 500 error
-- Admin access: tap logo 5 times to enter admin panel (hidden)
-- All lint checks pass, server running correctly
+- Redesigned globals.css with Japanese nature palette (matcha, kinari, sumi, sakura, moss, kusa)
+- Created zen liquid glass classes (glass-zen, glass-zen-strong, glass-zen-nav, etc.) with blur(40-50px) saturate(120-150%)
+- Nature background with soft green gradients and floating blobs
+- Rebuilt page.tsx with zen layout, kanji logo (葉), max-w-2xl centered, bottom nav with labels
+- Rebuilt BerandaPage with zen spacing, Japanese section labels (おしらせ, あたらしい), zen-divider
+- Rebuilt BlogPage with zen search, category pills, clean card list
+- Rebuilt KontakPage with zen profile, Japanese quote, clean contact rows
+- Rebuilt BlogDetail with zen article view, zen-divider
+- Rebuilt AdminPage with kanji styling (管理パネル), zen login gate, clean blog list
+- Rebuilt BlogEditor with Japanese labels, zen glass inputs, matcha accent buttons
+- Updated layout.tsx with zen toast styling
+- All lint checks pass, server running, 3 blogs intact
+- Admin access: tap logo 5x (葉 icon)
 
 Stage Summary:
-- Complete UI redesign from Nature theme to Instagram-style iOS liquid glass
-- 3 main tabs only (Beranda, Blog, Kontak) with bottom navigation
-- Admin hidden via 5-tap on logo
-- Green accent color (#30D158) throughout
-- Pure black background with subtle green blobs
-- iOS liquid glass: blur(40px) saturate(180%), 0.5px borders
-- All APIs working, 3 seeded blogs intact
+- Complete redesign to Japanese minimalist zen aesthetic
+- Nature green palette (#7C9A72 matcha, #A8C5A0 matcha-light, #F5F0E8 kinari)
+- Liquid glass with blur(40-50px) over nature gradient background
+- Japanese typography: tracking-wide, font-light, 10px uppercase labels
+- Zen elements: 間 (breathing space), zen-divider, kanji accents
+- Subtle floating nature blobs with gentle animations

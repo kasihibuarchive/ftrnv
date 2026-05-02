@@ -17,7 +17,7 @@ const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: 'kontak', label: 'Kontak', icon: Phone },
 ]
 
-export default function Home() {
+export default function Page() {
   const [activeTab, setActiveTab] = useState<Tab>('beranda')
   const [view, setView] = useState<'tabs' | 'detail' | 'admin'>('tabs')
   const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null)
@@ -50,72 +50,80 @@ export default function Home() {
   }, [logoTaps])
 
   return (
-    <div className="min-h-screen bg-ios-bg relative flex flex-col">
-      {/* Subtle background blobs */}
+    <div className="min-h-screen nature-bg relative flex flex-col">
+      {/* Nature ambient blobs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <div
-          className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full opacity-[0.07] animate-drift-1"
+          className="absolute top-[-5%] left-[10%] w-[600px] h-[600px] rounded-full opacity-[0.08] animate-float-1"
           style={{
-            background: 'radial-gradient(circle, #30D158 0%, transparent 70%)',
+            background: 'radial-gradient(circle, #6B8F5E 0%, #3D5A3A 40%, transparent 70%)',
             filter: 'blur(80px)',
           }}
         />
         <div
-          className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full opacity-[0.05] animate-drift-2"
+          className="absolute bottom-[5%] right-[5%] w-[500px] h-[500px] rounded-full opacity-[0.06] animate-float-2"
           style={{
-            background: 'radial-gradient(circle, #30D158 0%, transparent 70%)',
-            filter: 'blur(100px)',
+            background: 'radial-gradient(circle, #9BB592 0%, #4A6B42 40%, transparent 70%)',
+            filter: 'blur(90px)',
+          }}
+        />
+        <div
+          className="absolute top-[40%] left-[50%] w-[400px] h-[400px] rounded-full opacity-[0.04] animate-float-1"
+          style={{
+            background: 'radial-gradient(circle, #D4A0A0 0%, transparent 60%)',
+            filter: 'blur(70px)',
+            animationDelay: '-10s',
           }}
         />
       </div>
 
-      {/* Header - Instagram style */}
-      <header className="glass-header sticky top-0 z-50">
-        <div className="max-w-lg mx-auto px-4 h-12 flex items-center justify-between">
+      {/* Header — Zen minimal */}
+      <header className="glass-zen-header sticky top-0 z-50">
+        <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <button
             onClick={view === 'admin' ? handleBack : handleLogoTap}
-            className="flex items-center gap-2 active:opacity-60 transition-opacity"
+            className="flex items-center gap-3 group"
           >
-            <div className="w-7 h-7 rounded-lg bg-accent-green flex items-center justify-center">
-              <span className="text-black font-bold text-xs">F5</span>
+            <div className="w-8 h-8 rounded-full bg-matcha/20 flex items-center justify-center group-hover:bg-matcha/30 transition-colors duration-500">
+              <span className="text-matcha-light text-xs font-medium">葉</span>
             </div>
-            <h1 className="text-base font-semibold text-white tracking-tight">
-              {view === 'admin' ? 'Admin' : 'FTRN #5'}
-            </h1>
+            <span className="text-kinari/80 text-sm font-medium tracking-wide">
+              {view === 'admin' ? '管理' : 'FTRN #5'}
+            </span>
           </button>
           {view === 'detail' && (
             <button
               onClick={handleBack}
-              className="text-accent-green text-sm font-medium active:opacity-60"
+              className="text-matcha-light/60 text-xs tracking-wider hover:text-matcha-light transition-colors duration-300"
             >
-              Kembali
+              ← もどる
             </button>
           )}
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-lg mx-auto w-full">
+      {/* Content */}
+      <main className="flex-1 max-w-2xl mx-auto w-full">
         <AnimatePresence mode="wait">
           {view === 'admin' ? (
             <motion.div
               key="admin"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
-              className="pb-20"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="pb-28"
             >
               <AdminPage onBack={handleBack} />
             </motion.div>
           ) : view === 'detail' && selectedBlogId ? (
             <motion.div
               key="detail"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.2 }}
-              className="pb-20"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="pb-28"
             >
               <BlogDetail blogId={selectedBlogId} onBack={handleBack} />
             </motion.div>
@@ -125,8 +133,8 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="pb-20"
+              transition={{ duration: 0.35 }}
+              className="pb-28"
             >
               {activeTab === 'beranda' && (
                 <BerandaPage onBlogClick={handleBlogClick} />
@@ -140,10 +148,10 @@ export default function Home() {
         </AnimatePresence>
       </main>
 
-      {/* Bottom Tab Bar - Instagram style */}
+      {/* Bottom Nav — Zen minimal */}
       {view !== 'admin' && (
-        <nav className="glass-nav fixed bottom-0 left-0 right-0 z-50">
-          <div className="max-w-lg mx-auto flex items-center justify-around h-14">
+        <nav className="glass-zen-nav fixed bottom-0 left-0 right-0 z-50">
+          <div className="max-w-2xl mx-auto flex items-center justify-around h-16">
             {tabs.map((tab) => {
               const Icon = tab.icon
               const isActive = activeTab === tab.id && view === 'tabs'
@@ -151,21 +159,23 @@ export default function Home() {
                 <button
                   key={tab.id}
                   onClick={() => handleTabChange(tab.id)}
-                  className="flex flex-col items-center justify-center gap-0.5 flex-1 h-full active:opacity-50 transition-opacity"
+                  className="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-opacity duration-300"
                 >
                   <Icon
-                    className={`w-6 h-6 transition-colors duration-150 ${
-                      isActive ? 'text-white' : 'text-white/40'
+                    className={`w-5 h-5 transition-all duration-500 ${
+                      isActive ? 'text-matcha-light' : 'text-kinari/20'
                     }`}
-                    fill={isActive ? 'currentColor' : 'none'}
-                    strokeWidth={isActive ? 0 : 1.5}
+                    strokeWidth={isActive ? 1.8 : 1.2}
                   />
+                  <span className={`text-[9px] tracking-widest transition-colors duration-500 ${
+                    isActive ? 'text-matcha-light/60' : 'text-kinari/15'
+                  }`}>
+                    {tab.label}
+                  </span>
                 </button>
               )
             })}
           </div>
-          {/* Safe area spacer for iOS */}
-          <div className="h-[env(safe-area-inset-bottom)]" />
         </nav>
       )}
     </div>

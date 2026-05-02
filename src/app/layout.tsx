@@ -14,13 +14,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FTRN #5 - Festival Tari Tradisional Nasional",
-  description: "Festival Tari Tradisional Nasional ke-5 oleh ISI Yogyakarta",
+  title: "FTRN #5 — Festival Tari Tradisional Nasional",
+  description: "Festival Tari Tradisional Nasional ke-5 · ISI Yogyakarta",
   authors: [{ name: "FTRN ISI Yogyakarta" }],
-  icons: { icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%2330D158' rx='20' width='100' height='100'/><text x='50' y='68' text-anchor='middle' fill='black' font-size='45' font-weight='bold'>F5</text></svg>" },
   openGraph: {
-    title: "FTRN #5 - Festival Tari Tradisional Nasional",
-    description: "Festival Tari Tradisional Nasional ke-5 oleh ISI Yogyakarta",
+    title: "FTRN #5 — Festival Tari Tradisional Nasional",
+    description: "Festival Tari Tradisional Nasional ke-5 · ISI Yogyakarta",
     type: "website",
   },
 };
@@ -37,7 +36,15 @@ export default function RootLayout({
       >
         {children}
         <Toaster richColors position="top-center" toastOptions={{
-          style: { background: '#1c1c1e', border: '0.5px solid rgba(255,255,255,0.08)', color: '#fff', borderRadius: '14px' }
+          style: {
+            background: 'rgba(26, 46, 26, 0.85)',
+            backdropFilter: 'blur(30px)',
+            border: '1px solid rgba(245, 240, 232, 0.06)',
+            color: '#F5F0E8',
+            borderRadius: '12px',
+            fontSize: '13px',
+            letterSpacing: '0.02em',
+          }
         }} />
       </body>
     </html>

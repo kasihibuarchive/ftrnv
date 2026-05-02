@@ -18,72 +18,67 @@ interface BlogPageProps {
   onBlogClick: (blogId: string) => void
 }
 
-const categories = ['Semua', 'pendaftaran', 'informasi', 'juklak', 'umum']
+const categories = ['すべて', 'pendaftaran', 'informasi', 'juklak', 'umum']
 
 export default function BlogPage({ onBlogClick }: BlogPageProps) {
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const [activeCategory, setActiveCategory] = useState('Semua')
+  const [activeCategory, setActiveCategory] = useState('すべて')
 
-  useEffect(() => {
-    fetchBlogs()
-  }, [])
+  useEffect(() => { fetchBlogs() }, [])
 
   const fetchBlogs = async () => {
     try {
       const res = await fetch('/api/blogs')
-      if (res.ok) {
-        setBlogs(await res.json())
-      }
-    } catch {
-      // silent
-    } finally {
-      setLoading(false)
-    }
+      if (res.ok) setBlogs(await res.json())
+    } catch { /* */ } finally { setLoading(false) }
   }
 
   const filtered = blogs.filter((b) => {
     const matchSearch = !search || b.title.toLowerCase().includes(search.toLowerCase())
-    const matchCat = activeCategory === 'Semua' || b.category === activeCategory
+    const matchCat = activeCategory === 'すべて' || b.category === activeCategory
     return matchSearch && matchCat
   })
 
   const timeAgo = (dateStr: string) => {
     const diff = Date.now() - new Date(dateStr).getTime()
     const days = Math.floor(diff / 86400000)
-    if (days === 0) return 'Hari ini'
-    if (days === 1) return 'Kemarin'
-    if (days < 7) return `${days} hari lalu`
+    if (days === 0) return 'きょう'
+    if (days === 1) return 'きのう'
+    if (days < 7) return `${days}日前`
     return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })
   }
 
   return (
-    <div>
-      {/* Search bar */}
-      <div className="px-4 pt-3 pb-2">
-        <div className="flex items-center gap-2 bg-white/[0.07] rounded-xl px-3 py-2.5">
-          <Search className="w-4 h-4 text-ios-tertiary shrink-0" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Cari artikel..."
-            className="bg-transparent text-sm text-white placeholder:text-ios-tertiary outline-none flex-1"
-          />
-        </div>
+    <div className="px-6 pt-8 pb-6">
+      {/* Title */}
+      <h2 className="text-xl font-light text-kinari/80 tracking-wide mb-6">
+        ブログ<span className="text-matcha-light/40 ml-2 text-sm">Articles</span>
+      </h2>
+
+      {/* Search */}
+      <div className="glass-zen-input flex items-center gap-3 px-4 py-3 mb-5">
+        <Search className="w-4 h-4 text-kinari/15 shrink-0" />
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="さがす..."
+          className="bg-transparent text-sm text-kinari/70 placeholder:text-kinari/15 outline-none flex-1 tracking-wide"
+        />
       </div>
 
-      {/* Category pills - IG story-like horizontal scroll */}
-      <div className="px-4 pb-3 flex gap-2 overflow-x-auto no-scrollbar">
+      {/* Category pills */}
+      <div className="flex gap-2 overflow-x-auto no-scrollbar mb-6">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-150 ${
+            className={`px-4 py-1.5 rounded-full text-[11px] tracking-wider whitespace-nowrap transition-all duration-500 ${
               activeCategory === cat
-                ? 'bg-accent-green text-black'
-                : 'bg-white/[0.07] text-ios-secondary active:bg-white/10'
+                ? 'bg-matcha/20 text-matcha-light border border-matcha/20'
+                : 'text-kinari/20 border border-kinari/[0.05] hover:border-kinari/10 hover:text-kinari/30'
             }`}
           >
             {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -91,51 +86,48 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
         ))}
       </div>
 
-      {/* Blog list - IG feed style */}
+      {/* Blog list */}
       {loading ? (
-        <div className="divide-y divide-ios-separator">
+        <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="p-4 animate-pulse">
-              <div className="h-4 bg-white/5 rounded w-2/3 mb-3" />
-              <div className="h-3 bg-white/5 rounded w-full mb-2" />
-              <div className="h-3 bg-white/5 rounded w-1/2" />
+            <div key={i} className="glass-zen-card p-5 animate-pulse">
+              <div className="h-4 bg-kinari/[0.03] rounded w-2/3 mb-3" />
+              <div className="h-3 bg-kinari/[0.02] rounded w-full" />
             </div>
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="p-12 text-center">
-          <p className="text-ios-secondary text-sm">Tidak ada artikel ditemukan</p>
+        <div className="py-16 text-center">
+          <p className="text-kinari/15 text-sm">記事が見つかりません</p>
         </div>
       ) : (
-        <div className="divide-y divide-ios-separator">
+        <div className="space-y-2">
           {filtered.map((blog) => (
             <button
               key={blog.id}
               onClick={() => onBlogClick(blog.id)}
-              className="w-full text-left active:bg-ios-card transition-colors"
+              className="w-full text-left group"
             >
-              <div className="p-4">
-                <div className="flex items-center gap-2 mb-1.5">
+              <div className="glass-zen-card px-5 py-4 flex items-center gap-4 group-hover:border-matcha/15">
+                <div className="flex-1 min-w-0">
                   {blog.category && (
-                    <span className="text-[11px] font-medium text-accent-green bg-accent-green-dim px-2 py-0.5 rounded-full capitalize">
+                    <span className="text-[9px] tracking-[0.2em] text-matcha/40 uppercase">
                       {blog.category}
                     </span>
                   )}
-                  <span className="text-xs text-ios-tertiary">{timeAgo(blog.createdAt)}</span>
+                  <h3 className="text-sm font-light text-kinari/75 leading-relaxed mt-0.5">
+                    {blog.title}
+                  </h3>
+                  {blog.excerpt && (
+                    <p className="text-xs text-kinari/20 mt-1 line-clamp-1 leading-relaxed">
+                      {blog.excerpt}
+                    </p>
+                  )}
+                  <p className="text-[10px] text-kinari/15 mt-2 tracking-wider">
+                    {timeAgo(blog.createdAt)}
+                  </p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-[15px] font-semibold text-white leading-snug mb-1">
-                      {blog.title}
-                    </h3>
-                    {blog.excerpt && (
-                      <p className="text-sm text-ios-secondary leading-relaxed line-clamp-2">
-                        {blog.excerpt}
-                      </p>
-                    )}
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-ios-tertiary mt-1 shrink-0" />
-                </div>
+                <ChevronRight className="w-3.5 h-3.5 text-kinari/[0.06] group-hover:text-matcha-light/30 transition-colors duration-500 shrink-0" />
               </div>
             </button>
           ))}

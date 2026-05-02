@@ -7,8 +7,6 @@ import {
   List, ListOrdered, Quote, Code
 } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import {
@@ -73,110 +71,83 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
   const generateSlug = (text: string) =>
     text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim()
 
-  const handleTitleChange = (newTitle: string) => {
-    setTitle(newTitle)
-    if (!blog) setSlug(generateSlug(newTitle))
-  }
+  const handleTitleChange = (t: string) => { setTitle(t); if (!blog) setSlug(generateSlug(t)) }
 
   const insertAtCursor = useCallback((text: string) => {
-    const textarea = textareaRef.current
-    if (!textarea) return
-    const start = textarea.selectionStart
-    const end = textarea.selectionEnd
-    const newContent = content.substring(0, start) + text + content.substring(end)
-    setContent(newContent)
-    setTimeout(() => {
-      textarea.focus()
-      textarea.setSelectionRange(start + text.length, start + text.length)
-    }, 0)
+    const ta = textareaRef.current
+    if (!ta) return
+    const s = ta.selectionStart, e = ta.selectionEnd
+    setContent(content.substring(0, s) + text + content.substring(e))
+    setTimeout(() => { ta.focus(); ta.setSelectionRange(s + text.length, s + text.length) }, 0)
   }, [content])
 
   const handleToolbarAction = (action: string) => {
-    const textarea = textareaRef.current
-    if (!textarea) return
-    const start = textarea.selectionStart
-    const end = textarea.selectionEnd
-    const selected = content.substring(start, end)
-
+    const ta = textareaRef.current
+    if (!ta) return
+    const s = ta.selectionStart, e = ta.selectionEnd
+    const sel = content.substring(s, e)
     switch (action) {
-      case 'bold': insertAtCursor(selected ? `**${selected}**` : '**teks**'); break
-      case 'italic': insertAtCursor(selected ? `*${selected}*` : '*miring*'); break
-      case 'h1': insertAtCursor(`# ${selected || 'Heading 1'}`); break
-      case 'h2': insertAtCursor(`## ${selected || 'Heading 2'}`); break
-      case 'h3': insertAtCursor(`### ${selected || 'Heading 3'}`); break
-      case 'link': setLinkText(selected || ''); setLinkUrl(''); setLinkDialogOpen(true); break
-      case 'image': setImageAlt(selected || ''); setImageUrl(''); setImageDialogOpen(true); break
+      case 'bold': insertAtCursor(sel ? `**${sel}**` : '**teks**'); break
+      case 'italic': insertAtCursor(sel ? `*${sel}*` : '*miring*'); break
+      case 'h1': insertAtCursor(`# ${sel || 'Heading 1'}`); break
+      case 'h2': insertAtCursor(`## ${sel || 'Heading 2'}`); break
+      case 'h3': insertAtCursor(`### ${sel || 'Heading 3'}`); break
+      case 'link': setLinkText(sel || ''); setLinkUrl(''); setLinkDialogOpen(true); break
+      case 'image': setImageAlt(sel || ''); setImageUrl(''); setImageDialogOpen(true); break
       case 'video': setVideoUrl(''); setVideoDialogOpen(true); break
-      case 'ul': insertAtCursor(selected ? `\n- ${selected.split('\n').join('\n- ')}` : '\n- Item 1\n- Item 2'); break
-      case 'ol': insertAtCursor(selected ? `\n1. ${selected.split('\n').map((l, i) => `${i+1}. ${l}`).join('\n')}` : '\n1. Item 1\n2. Item 2'); break
-      case 'quote': insertAtCursor(selected ? `> ${selected}` : '> Kutipan'); break
-      case 'code': insertAtCursor(selected ? `\`\`\`\n${selected}\n\`\`\`` : '```\nkode\n```'); break
+      case 'ul': insertAtCursor(sel ? `\n- ${sel.split('\n').join('\n- ')}` : '\n- Item 1\n- Item 2'); break
+      case 'ol': insertAtCursor(sel ? `\n1. ${sel.split('\n').map((l,i) => `${i+1}. ${l}`).join('\n')}` : '\n1. Item 1\n2. Item 2'); break
+      case 'quote': insertAtCursor(sel ? `> ${sel}` : '> Kutipan'); break
+      case 'code': insertAtCursor(sel ? `\`\`\`\n${sel}\n\`\`\`` : '```\nkode\n```'); break
     }
   }
 
-  const insertLink = () => {
-    insertAtCursor(linkText ? `[${linkText}](${linkUrl})` : `[${linkUrl}](${linkUrl})`)
-    setLinkDialogOpen(false); setLinkUrl(''); setLinkText('')
-  }
-
-  const insertImage = () => {
-    insertAtCursor(`![${imageAlt || 'gambar'}](${imageUrl})`)
-    setImageDialogOpen(false); setImageUrl(''); setImageAlt('')
-  }
-
+  const insertLink = () => { insertAtCursor(linkText ? `[${linkText}](${linkUrl})` : `[${linkUrl}](${linkUrl})`); setLinkDialogOpen(false) }
+  const insertImage = () => { insertAtCursor(`![${imageAlt || 'gambar'}](${imageUrl})`); setImageDialogOpen(false) }
   const insertVideo = () => {
-    let embedUrl = videoUrl
-    const ytMatch = videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/)
-    if (ytMatch) embedUrl = `https://www.youtube.com/embed/${ytMatch[1]}`
-    insertAtCursor(`[Video](${embedUrl})\n\n<iframe width="100%" height="400" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`)
-    setVideoDialogOpen(false); setVideoUrl('')
+    let url = videoUrl
+    const m = videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/)
+    if (m) url = `https://www.youtube.com/embed/${m[1]}`
+    insertAtCursor(`[Video](${url})\n\n<iframe width="100%" height="400" src="${url}" frameborder="0" allowfullscreen></iframe>`)
+    setVideoDialogOpen(false)
   }
 
   const handleSave = async () => {
     if (!title.trim() || !slug.trim()) return
     setSaving(true)
     try {
-      await onSave({
-        title, slug, content, excerpt: excerpt || undefined,
-        coverImage: coverImage || undefined, isHighlight,
-        highlightType: isHighlight ? (highlightType || undefined) : undefined,
-        category: category || undefined, published,
-      })
-    } finally {
-      setSaving(false)
-    }
+      await onSave({ title, slug, content, excerpt: excerpt || undefined, coverImage: coverImage || undefined, isHighlight, highlightType: isHighlight ? (highlightType || undefined) : undefined, category: category || undefined, published })
+    } finally { setSaving(false) }
   }
 
-  // iOS-style input class
-  const inputCls = "w-full bg-white/[0.07] border-0 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-ios-tertiary outline-none focus:ring-1 focus:ring-accent-green/50"
+  const inputCls = "w-full glass-zen-input px-4 py-3 text-sm text-kinari/70 placeholder:text-kinari/12 outline-none tracking-wide"
+  const dialogCls = "bg-[#1a2e1a]/95 border-kinari/[0.06] text-kinari/70"
 
   return (
-    <div className="px-4 space-y-4 pb-8">
-      {/* Meta fields */}
-      <div className="glass-card p-4 space-y-3">
+    <div className="px-6 space-y-5 pb-8">
+      {/* Meta */}
+      <div className="glass-zen-strong p-6 space-y-4">
         <div>
-          <Label className="text-xs text-ios-secondary mb-1 block">Judul</Label>
+          <Label className="text-[10px] text-kinari/25 tracking-wider mb-1.5 block">タイトル — Judul</Label>
           <input value={title} onChange={(e) => handleTitleChange(e.target.value)} placeholder="Judul artikel..." className={inputCls} />
         </div>
         <div>
-          <Label className="text-xs text-ios-secondary mb-1 block">Slug</Label>
+          <Label className="text-[10px] text-kinari/25 tracking-wider mb-1.5 block">スラッグ — Slug</Label>
           <input value={slug} onChange={(e) => setSlug(e.target.value)} placeholder="slug-artikel" className={`${inputCls} font-mono text-xs`} />
         </div>
         <div>
-          <Label className="text-xs text-ios-secondary mb-1 block">Ringkasan</Label>
+          <Label className="text-[10px] text-kinari/25 tracking-wider mb-1.5 block">概要 — Excerpt</Label>
           <input value={excerpt} onChange={(e) => setExcerpt(e.target.value)} placeholder="Deskripsi singkat..." className={inputCls} />
         </div>
         <div>
-          <Label className="text-xs text-ios-secondary mb-1 block">Cover Image URL</Label>
+          <Label className="text-[10px] text-kinari/25 tracking-wider mb-1.5 block">画像 — Cover Image URL</Label>
           <input value={coverImage} onChange={(e) => setCoverImage(e.target.value)} placeholder="https://..." className={inputCls} />
         </div>
         <div>
-          <Label className="text-xs text-ios-secondary mb-1 block">Kategori</Label>
+          <Label className="text-[10px] text-kinari/25 tracking-wider mb-1.5 block">カテゴリー — Kategori</Label>
           <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger className="bg-white/[0.07] border-0 rounded-xl text-sm text-white h-10">
-              <SelectValue placeholder="Pilih kategori" />
-            </SelectTrigger>
-            <SelectContent className="bg-[#1c1c1e] border-ios-separator">
+            <SelectTrigger className="glass-zen-input border-0 h-10 text-sm text-kinari/60">{<SelectValue placeholder="Pilih kategori" />}</SelectTrigger>
+            <SelectContent className="bg-[#1a2e1a] border-kinari/[0.06]">
               <SelectItem value="pendaftaran">Pendaftaran</SelectItem>
               <SelectItem value="informasi">Informasi</SelectItem>
               <SelectItem value="juklak">Juklak</SelectItem>
@@ -185,20 +156,19 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
           </Select>
         </div>
 
-        {/* Toggles - iOS style */}
-        <div className="space-y-2 pt-1">
+        <div className="zen-divider" />
+
+        <div className="space-y-3">
           <div className="flex items-center justify-between py-1">
-            <span className="text-sm text-white">Highlight di Beranda</span>
+            <span className="text-xs text-kinari/40 tracking-wider">ハイライト — Highlight</span>
             <Switch checked={isHighlight} onCheckedChange={setIsHighlight} />
           </div>
           {isHighlight && (
             <div className="flex items-center justify-between py-1">
-              <span className="text-sm text-white">Tipe</span>
+              <span className="text-xs text-kinari/40 tracking-wider">タイプ — Type</span>
               <Select value={highlightType} onValueChange={setHighlightType}>
-                <SelectTrigger className="bg-white/[0.07] border-0 rounded-xl text-sm text-white h-9 w-32">
-                  <SelectValue placeholder="Pilih" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1c1c1e] border-ios-separator">
+                <SelectTrigger className="glass-zen-input border-0 h-9 w-28 text-xs text-kinari/60">{<SelectValue placeholder="Pilih" />}</SelectTrigger>
+                <SelectContent className="bg-[#1a2e1a] border-kinari/[0.06]">
                   <SelectItem value="headline">Headline</SelectItem>
                   <SelectItem value="featured">Featured</SelectItem>
                 </SelectContent>
@@ -206,122 +176,77 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
             </div>
           )}
           <div className="flex items-center justify-between py-1">
-            <span className="text-sm text-white">Publish</span>
+            <span className="text-xs text-kinari/40 tracking-wider">公開 — Publish</span>
             <Switch checked={published} onCheckedChange={setPublished} />
           </div>
         </div>
       </div>
 
-      {/* Markdown Editor */}
-      <div className="glass-card overflow-hidden">
-        {/* Toolbar */}
-        <div className="flex items-center gap-0.5 px-2 py-2 border-b border-ios-separator overflow-x-auto no-scrollbar">
+      {/* Editor */}
+      <div className="glass-zen-strong overflow-hidden">
+        <div className="flex items-center gap-0.5 px-3 py-2 border-b border-kinari/[0.04] overflow-x-auto no-scrollbar">
           {toolbarButtons.map((btn) => (
-            <button
-              key={btn.action}
-              onClick={() => handleToolbarAction(btn.action)}
-              className="p-2 rounded-lg text-ios-secondary hover:text-white hover:bg-white/10 active:bg-white/15 transition-colors shrink-0"
-            >
-              <btn.icon className="w-4 h-4" />
+            <button key={btn.action} onClick={() => handleToolbarAction(btn.action)}
+              className="p-2 rounded-lg text-kinari/15 hover:text-matcha-light/50 hover:bg-kinari/[0.04] transition-colors duration-300 shrink-0">
+              <btn.icon className="w-3.5 h-3.5" />
             </button>
           ))}
         </div>
-
-        {/* Split pane */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-ios-separator">
+        <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-kinari/[0.04]">
           <div className="blog-editor">
-            <div className="px-3 py-2 text-[10px] text-ios-tertiary uppercase tracking-wider font-medium border-b border-ios-separator">
-              Markdown
-            </div>
-            <textarea
-              ref={textareaRef}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Tulis konten..."
-              className="w-full h-[400px] p-3 text-sm leading-relaxed resize-none"
-            />
+            <div className="px-3 py-2 text-[9px] text-kinari/10 tracking-[0.2em] uppercase border-b border-kinari/[0.03]">Markdown</div>
+            <textarea ref={textareaRef} value={content} onChange={(e) => setContent(e.target.value)} placeholder="書く..." className="w-full h-[400px] p-3 text-sm leading-relaxed resize-none" />
           </div>
           <div>
-            <div className="px-3 py-2 text-[10px] text-ios-tertiary uppercase tracking-wider font-medium border-b border-ios-separator">
-              Preview
-            </div>
+            <div className="px-3 py-2 text-[9px] text-kinari/10 tracking-[0.2em] uppercase border-b border-kinari/[0.03]">プレビュー</div>
             <div className="h-[400px] overflow-y-auto no-scrollbar p-3">
-              <div className="markdown-content">
-                <ReactMarkdown>{content || '*Mulai menulis...*'}</ReactMarkdown>
-              </div>
+              <div className="markdown-content"><ReactMarkdown>{content || '*書き始める...'}</ReactMarkdown></div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Save buttons */}
-      <div className="flex gap-2">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-2.5 rounded-xl text-sm font-medium text-ios-secondary bg-white/[0.07] active:bg-white/10"
-        >
-          Batal
+      {/* Save */}
+      <div className="flex gap-3">
+        <button onClick={onCancel} className="flex-1 py-3 rounded-xl text-xs text-kinari/25 border border-kinari/[0.05] hover:border-kinari/10 tracking-wider transition-colors duration-300">
+          キャンセル
         </button>
-        <button
-          onClick={handleSave}
-          disabled={saving || !title.trim() || !slug.trim()}
-          className="flex-1 py-2.5 rounded-xl text-sm font-semibold text-black bg-accent-green active:opacity-80 disabled:opacity-40"
-        >
-          {saving ? 'Menyimpan...' : blog ? 'Update' : 'Simpan'}
+        <button onClick={handleSave} disabled={saving || !title.trim() || !slug.trim()}
+          className="flex-1 py-3 rounded-xl text-xs bg-matcha/15 text-matcha-light tracking-wider hover:bg-matcha/25 transition-colors duration-500 disabled:opacity-30">
+          {saving ? '...' : blog ? '更新' : '保存'}
         </button>
       </div>
 
       {/* Dialogs */}
       <Dialog open={linkDialogOpen} onOpenChange={setLinkDialogOpen}>
-        <DialogContent className="bg-[#1c1c1e] border-ios-separator text-white">
-          <DialogHeader><DialogTitle className="text-white">Sisipkan Link</DialogTitle></DialogHeader>
+        <DialogContent className={dialogCls}>
+          <DialogHeader><DialogTitle className="text-kinari/60 text-sm font-light">リンク挿入</DialogTitle></DialogHeader>
           <div className="space-y-3 py-2">
-            <div>
-              <Label className="text-xs text-ios-secondary">Teks</Label>
-              <input value={linkText} onChange={(e) => setLinkText(e.target.value)} placeholder="Teks link" className={inputCls} />
-            </div>
-            <div>
-              <Label className="text-xs text-ios-secondary">URL</Label>
-              <input value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="https://..." className={inputCls} />
-            </div>
+            <div><Label className="text-[10px] text-kinari/20">テキスト</Label><input value={linkText} onChange={(e) => setLinkText(e.target.value)} placeholder="Teks" className={inputCls} /></div>
+            <div><Label className="text-[10px] text-kinari/20">URL</Label><input value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="https://..." className={inputCls} /></div>
           </div>
-          <DialogFooter>
-            <button onClick={insertLink} disabled={!linkUrl} className="bg-accent-green text-black text-sm font-semibold px-4 py-2 rounded-xl disabled:opacity-40">Sisipkan</button>
-          </DialogFooter>
+          <DialogFooter><button onClick={insertLink} disabled={!linkUrl} className="bg-matcha/15 text-matcha-light text-xs px-4 py-2 rounded-xl disabled:opacity-30 tracking-wider">挿入</button></DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog open={imageDialogOpen} onOpenChange={setImageDialogOpen}>
-        <DialogContent className="bg-[#1c1c1e] border-ios-separator text-white">
-          <DialogHeader><DialogTitle className="text-white">Sisipkan Gambar</DialogTitle></DialogHeader>
+        <DialogContent className={dialogCls}>
+          <DialogHeader><DialogTitle className="text-kinari/60 text-sm font-light">画像挿入</DialogTitle></DialogHeader>
           <div className="space-y-3 py-2">
-            <div>
-              <Label className="text-xs text-ios-secondary">Alt Text</Label>
-              <input value={imageAlt} onChange={(e) => setImageAlt(e.target.value)} placeholder="Deskripsi" className={inputCls} />
-            </div>
-            <div>
-              <Label className="text-xs text-ios-secondary">Image URL</Label>
-              <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." className={inputCls} />
-            </div>
+            <div><Label className="text-[10px] text-kinari/20">Alt</Label><input value={imageAlt} onChange={(e) => setImageAlt(e.target.value)} placeholder="Deskripsi" className={inputCls} /></div>
+            <div><Label className="text-[10px] text-kinari/20">URL</Label><input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." className={inputCls} /></div>
           </div>
-          <DialogFooter>
-            <button onClick={insertImage} disabled={!imageUrl} className="bg-accent-green text-black text-sm font-semibold px-4 py-2 rounded-xl disabled:opacity-40">Sisipkan</button>
-          </DialogFooter>
+          <DialogFooter><button onClick={insertImage} disabled={!imageUrl} className="bg-matcha/15 text-matcha-light text-xs px-4 py-2 rounded-xl disabled:opacity-30 tracking-wider">挿入</button></DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog open={videoDialogOpen} onOpenChange={setVideoDialogOpen}>
-        <DialogContent className="bg-[#1c1c1e] border-ios-separator text-white">
-          <DialogHeader><DialogTitle className="text-white">Sisipkan Video</DialogTitle></DialogHeader>
+        <DialogContent className={dialogCls}>
+          <DialogHeader><DialogTitle className="text-kinari/60 text-sm font-light">動画挿入</DialogTitle></DialogHeader>
           <div className="space-y-3 py-2">
-            <div>
-              <Label className="text-xs text-ios-secondary">Video URL</Label>
-              <input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://youtube.com/watch?v=..." className={inputCls} />
-            </div>
+            <div><Label className="text-[10px] text-kinari/20">Video URL</Label><input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://youtube.com/..." className={inputCls} /></div>
           </div>
-          <DialogFooter>
-            <button onClick={insertVideo} disabled={!videoUrl} className="bg-accent-green text-black text-sm font-semibold px-4 py-2 rounded-xl disabled:opacity-40">Sisipkan</button>
-          </DialogFooter>
+          <DialogFooter><button onClick={insertVideo} disabled={!videoUrl} className="bg-matcha/15 text-matcha-light text-xs px-4 py-2 rounded-xl disabled:opacity-30 tracking-wider">挿入</button></DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
