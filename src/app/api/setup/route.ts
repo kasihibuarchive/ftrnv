@@ -63,6 +63,7 @@ FTRN (Festival Teater Remaja Nusantara) adalah ajang tahunan yang diselenggaraka
 
 Hubungi kami untuk informasi lebih lanjut. Mari bersama merayakan kekayaan budaya teater Nusantara! 🌿`,
     excerpt: 'Festival Teater Remaja Nusantara ke-5 telah resmi dibuka! Segera daftarkan diri Anda dan komunitas teater Anda.',
+    coverImage: '/cover-pendaftaran.png',
     isHighlight: 1,
     highlightType: 'headline',
     category: 'pendaftaran',
@@ -106,6 +107,7 @@ Untuk informasi lebih lanjut, silakan hubungi:
 
 > FTRN #5 mengajak kita semua untuk menjaga dan melestarikan warisan budaya teater Nusantara. 🌿`,
     excerpt: 'Informasi lengkap seputar Festival Teater Remaja Nusantara ke-5: tema, kategori, lokasi, dan cara menghubungi panitia.',
+    coverImage: '/cover-informasi.png',
     isHighlight: 1,
     highlightType: 'featured',
     category: 'informasi',
@@ -169,6 +171,7 @@ Untuk pertanyaan lebih lanjut, silakan hubungi panitia melalui kontak yang terse
 
 *Petunjuk pelaksanaan ini dapat berubah sewaktu-waktu. Pantau terus informasi terbaru dari FTRN #5.* 🌿`,
     excerpt: 'Petunjuk pelaksanaan lengkap untuk peserta FTRN #5: ketentuan umum, kategori, syarat, penilaian, dan timeline penting.',
+    coverImage: '/cover-juklak.png',
     isHighlight: 1,
     highlightType: 'featured',
     category: 'juklak',
@@ -189,8 +192,12 @@ async function runSetup() {
   // Check if data already exists
   const existing = await libsql.execute('SELECT id FROM Blog LIMIT 1')
   if (existing.rows.length > 0) {
+    // Update coverImages if they're null
+    await libsql.execute(`UPDATE Blog SET coverImage = '/cover-pendaftaran.png' WHERE slug = 'pendaftaran-ftrn-5-dibuka' AND coverImage IS NULL`)
+    await libsql.execute(`UPDATE Blog SET coverImage = '/cover-informasi.png' WHERE slug = 'informasi-seputar-ftrn-5' AND coverImage IS NULL`)
+    await libsql.execute(`UPDATE Blog SET coverImage = '/cover-juklak.png' WHERE slug = 'juklak-ftrn-5' AND coverImage IS NULL`)
     const count = (await libsql.execute('SELECT COUNT(*) as count FROM Blog')).rows[0].count
-    return { message: 'Tables exist and data already seeded', blogCount: count, isNew: false }
+    return { message: 'Tables exist and data already seeded (coverImages updated)', blogCount: count, isNew: false }
   }
 
   // Seed data
@@ -198,13 +205,14 @@ async function runSetup() {
 
   for (const blog of SEED_BLOGS) {
     await libsql.execute({
-      sql: `INSERT INTO Blog (id, title, slug, content, excerpt, isHighlight, highlightType, category, published, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      sql: `INSERT INTO Blog (id, title, slug, content, excerpt, coverImage, isHighlight, highlightType, category, published, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [
         blog.id,
         blog.title,
         blog.slug,
         blog.content,
         blog.excerpt,
+        blog.coverImage || null,
         blog.isHighlight,
         blog.highlightType,
         blog.category,

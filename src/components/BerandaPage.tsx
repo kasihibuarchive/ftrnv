@@ -100,28 +100,48 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
             onClick={() => onBlogClick(headline.id)}
             className="w-full text-left group"
           >
-            <div className="headline-card p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-2 h-2 rounded-full bg-matcha-light animate-pulse-soft" />
-                <span className="badge-urgent px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
-                  Headline
-                </span>
-              </div>
-              <h2 className="text-xl font-bold text-kinari leading-snug mb-3">
-                {headline.title}
-              </h2>
-              {headline.excerpt && (
-                <p className="text-sm text-kinari/50 leading-relaxed font-medium">
-                  {headline.excerpt}
-                </p>
+            <div className="headline-card overflow-hidden">
+              {headline.coverImage && (
+                <div className="relative w-full h-44 overflow-hidden">
+                  <img
+                    src={headline.coverImage}
+                    alt={headline.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                  <div className="absolute top-3 left-3 flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-matcha-light animate-pulse-soft" />
+                    <span className="badge-urgent px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
+                      Headline
+                    </span>
+                  </div>
+                </div>
               )}
-              <div className="flex items-center justify-between mt-5">
-                <p className="text-[11px] text-kinari/30 font-medium">
-                  {timeAgo(headline.createdAt)}
-                </p>
-                <span className="flex items-center gap-1 text-matcha-light text-xs font-semibold group-hover:gap-2 transition-all duration-300">
-                  Baca <ArrowRight className="w-3.5 h-3.5" />
-                </span>
+              <div className="p-6">
+                {!headline.coverImage && (
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-2 h-2 rounded-full bg-matcha-light animate-pulse-soft" />
+                    <span className="badge-urgent px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
+                      Headline
+                    </span>
+                  </div>
+                )}
+                <h2 className="text-xl font-bold text-kinari leading-snug mb-3">
+                  {headline.title}
+                </h2>
+                {headline.excerpt && (
+                  <p className="text-sm text-kinari/50 leading-relaxed font-medium">
+                    {headline.excerpt}
+                  </p>
+                )}
+                <div className="flex items-center justify-between mt-5">
+                  <p className="text-[11px] text-kinari/30 font-medium">
+                    {timeAgo(headline.createdAt)}
+                  </p>
+                  <span className="flex items-center gap-1 text-matcha-light text-xs font-semibold group-hover:gap-2 transition-all duration-300">
+                    Baca <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
               </div>
             </div>
           </button>
@@ -141,29 +161,41 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
                 onClick={() => onBlogClick(blog.id)}
                 className="w-full text-left group"
               >
-                <div className="glass-zen-card px-5 py-4 flex items-center gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      {blog.category && (
-                        <span className="badge-matcha px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
-                          {blog.category}
-                        </span>
-                      )}
+                <div className="glass-zen-card overflow-hidden">
+                  {blog.coverImage && (
+                    <div className="relative w-full h-32 overflow-hidden">
+                      <img
+                        src={blog.coverImage}
+                        alt={blog.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                     </div>
-                    <h3 className="text-sm font-semibold text-kinari/85 leading-snug">
-                      {blog.title}
-                    </h3>
-                    {blog.excerpt && (
-                      <p className="text-xs text-kinari/30 mt-1.5 line-clamp-1 font-medium">
-                        {blog.excerpt}
+                  )}
+                  <div className="px-5 py-4 flex items-center gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        {blog.category && (
+                          <span className="badge-matcha px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
+                            {blog.category}
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="text-sm font-semibold text-kinari/85 leading-snug">
+                        {blog.title}
+                      </h3>
+                      {blog.excerpt && (
+                        <p className="text-xs text-kinari/30 mt-1.5 line-clamp-1 font-medium">
+                          {blog.excerpt}
+                        </p>
+                      )}
+                      <p className="text-[11px] text-kinari/20 mt-2 font-medium">
+                        {timeAgo(blog.createdAt)}
                       </p>
-                    )}
-                    <p className="text-[11px] text-kinari/20 mt-2 font-medium">
-                      {timeAgo(blog.createdAt)}
-                    </p>
-                  </div>
-                  <div className="p-1.5 rounded-lg bg-matcha/5 group-hover:bg-matcha/10 transition-colors duration-300 shrink-0">
-                    <ChevronRight className="w-4 h-4 text-kinari/15 group-hover:text-matcha-light transition-colors duration-300" />
+                    </div>
+                    <div className="p-1.5 rounded-lg bg-matcha/5 group-hover:bg-matcha/10 transition-colors duration-300 shrink-0">
+                      <ChevronRight className="w-4 h-4 text-kinari/15 group-hover:text-matcha-light transition-colors duration-300" />
+                    </div>
                   </div>
                 </div>
               </button>
