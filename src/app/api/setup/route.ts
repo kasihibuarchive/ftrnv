@@ -27,20 +27,6 @@ const CREATE_ADMIN_SESSION_TABLE = `
   )
 `
 
-const CREATE_PENDAFTARAN_TABLE = `
-  CREATE TABLE IF NOT EXISTS Pendaftaran (
-    id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(8)) || '-' || hex(randomblob(4)) || '-' || hex(randomblob(4)) || '-' || hex(randomblob(4)) || '-' || hex(randomblob(12)))),
-    namaLengkap TEXT NOT NULL,
-    namaGrup TEXT NOT NULL,
-    email TEXT NOT NULL,
-    whatsapp TEXT NOT NULL,
-    kategori TEXT NOT NULL,
-    judulPertunjukan TEXT NOT NULL,
-    durasi TEXT NOT NULL,
-    nomorSurat TEXT,
-    createdAt TEXT NOT NULL DEFAULT (datetime('now'))
-  )
-`
 
 const SEED_BLOGS = [
   {
@@ -203,7 +189,6 @@ async function runSetup() {
   // Create tables
   await libsql.execute(CREATE_BLOG_TABLE)
   await libsql.execute(CREATE_ADMIN_SESSION_TABLE)
-  await libsql.execute(CREATE_PENDAFTARAN_TABLE)
 
   // Check if data already exists
   const existing = await libsql.execute('SELECT id FROM Blog LIMIT 1')
