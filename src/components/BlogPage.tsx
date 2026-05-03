@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Search, ChevronRight, FileText } from 'lucide-react'
+import { Search, ChevronRight, FileText, Clock } from 'lucide-react'
 import { proxyImageUrl } from '@/lib/image-proxy'
+import { timeAgo, readingTime } from '@/lib/utils-shared'
 
 interface Blog {
   id: string
@@ -42,15 +43,7 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
     return matchSearch && matchCat
   })
 
-  const timeAgo = (dateStr: string) => {
-    const diff = Date.now() - new Date(dateStr).getTime()
-    const days = Math.floor(diff / 86400000)
-    if (days === 0) return 'Hari ini'
-    if (days === 1) return 'Kemarin'
-    if (days < 7) return `${days} hari lalu`
-    if (days < 30) return `${Math.floor(days / 7)} minggu lalu`
-    return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })
-  }
+  // timeAgo and readingTime are now imported from @/lib/utils-shared
 
   return (
     <div className="px-6 pt-8 pb-6">
@@ -146,8 +139,12 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
                         {blog.excerpt}
                       </p>
                     )}
-                    <p className="text-[11px] text-kinari/20 mt-2 font-medium">
-                      {timeAgo(blog.createdAt)}
+                    <p className="text-[11px] text-kinari/20 mt-2 font-medium flex items-center gap-2">
+                      <span>{timeAgo(blog.createdAt)}</span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-2.5 h-2.5" />
+                        {readingTime(blog.excerpt || blog.title)}
+                      </span>
                     </p>
                   </div>
                   <div className="p-1.5 rounded-lg bg-matcha/5 group-hover:bg-matcha/10 transition-colors duration-300 shrink-0">

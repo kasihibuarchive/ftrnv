@@ -1,9 +1,10 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { ChevronRight, Sparkles, ArrowRight } from 'lucide-react'
+import { ChevronRight, Sparkles, ArrowRight, Clock } from 'lucide-react'
 import Image from 'next/image'
 import { proxyImageUrl } from '@/lib/image-proxy'
+import { timeAgo, readingTime } from '@/lib/utils-shared'
 
 interface Blog {
   id: string
@@ -44,15 +45,7 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
     }
   }
 
-  const timeAgo = (dateStr: string) => {
-    const diff = Date.now() - new Date(dateStr).getTime()
-    const days = Math.floor(diff / 86400000)
-    if (days === 0) return 'Hari ini'
-    if (days === 1) return 'Kemarin'
-    if (days < 7) return `${days} hari lalu`
-    if (days < 30) return `${Math.floor(days / 7)} minggu lalu`
-    return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })
-  }
+  // timeAgo and readingTime are now imported from @/lib/utils-shared
 
   if (loading) {
     return (
@@ -136,8 +129,12 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
                   </p>
                 )}
                 <div className="flex items-center justify-between mt-5">
-                  <p className="text-[11px] text-kinari/30 font-medium">
-                    {timeAgo(headline.createdAt)}
+                  <p className="text-[11px] text-kinari/30 font-medium flex items-center gap-2">
+                    <span>{timeAgo(headline.createdAt)}</span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-2.5 h-2.5" />
+                      {readingTime(headline.excerpt || headline.title)}
+                    </span>
                   </p>
                   <span className="flex items-center gap-1 text-matcha-light text-xs font-semibold group-hover:gap-2 transition-all duration-300">
                     Baca <ArrowRight className="w-3.5 h-3.5" />
@@ -190,8 +187,12 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
                           {blog.excerpt}
                         </p>
                       )}
-                      <p className="text-[11px] text-kinari/20 mt-2 font-medium">
-                        {timeAgo(blog.createdAt)}
+                      <p className="text-[11px] text-kinari/20 mt-2 font-medium flex items-center gap-2">
+                        <span>{timeAgo(blog.createdAt)}</span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-2.5 h-2.5" />
+                          {readingTime(blog.excerpt || blog.title)}
+                        </span>
                       </p>
                     </div>
                     <div className="p-1.5 rounded-lg bg-matcha/5 group-hover:bg-matcha/10 transition-colors duration-300 shrink-0">

@@ -77,16 +77,19 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
   const insertAtCursor = useCallback((text: string) => {
     const ta = textareaRef.current
     if (!ta) return
+    // Read selection positions BEFORE the state update to avoid stale references
     const s = ta.selectionStart, e = ta.selectionEnd
-    setContent(content.substring(0, s) + text + content.substring(e))
+    // Use functional state update to avoid stale closure over `content`
+    setContent(prev => prev.substring(0, s) + text + prev.substring(e))
     setTimeout(() => { ta.focus(); ta.setSelectionRange(s + text.length, s + text.length) }, 0)
-  }, [content])
+  }, [])
 
   const handleToolbarAction = (action: string) => {
     const ta = textareaRef.current
     if (!ta) return
     const s = ta.selectionStart, e = ta.selectionEnd
-    const sel = content.substring(s, e)
+    // Read selected text directly from the DOM textarea value to avoid stale state
+    const sel = ta.value.substring(s, e)
     switch (action) {
       case 'bold': insertAtCursor(sel ? `**${sel}**` : '**teks**'); break
       case 'italic': insertAtCursor(sel ? `*${sel}*` : '*miring*'); break

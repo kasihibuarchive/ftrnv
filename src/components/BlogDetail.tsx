@@ -1,9 +1,10 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Tag, Calendar, ArrowLeft } from 'lucide-react'
+import { Tag, Calendar, ArrowLeft, Share2, Clock } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import { proxyImageUrl } from '@/lib/image-proxy'
+import { toast } from '@/hooks/use-toast'
 
 interface Blog {
   id: string
@@ -36,6 +37,22 @@ export default function BlogDetail({ blogId, onBack }: BlogDetailProps) {
 
   const formatDate = (dateStr: string) =>
     new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+
+  const readingTime = (text: string) => Math.max(1, Math.ceil(text.split(/\s+/).length / 200))
+
+  const handleShare = async () => {
+    const url = window.location.href
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: blog?.title, url })
+      } catch {
+        // user cancelled or error — silent
+      }
+    } else {
+      await navigator.clipboard.writeText(url)
+      toast({ title: 'Link disalin!' })
+    }
+  }
 
   if (loading) {
     return (
@@ -84,9 +101,24 @@ export default function BlogDetail({ blogId, onBack }: BlogDetailProps) {
       </div>
 
       {/* Title */}
-      <h1 className="text-2xl font-bold text-kinari leading-snug mb-2">
+      <h1 className="text-2xl font-bold text-kinari leading-snug mb-3">
         {blog.title}
       </h1>
+
+      {/* Share row */}
+      <div className="flex items-center justify-between mb-2">
+        <span className="flex items-center gap-1.5 text-[11px] text-kinari/30 font-medium">
+          <Clock className="w-3 h-3" />
+          ~{readingTime(blog.content)} menit baca
+        </span>
+        <button
+          onClick={handleShare}
+          className="flex items-center gap-1.5 text-[11px] text-kinari/40 font-medium hover:text-matcha-light transition-colors duration-200"
+        >
+          <Share2 className="w-3 h-3" />
+          Bagikan
+        </button>
+      </div>
 
       {/* Divider */}
       <div className="zen-divider my-8" />

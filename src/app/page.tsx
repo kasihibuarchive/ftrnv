@@ -2,18 +2,22 @@
 
 import React, { useState, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Home as HomeIcon, BookOpen, Phone } from 'lucide-react'
+import { Home as HomeIcon, BookOpen, Phone, ClipboardList, CalendarDays } from 'lucide-react'
 import Image from 'next/image'
 import BerandaPage from '@/components/BerandaPage'
 import BlogPage from '@/components/BlogPage'
 import KontakPage from '@/components/KontakPage'
 import AdminPage from '@/components/AdminPage'
 import BlogDetail from '@/components/BlogDetail'
+import PendaftaranPage from '@/components/PendaftaranPage'
+import JadwalPage from '@/components/JadwalPage'
 
-type Tab = 'beranda' | 'blog' | 'kontak'
+type Tab = 'beranda' | 'jadwal' | 'pendaftaran' | 'blog' | 'kontak'
 
 const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: 'beranda', label: 'Beranda', icon: HomeIcon },
+  { id: 'jadwal', label: 'Jadwal', icon: CalendarDays },
+  { id: 'pendaftaran', label: 'Daftar', icon: ClipboardList },
   { id: 'blog', label: 'Blog', icon: BookOpen },
   { id: 'kontak', label: 'Kontak', icon: Phone },
 ]
@@ -55,24 +59,24 @@ export default function Page() {
       {/* Nature ambient blobs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <div
-          className="absolute top-[-5%] left-[10%] w-[600px] h-[600px] rounded-full opacity-[0.1] animate-float-1"
+          className="absolute top-[-5%] left-[10%] w-[400px] h-[400px] rounded-full opacity-[0.1] animate-float-1"
           style={{
             background: 'radial-gradient(circle, #6B8F5E 0%, #3D5A3A 40%, transparent 70%)',
-            filter: 'blur(80px)',
+            filter: 'blur(40px)',
           }}
         />
         <div
-          className="absolute bottom-[5%] right-[5%] w-[500px] h-[500px] rounded-full opacity-[0.08] animate-float-2"
+          className="absolute bottom-[5%] right-[5%] w-[350px] h-[350px] rounded-full opacity-[0.08] animate-float-2"
           style={{
             background: 'radial-gradient(circle, #9BB592 0%, #4A6B42 40%, transparent 70%)',
-            filter: 'blur(90px)',
+            filter: 'blur(50px)',
           }}
         />
         <div
-          className="absolute top-[40%] left-[50%] w-[400px] h-[400px] rounded-full opacity-[0.05] animate-float-1"
+          className="absolute top-[40%] left-[50%] w-[300px] h-[300px] rounded-full opacity-[0.05] animate-float-1"
           style={{
             background: 'radial-gradient(circle, #D4A0A0 0%, transparent 60%)',
-            filter: 'blur(70px)',
+            filter: 'blur(35px)',
             animationDelay: '-10s',
           }}
         />
@@ -156,6 +160,8 @@ export default function Page() {
               {activeTab === 'beranda' && (
                 <BerandaPage onBlogClick={handleBlogClick} />
               )}
+              {activeTab === 'jadwal' && <JadwalPage />}
+              {activeTab === 'pendaftaran' && <PendaftaranPage />}
               {activeTab === 'blog' && (
                 <BlogPage onBlogClick={handleBlogClick} />
               )}
@@ -178,15 +184,15 @@ export default function Page() {
                   onClick={() => handleTabChange(tab.id)}
                   className="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-all duration-300"
                 >
-                  <div className={`p-1.5 rounded-xl transition-all duration-300 ${isActive ? 'bg-matcha/15 green-glow-soft' : ''}`}>
+                  <div className={`p-1 rounded-lg transition-all duration-300 ${isActive ? 'bg-matcha/15 green-glow-soft' : ''}`}>
                     <Icon
-                      className={`w-5 h-5 transition-all duration-300 ${
+                      className={`w-[18px] h-[18px] transition-all duration-300 ${
                         isActive ? 'text-matcha-light' : 'text-kinari/25'
                       }`}
                       strokeWidth={isActive ? 2 : 1.2}
                     />
                   </div>
-                  <span className={`text-[10px] font-medium tracking-wide transition-all duration-300 ${
+                  <span className={`text-[9px] font-medium tracking-wide transition-all duration-300 ${
                     isActive ? 'text-matcha-light' : 'text-kinari/20'
                   }`}>
                     {tab.label}
