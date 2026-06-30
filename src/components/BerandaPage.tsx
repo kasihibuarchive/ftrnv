@@ -3,12 +3,14 @@
 import React, { useEffect, useState } from 'react'
 import { ChevronRight, Sparkles, ArrowRight, Clock } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { proxyImageUrl } from '@/lib/image-proxy'
 import { timeAgo, readingTime } from '@/lib/utils-shared'
 
 interface Blog {
   id: string
   title: string
+  slug: string
   excerpt?: string
   coverImage?: string
   isHighlight: boolean
@@ -17,11 +19,7 @@ interface Blog {
   createdAt: string
 }
 
-interface BerandaPageProps {
-  onBlogClick: (blogId: string) => void
-}
-
-export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
+export default function BerandaPage() {
   const [headline, setHeadline] = useState<Blog | null>(null)
   const [featured, setFeatured] = useState<Blog[]>([])
   const [loading, setLoading] = useState(true)
@@ -44,8 +42,6 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
       setLoading(false)
     }
   }
-
-  // timeAgo and readingTime are now imported from @/lib/utils-shared
 
   if (loading) {
     return (
@@ -90,9 +86,9 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
           <p className="text-[11px] font-bold tracking-[0.2em] text-matcha-light uppercase mb-4">
             Pengumuman
           </p>
-          <button
-            onClick={() => onBlogClick(headline.id)}
-            className="w-full text-left group"
+          <Link
+            href={`/blog/${headline.slug}`}
+            className="w-full text-left group block"
           >
             <div className="headline-card overflow-hidden">
               {headline.coverImage && (
@@ -142,7 +138,7 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
                 </div>
               </div>
             </div>
-          </button>
+          </Link>
         </div>
       )}
 
@@ -154,10 +150,10 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
           </p>
           <div className="space-y-3">
             {featured.map((blog) => (
-              <button
+              <Link
                 key={blog.id}
-                onClick={() => onBlogClick(blog.id)}
-                className="w-full text-left group"
+                href={`/blog/${blog.slug}`}
+                className="w-full text-left group block"
               >
                 <div className="glass-zen-card overflow-hidden">
                   {blog.coverImage && (
@@ -200,7 +196,7 @@ export default function BerandaPage({ onBlogClick }: BerandaPageProps) {
                     </div>
                   </div>
                 </div>
-              </button>
+              </Link>
             ))}
           </div>
         </div>

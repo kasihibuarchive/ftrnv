@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { Search, ChevronRight, FileText, Clock } from 'lucide-react'
+import Link from 'next/link'
 import { proxyImageUrl } from '@/lib/image-proxy'
 import { timeAgo, readingTime } from '@/lib/utils-shared'
 
@@ -16,13 +17,9 @@ interface Blog {
   createdAt: string
 }
 
-interface BlogPageProps {
-  onBlogClick: (blogId: string) => void
-}
-
 const categories = ['Semua', 'pendaftaran', 'informasi', 'juklak', 'umum']
 
-export default function BlogPage({ onBlogClick }: BlogPageProps) {
+export default function BlogPage() {
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -42,8 +39,6 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
     const matchCat = activeCategory === 'Semua' || b.category === activeCategory
     return matchSearch && matchCat
   })
-
-  // timeAgo and readingTime are now imported from @/lib/utils-shared
 
   return (
     <div className="px-6 pt-8 pb-6">
@@ -106,10 +101,10 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
       ) : (
         <div className="space-y-3">
           {filtered.map((blog) => (
-            <button
+            <Link
               key={blog.id}
-              onClick={() => onBlogClick(blog.id)}
-              className="w-full text-left group"
+              href={`/blog/${blog.slug}`}
+              className="w-full text-left group block"
             >
               <div className="glass-zen-card overflow-hidden">
                 {blog.coverImage && (
@@ -152,7 +147,7 @@ export default function BlogPage({ onBlogClick }: BlogPageProps) {
                   </div>
                 </div>
               </div>
-            </button>
+            </Link>
           ))}
         </div>
       )}

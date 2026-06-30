@@ -8,7 +8,6 @@ import BerandaPage from '@/components/BerandaPage'
 import BlogPage from '@/components/BlogPage'
 import KontakPage from '@/components/KontakPage'
 import AdminPage from '@/components/AdminPage'
-import BlogDetail from '@/components/BlogDetail'
 
 type Tab = 'beranda' | 'blog' | 'kontak'
 
@@ -20,24 +19,16 @@ const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<Tab>('beranda')
-  const [view, setView] = useState<'tabs' | 'detail' | 'admin'>('tabs')
-  const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null)
+  const [view, setView] = useState<'tabs' | 'admin'>('tabs')
   const [logoTaps, setLogoTaps] = useState(0)
 
   const handleTabChange = useCallback((tab: Tab) => {
     setActiveTab(tab)
     setView('tabs')
-    setSelectedBlogId(null)
-  }, [])
-
-  const handleBlogClick = useCallback((blogId: string) => {
-    setSelectedBlogId(blogId)
-    setView('detail')
   }, [])
 
   const handleBack = useCallback(() => {
     setView('tabs')
-    setSelectedBlogId(null)
   }, [])
 
   const handleLogoTap = useCallback(() => {
@@ -108,14 +99,6 @@ export default function Page() {
               />
             )}
           </button>
-          {view === 'detail' && (
-            <button
-              onClick={handleBack}
-              className="cta-button px-3 py-1.5 text-xs font-medium"
-            >
-              ← Kembali
-            </button>
-          )}
         </div>
       </header>
 
@@ -133,17 +116,6 @@ export default function Page() {
             >
               <AdminPage onBack={handleBack} />
             </motion.div>
-          ) : view === 'detail' && selectedBlogId ? (
-            <motion.div
-              key="detail"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className="pb-28"
-            >
-              <BlogDetail blogId={selectedBlogId} onBack={handleBack} />
-            </motion.div>
           ) : (
             <motion.div
               key={activeTab}
@@ -153,12 +125,8 @@ export default function Page() {
               transition={{ duration: 0.25 }}
               className="pb-28"
             >
-              {activeTab === 'beranda' && (
-                <BerandaPage onBlogClick={handleBlogClick} />
-              )}
-              {activeTab === 'blog' && (
-                <BlogPage onBlogClick={handleBlogClick} />
-              )}
+              {activeTab === 'beranda' && <BerandaPage />}
+              {activeTab === 'blog' && <BlogPage />}
               {activeTab === 'kontak' && <KontakPage />}
             </motion.div>
           )}
