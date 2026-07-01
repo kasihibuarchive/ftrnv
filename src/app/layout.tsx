@@ -68,6 +68,12 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  alternates: {
+    canonical: siteUrl,
+  },
+  verification: {
+    google: "google-site-verification-placeholder",
+  },
 };
 
 export default function RootLayout({

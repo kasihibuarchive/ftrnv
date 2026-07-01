@@ -1,105 +1,182 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { getTurso, rowToBlog } from '@/lib/turso'
-import BlogPostPage from './BlogPostPage'
+import BlogPostClient from './BlogPostClient'
 
-interface PageProps {
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ftrn.space-z.ai'
+
+// Fetch blog by slug server-side for metadata generation
+async function getBlogBySlug(slug: string) {
+  try {
+    const turso = getTurso()
+    const result = await turso.execute({
+      sql: 'SELECT * FROM Blog WHERE slug = ? AND published = 1',
+      args: [slug],
+    })
+    if (result.rows.length === 0) return null
+    return rowToBlog(result.rows[0] as Record<string, unknown>)
+  } catch {
+    return null
+  }
+}
+
+// Generate SEO metadata per blog slug
+export async function generateMetadata({
+  params,
+}: {
   params: Promise<{ slug: string }>
-}
-
-// Fetch blog server-side for metadata
-async function getBlog(slug: string) {
-  const turso = getTurso()
-  const result = await turso.execute({
-    sql: 'SELECT * FROM Blog WHERE slug = ? AND published = 1',
-    args: [slug],
-  })
-  if (result.rows.length === 0) return null
-  return rowToBlog(result.rows[0] as Record<string, unknown>)
-}
-
-// Generate dynamic metadata for SEO
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+}): Promise<Metadata> {
   const { slug } = await params
-  const blog = await getBlog(slug)
+  const blog = await getBlogBySlug(slug)
 
   if (!blog) {
     return {
-      title: 'Artikel Tidak Ditemukan — FTRN #5',
-      description: 'Halaman yang Anda cari tidak ditemukan.',
+      title: 'Artikel Tidak Ditemukan',
+      description: 'Artikel yang Anda cari tidak ditemukan di FTRN #5.',
     }
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ftrn.space-z.ai'
-  const blogUrl = `${siteUrl}/blog/${slug}`
-  const coverUrl = blog.coverImage
-    ? (blog.coverImage.startsWith('/') ? `${siteUrl}${blog.coverImage}` : blog.coverImage)
+  const blogUrl = `${siteUrl}/blog/${blog.slug}`
+  const ogImage = blog.coverImage
+    ? blog.coverImage.startsWith('/')
+      ? `${siteUrl}${blog.coverImage}`
+      : blog.coverImage
     : `${siteUrl}/ftrn-logo.png`
 
+  const description = blog.excerpt || blog.content.replace(/[#*_>\[\]()]/g, '').slice(0, 160)
+
   return {
-    title: `${blog.title} — FTRN #5`,
-    description: blog.excerpt || blog.title,
+    title: blog.title,
+    description,
     authors: [{ name: 'FTRN ISI Yogyakarta' }],
+    keywords: [
+      'FTRN',
+      'Festival Teater Remaja Nusantara',
+      blog.category || 'teater',
+      blog.title,
+      'ISI Yogyakarta',
+      'seni pertunjukan',
+    ],
+    alternates: {
+      canonical: blogUrl,
+    },
     openGraph: {
       title: blog.title,
-      description: blog.excerpt || blog.title,
+      description,
       url: blogUrl,
+      siteName: 'FTRN #5',
+      locale: 'id_ID',
       type: 'article',
       publishedTime: blog.createdAt,
       modifiedTime: blog.updatedAt,
+      authors: ['FTRN ISI Yogyakarta'],
+      tags: [blog.category || 'teater', 'FTRN', 'festival'],
       images: [
         {
-          url: coverUrl,
+          url: ogImage,
           width: 1200,
           height: 630,
           alt: blog.title,
         },
       ],
-      siteName: 'FTRN #5',
-      locale: 'id_ID',
     },
     twitter: {
       card: 'summary_large_image',
       title: blog.title,
-      description: blog.excerpt || blog.title,
-      images: [coverUrl],
-    },
-    alternates: {
-      canonical: blogUrl,
+      description,
+      images: [ogImage],
     },
   }
 }
 
-// Generate static params for all published blogs (ISR)
+// Generate static params for all published blogs (for build-time pre-render)
 export async function generateStaticParams() {
   try {
     const turso = getTurso()
-    const result = await turso.execute('SELECT slug FROM Blog WHERE published = 1')
-    return result.rows.map((row) => ({ slug: row.slug as string }))
+    const result = await turso.execute({
+      sql: 'SELECT slug FROM Blog WHERE published = 1',
+      args: [],
+    })
+    return result.rows.map((row) => ({
+      slug: row.slug as string,
+    }))
   } catch {
     return []
   }
 }
 
-// Server component — renders the client component with blog data
-export default async function BlogSlugPage({ params }: PageProps) {
+// Blog post page — server component wrapping client component
+export default async function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
   const { slug } = await params
-  const blog = await getBlog(slug)
+  const blog = await getBlogBySlug(slug)
 
   if (!blog) {
     return (
-      <div className="min-h-screen nature-bg flex items-center justify-center">
-        <div className="text-center py-20">
+      <div className="min-h-screen nature-bg relative flex items-center justify-center">
+        <div className="text-center px-6">
           <div className="icon-circle w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-            <span className="text-2xl">🔍</span>
+            <span className="text-2xl">🌿</span>
           </div>
-          <p className="text-kinari/30 text-sm font-semibold">Artikel tidak ditemukan</p>
-          <a href="/" className="cta-button px-4 py-2 text-xs font-semibold mt-4 inline-flex items-center gap-1.5">
-            ← Kembali
+          <h1 className="text-xl font-bold text-kinari mb-2">Artikel Tidak Ditemukan</h1>
+          <p className="text-kinari/40 text-sm font-medium mb-6">Artikel yang Anda cari tidak tersedia.</p>
+          <a
+            href="/"
+            className="cta-button px-5 py-2.5 text-xs font-semibold inline-flex items-center gap-2"
+          >
+            ← Kembali ke Beranda
           </a>
         </div>
       </div>
     )
   }
 
-  return <BlogPostPage blog={blog} />
+  // JSON-LD structured data for Google rich results
+  const blogUrl = `${siteUrl}/blog/${blog.slug}`
+  const ogImage = blog.coverImage
+    ? blog.coverImage.startsWith('/')
+      ? `${siteUrl}${blog.coverImage}`
+      : blog.coverImage
+    : `${siteUrl}/ftrn-logo.png`
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: blog.title,
+    description: blog.excerpt || blog.content.replace(/[#*_>\[\]()]/g, '').slice(0, 160),
+    image: ogImage,
+    url: blogUrl,
+    datePublished: blog.createdAt,
+    dateModified: blog.updatedAt,
+    author: {
+      '@type': 'Organization',
+      name: 'FTRN ISI Yogyakarta',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'FTRN #5',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/ftrn-logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': blogUrl,
+    },
+    articleSection: blog.category || 'Teater',
+    inLanguage: 'id',
+  }
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <BlogPostClient blog={blog} />
+    </>
+  )
 }
