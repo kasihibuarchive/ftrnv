@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { getTurso, rowToBlog } from '@/lib/turso'
 import BlogPostClient from './BlogPostClient'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ftrn.space-z.ai'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ftrnv.vercel.app'
 
 // Fetch blog by slug server-side for metadata generation
 async function getBlogBySlug(slug: string) {

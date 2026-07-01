@@ -28,7 +28,7 @@ interface BlogPostClientProps {
 }
 
 export default function BlogPostClient({ blog }: BlogPostClientProps) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ftrn.space-z.ai'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ftrnv.vercel.app'
   const blogUrl = `${siteUrl}/blog/${blog.slug}`
 
   const formatDate = (dateStr: string) =>

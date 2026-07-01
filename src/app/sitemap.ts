@@ -1,7 +1,7 @@
 import { getTurso } from '@/lib/turso'
 import type { MetadataRoute } from 'next'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ftrn.space-z.ai'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ftrnv.vercel.app'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages
