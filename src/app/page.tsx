@@ -69,20 +69,19 @@ export default function Page() {
             className="flex items-center gap-2 group"
           >
             <Image
-              src="/ftrn-logo.png"
+              src={isDark ? "/ftrn-logo-light.png" : "/ftrn-logo.png"}
               alt="FTRN"
               width={28}
               height={28}
               className="object-contain"
-              style={{ filter: isDark ? 'brightness(0) invert(1)' : 'none' }}
             />
             <Image
-              src="/ftrn-text.png"
+              src={isDark ? "/ftrn-text-light.png" : "/ftrn-text.png"}
               alt="FTRN #5 Temu-Taut"
               width={100}
               height={30}
               className="object-contain h-7 w-auto"
-              style={{ filter: isDark ? 'invert(1) brightness(1.1)' : 'brightness(0)' }}
+              style={{ filter: isDark ? 'none' : 'brightness(0)' }}
             />
             {view === 'admin' && (
               <span className="font-semibold text-sm tracking-wide text-foreground/50 ml-1">Admin</span>

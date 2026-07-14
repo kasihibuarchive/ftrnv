@@ -62,20 +62,19 @@ export default function BerandaPage({ isDark }: BerandaPageProps) {
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-4">
           <Image
-            src="/ftrn-logo.png"
+            src={isDark ? "/ftrn-logo-light.png" : "/ftrn-logo.png"}
             alt="FTRN Wayang"
             width={48}
             height={48}
             className="object-contain"
-            style={{ filter: isDark ? 'brightness(0) invert(1)' : 'none' }}
           />
           <Image
-            src="/ftrn-text.png"
+            src={isDark ? "/ftrn-text-light.png" : "/ftrn-text.png"}
             alt="FTRN #5 Temu-Taut"
             width={140}
             height={42}
             className="object-contain"
-            style={{ filter: isDark ? 'invert(1) brightness(1.1)' : 'brightness(0)' }}
+            style={{ filter: isDark ? 'none' : 'brightness(0)' }}
           />
         </div>
         <p className="badge-matcha px-3 py-1 inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-widest uppercase mb-4">
