@@ -36,7 +36,7 @@ export default function MerchAdboard() {
       const res = await fetch('/api/merch')
       if (res.ok) {
         const data = await res.json()
-        setMerch(data.slice(0, 8)) // Show max 8 items
+        setMerch(data.slice(0, 8))
       }
     } catch {
       /* */
@@ -45,7 +45,6 @@ export default function MerchAdboard() {
     }
   }
 
-  // Don't render if no merch or still loading
   if (loading || merch.length === 0) return null
 
   return (
@@ -57,45 +56,37 @@ export default function MerchAdboard() {
         </span>
       </div>
 
-      {/* Horizontal scrollable row */}
-      <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1">
+      {/* Horizontal scrollable row — seamless */}
+      <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
         {merch.map((item) => (
           <a
             key={item.id}
             href="/"
             onClick={(e) => {
               e.preventDefault()
-              // For now, just scroll to top — in the future this would navigate to merch tab
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
-            className="shrink-0 w-[120px] group"
+            className="shrink-0 w-[110px] group"
           >
-            <div className="glass-zen-card overflow-hidden">
-              {/* Thumbnail */}
-              <div className="relative w-full h-[90px] overflow-hidden bg-foreground/[0.02]">
-                {item.imageUrl ? (
-                  <img
-                    src={proxyImageUrl(item.imageUrl)}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <ShoppingBag className="w-5 h-5 text-foreground/[0.06]" />
-                  </div>
-                )}
-              </div>
-
-              {/* Info */}
-              <div className="p-2">
-                <p className="text-[10px] font-semibold text-foreground/55 line-clamp-1 leading-tight mb-0.5">
-                  {item.name}
-                </p>
-                <p className="text-[10px] font-bold text-primary/60">
-                  {formatPrice(item.price)}
-                </p>
-              </div>
+            <div className="relative w-full h-[90px] overflow-hidden rounded-lg bg-foreground/[0.02] mb-2">
+              {item.imageUrl ? (
+                <img
+                  src={proxyImageUrl(item.imageUrl)}
+                  alt={item.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <ShoppingBag className="w-5 h-5 text-foreground/[0.06]" />
+                </div>
+              )}
             </div>
+            <p className="text-[10px] font-semibold text-foreground/55 line-clamp-1 leading-tight mb-0.5">
+              {item.name}
+            </p>
+            <p className="text-[10px] font-bold text-primary/60">
+              {formatPrice(item.price)}
+            </p>
           </a>
         ))}
       </div>

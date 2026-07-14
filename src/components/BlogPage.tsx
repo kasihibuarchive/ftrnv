@@ -53,7 +53,7 @@ export default function BlogPage() {
 
       {/* Search */}
       <div className="glass-zen-input flex items-center gap-3 px-4 py-3 mb-5">
-        <Search className="w-4 h-4 text-foreground/30 shrink-0" />
+        <Search className="w-4 h-4 text-foreground/25 shrink-0" />
         <input
           type="text"
           value={search}
@@ -72,7 +72,7 @@ export default function BlogPage() {
             className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-wide whitespace-nowrap transition-all duration-300 ${
               activeCategory === cat
                 ? 'badge-matcha'
-                : 'text-foreground/25 border border-border hover:border-primary/20 hover:text-foreground/40'
+                : 'text-foreground/20 hover:text-foreground/40'
             }`}
           >
             {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -80,12 +80,13 @@ export default function BlogPage() {
         ))}
       </div>
 
-      {/* Blog list */}
+      {/* Blog list — seamless */}
       {loading ? (
-        <div className="space-y-3">
+        <div className="space-y-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="glass-zen-card p-5 animate-pulse">
-              <div className="h-4 bg-foreground/[0.04] rounded w-2/3 mb-3" />
+            <div key={i} className="animate-pulse">
+              <div className="h-28 bg-foreground/[0.03] rounded-lg mb-3" />
+              <div className="h-4 bg-foreground/[0.03] rounded w-2/3 mb-2" />
               <div className="h-3 bg-foreground/[0.02] rounded w-full" />
             </div>
           ))}
@@ -99,53 +100,49 @@ export default function BlogPage() {
           <p className="text-foreground/18 text-xs mt-1 font-medium">Coba kata kunci lain</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-6">
           {filtered.map((blog) => (
             <Link
               key={blog.id}
               href={`/blog/${blog.slug}`}
               className="w-full text-left group block"
             >
-              <div className="glass-zen-card overflow-hidden">
-                {blog.coverImage && (
-                  <div className="relative w-full h-28 overflow-hidden">
-                    <img
-                      src={proxyImageUrl(blog.coverImage)}
-                      alt={blog.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                  </div>
-                )}
-                <div className="px-5 py-4 flex items-center gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      {blog.category && (
-                        <span className="badge-matcha px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
-                          {blog.category}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="text-sm font-semibold text-foreground/80 leading-snug">
-                      {blog.title}
-                    </h3>
-                    {blog.excerpt && (
-                      <p className="text-xs text-foreground/35 mt-1.5 line-clamp-1 font-medium leading-relaxed">
-                        {blog.excerpt}
-                      </p>
-                    )}
-                    <p className="text-[11px] text-foreground/25 mt-2 font-medium flex items-center gap-2">
-                      <span>{timeAgo(blog.createdAt)}</span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-2.5 h-2.5" />
-                        {readingTime(blog.excerpt || blog.title)}
-                      </span>
-                    </p>
-                  </div>
-                  <div className="p-1.5 rounded-lg bg-primary/5 group-hover:bg-primary/10 transition-colors duration-300 shrink-0">
-                    <ChevronRight className="w-4 h-4 text-foreground/12 group-hover:text-primary transition-colors duration-300" />
-                  </div>
+              {blog.coverImage && (
+                <div className="relative w-full h-32 overflow-hidden rounded-lg mb-3">
+                  <img
+                    src={proxyImageUrl(blog.coverImage)}
+                    alt={blog.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
+              )}
+              <div className="flex items-start gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    {blog.category && (
+                      <span className="badge-matcha px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
+                        {blog.category}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-sm font-semibold text-foreground/85 leading-snug">
+                    {blog.title}
+                  </h3>
+                  {blog.excerpt && (
+                    <p className="text-xs text-foreground/40 mt-1 line-clamp-1 font-medium leading-relaxed">
+                      {blog.excerpt}
+                    </p>
+                  )}
+                  <p className="text-[11px] text-foreground/25 mt-2 font-medium flex items-center gap-2">
+                    <span>{timeAgo(blog.createdAt)}</span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-2.5 h-2.5" />
+                      {readingTime(blog.excerpt || blog.title)}
+                    </span>
+                  </p>
+                </div>
+                <ChevronRight className="w-4 h-4 text-foreground/10 group-hover:text-primary transition-colors duration-300 shrink-0 mt-1" />
               </div>
             </Link>
           ))}

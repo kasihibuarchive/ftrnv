@@ -42,100 +42,94 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Nature Distilled Palette — FTRN #5 Moodboard */
-  --color-matcha: #7FA771;
-  --color-matcha-light: #9DC293;
-  --color-matcha-dark: #2E5A1F;
+  /* Nature Distilled Palette */
   --color-terra: #C97A4A;
   --color-terra-light: #E09A6E;
   --color-cream: #EDE7D6;
-  --color-cream-dark: #D9D2BF;
-  --color-charcoal: #333333;
-  --color-moss: #3D5A3A;
+  --color-charcoal: #2C2C2C;
+  --color-matcha: #7FA771;
+  --color-matcha-light: #9DC293;
   --color-sakura: #D4A0A0;
-  --color-kinari: #F5F0E8;
   --color-sumi: #2C2C2C;
   --color-suri: #8A8A7A;
-  --color-washi: #EDE8DF;
   --color-kusa: #6B8F5E;
-  --color-tsuyu: #9BB592;
 }
 
 /* ==========================================================
-   DEFAULT THEME: Warm Terra / Cream (Light)
-   Nature Distilled — warm, earthy, organic
+   LIGHT MODE — 2 colors: Cream + Charcoal
+   Terra accent sparingly
+   Nature Distilled 60 / Swiss 30 / Glass 10
    ========================================================== */
 :root {
-  --radius: 0.875rem;
+  --radius: 0.75rem;
   --background: #EDE7D6;
-  --foreground: #333333;
-  --card: rgba(255, 255, 255, 0.12);
-  --card-foreground: #333333;
-  --popover: rgba(237, 231, 214, 0.95);
-  --popover-foreground: #333333;
+  --foreground: #2C2C2C;
+  --card: transparent;
+  --card-foreground: #2C2C2C;
+  --popover: rgba(237, 231, 214, 0.97);
+  --popover-foreground: #2C2C2C;
   --primary: #C97A4A;
   --primary-foreground: #EDE7D6;
-  --secondary: rgba(201, 122, 74, 0.08);
-  --secondary-foreground: #C97A4A;
-  --muted: rgba(51, 51, 51, 0.04);
+  --secondary: transparent;
+  --secondary-foreground: #2C2C2C;
+  --muted: transparent;
   --muted-foreground: #8A8A7A;
-  --accent: rgba(127, 167, 113, 0.10);
-  --accent-foreground: #7FA771;
+  --accent: transparent;
+  --accent-foreground: #C97A4A;
   --destructive: #B44444;
-  --border: rgba(51, 51, 51, 0.08);
-  --input: rgba(51, 51, 51, 0.05);
+  --border: rgba(44, 44, 44, 0.06);
+  --input: rgba(44, 44, 44, 0.04);
   --ring: #C97A4A;
   --chart-1: #C97A4A;
   --chart-2: #7FA771;
   --chart-3: #E09A6E;
   --chart-4: #9DC293;
   --chart-5: #2E5A1F;
-  --sidebar: rgba(237, 231, 214, 0.9);
-  --sidebar-foreground: #333333;
+  --sidebar: #EDE7D6;
+  --sidebar-foreground: #2C2C2C;
   --sidebar-primary: #C97A4A;
   --sidebar-primary-foreground: #EDE7D6;
-  --sidebar-accent: rgba(201, 122, 74, 0.10);
+  --sidebar-accent: rgba(201, 122, 74, 0.08);
   --sidebar-accent-foreground: #C97A4A;
-  --sidebar-border: rgba(51, 51, 51, 0.08);
+  --sidebar-border: rgba(44, 44, 44, 0.06);
   --sidebar-ring: #C97A4A;
 }
 
 /* ==========================================================
-   DARK THEME: Deep Forest (#2E5A1F)
-   Activated by class="dark" on <html>
+   DARK MODE — Deep Forest
    ========================================================== */
 html.dark {
   --background: #162416;
   --foreground: #EDE7D6;
-  --card: rgba(237, 231, 214, 0.04);
+  --card: transparent;
   --card-foreground: #EDE7D6;
-  --popover: rgba(22, 36, 22, 0.95);
+  --popover: rgba(22, 36, 22, 0.97);
   --popover-foreground: #EDE7D6;
-  --primary: #7FA771;
+  --primary: #9DC293;
   --primary-foreground: #162416;
-  --secondary: rgba(237, 231, 214, 0.05);
-  --secondary-foreground: #9DC293;
-  --muted: rgba(237, 231, 214, 0.03);
+  --secondary: transparent;
+  --secondary-foreground: #EDE7D6;
+  --muted: transparent;
   --muted-foreground: #7A7A6A;
-  --accent: rgba(127, 167, 113, 0.12);
+  --accent: transparent;
   --accent-foreground: #9DC293;
   --destructive: #C45B5B;
-  --border: rgba(237, 231, 214, 0.08);
-  --input: rgba(237, 231, 214, 0.05);
-  --ring: #7FA771;
-  --chart-1: #7FA771;
-  --chart-2: #9DC293;
+  --border: rgba(237, 231, 214, 0.06);
+  --input: rgba(237, 231, 214, 0.04);
+  --ring: #9DC293;
+  --chart-1: #9DC293;
+  --chart-2: #7FA771;
   --chart-3: #6B8F5E;
   --chart-4: #9BB592;
   --chart-5: #C97A4A;
-  --sidebar: rgba(22, 36, 22, 0.9);
+  --sidebar: #162416;
   --sidebar-foreground: #EDE7D6;
-  --sidebar-primary: #7FA771;
+  --sidebar-primary: #9DC293;
   --sidebar-primary-foreground: #162416;
-  --sidebar-accent: rgba(127, 167, 113, 0.12);
+  --sidebar-accent: rgba(127, 167, 113, 0.10);
   --sidebar-accent-foreground: #9DC293;
-  --sidebar-border: rgba(237, 231, 214, 0.08);
-  --sidebar-ring: #7FA771;
+  --sidebar-border: rgba(237, 231, 214, 0.06);
+  --sidebar-ring: #9DC293;
 }
 
 @layer base {
@@ -153,126 +147,95 @@ html.dark {
 }
 
 /* ==========================================================
-   NATURE DISTILLED BACKGROUND — 60% Nature Distilled
-   Organic, flowing gradients — warm & earthy
+   BACKGROUND — Seamless, flat cream / forest
    ========================================================== */
 .nature-bg {
-  background:
-    radial-gradient(ellipse at 15% 30%, rgba(201, 122, 74, 0.07) 0%, transparent 50%),
-    radial-gradient(ellipse at 75% 15%, rgba(127, 167, 113, 0.05) 0%, transparent 40%),
-    radial-gradient(ellipse at 50% 80%, rgba(224, 154, 110, 0.04) 0%, transparent 45%),
-    linear-gradient(170deg, #EDE7D6 0%, #E8DFCA 25%, #E0D5BD 50%, #E8DFCA 75%, #EDE7D6 100%);
+  background: var(--background);
   min-height: 100vh;
   transition: background 0.5s ease;
 }
 
-html.dark .nature-bg {
-  background:
-    radial-gradient(ellipse at 20% 40%, rgba(107, 143, 94, 0.10) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(155, 181, 146, 0.06) 0%, transparent 40%),
-    radial-gradient(ellipse at 60% 75%, rgba(74, 107, 66, 0.08) 0%, transparent 45%),
-    linear-gradient(170deg, #162416 0%, #1a2e1a 25%, #1e3520 50%, #1a2e1a 75%, #162416 100%);
+/* ==========================================================
+   HEADER — Clean flat bar, only 10% glass
+   ========================================================== */
+.glass-zen-header {
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.4s ease, border-color 0.4s ease;
 }
 
 /* ==========================================================
-   GLASS — 10% Glassmorphism, 30% Swiss Minimalism
-   Very subtle glass, mostly clean surfaces with fine borders
+   BOTTOM NAV — Clean flat bar
    ========================================================== */
-
-/* --- Primary Glass Panel — subtle, minimal --- */
-.glass-zen {
-  background: var(--card);
-  backdrop-filter: blur(8px) saturate(105%);
-  -webkit-backdrop-filter: blur(8px) saturate(105%);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  box-shadow: 0 2px 12px -4px rgba(0, 0, 0, 0.04);
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-/* --- Strong Glass (modals, overlays) --- */
-.glass-zen-strong {
-  background: var(--popover);
-  backdrop-filter: blur(12px) saturate(110%);
-  -webkit-backdrop-filter: blur(12px) saturate(110%);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.06);
-  position: relative;
-}
-
-/* --- Header — Clean, minimal floating bar --- */
-.glass-zen-header {
-  background: rgba(237, 231, 214, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(51, 51, 51, 0.05);
-  transition: background 0.4s ease, border-color 0.4s ease;
-}
-
-html.dark .glass-zen-header {
-  background: rgba(22, 36, 22, 0.88);
-  border-bottom-color: rgba(237, 231, 214, 0.06);
-}
-
-/* --- Bottom Nav — Clean, minimal --- */
 .glass-zen-nav {
-  background: rgba(237, 231, 214, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(51, 51, 51, 0.05);
+  background: var(--background);
+  border-top: 1px solid var(--border);
   transition: background 0.4s ease, border-color 0.4s ease;
 }
 
-html.dark .glass-zen-nav {
-  background: rgba(22, 36, 22, 0.88);
-  border-top-color: rgba(237, 231, 214, 0.06);
-}
-
-/* --- Cards — Minimal surfaces --- */
+/* ==========================================================
+   CARDS — Seamless, no borders, no glass
+   Just subtle bg tint on hover
+   ========================================================== */
 .glass-zen-card {
-  background: var(--card);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid var(--border);
-  border-radius: 0.875rem;
-  box-shadow: 0 1px 8px -2px rgba(0, 0, 0, 0.03);
-  transition: all 0.3s ease;
+  background: transparent;
+  border: none;
+  border-radius: 0.75rem;
+  transition: all 0.25s ease;
   position: relative;
   overflow: hidden;
 }
 
 .glass-zen-card:hover {
-  box-shadow: 0 2px 16px -4px rgba(0, 0, 0, 0.06);
-  border-color: rgba(201, 122, 74, 0.12);
-  transform: translateY(-1px);
+  background: rgba(201, 122, 74, 0.04);
 }
 
 html.dark .glass-zen-card:hover {
-  border-color: rgba(127, 167, 113, 0.15);
+  background: rgba(127, 167, 113, 0.05);
 }
 
-/* --- Input — Clean, Swiss --- */
-.glass-zen-input {
-  background: rgba(255, 255, 255, 0.06);
+/* ==========================================================
+   GLASS PANEL — For modals / overlays only (10% usage)
+   ========================================================== */
+.glass-zen {
+  background: var(--popover);
+  backdrop-filter: blur(12px) saturate(110%);
+  -webkit-backdrop-filter: blur(12px) saturate(110%);
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.08);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.glass-zen-strong {
+  background: var(--popover);
+  backdrop-filter: blur(16px) saturate(115%);
+  -webkit-backdrop-filter: blur(16px) saturate(115%);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+/* ==========================================================
+   INPUT — Clean Swiss
+   ========================================================== */
+.glass-zen-input {
+  background: var(--input);
+  border: 1px solid var(--border);
+  border-radius: 0.625rem;
   transition: all 0.2s ease;
 }
 
-html.dark .glass-zen-input {
-  background: rgba(237, 231, 214, 0.03);
-}
-
-.glass-zen-input:focus {
+.glass-zen-input:focus-within {
   border-color: rgba(201, 122, 74, 0.25);
   box-shadow: 0 0 0 2px rgba(201, 122, 74, 0.06);
 }
 
-html.dark .glass-zen-input:focus {
-  border-color: rgba(127, 167, 113, 0.25);
-  box-shadow: 0 0 0 2px rgba(127, 167, 113, 0.06);
+html.dark .glass-zen-input:focus-within {
+  border-color: rgba(157, 194, 147, 0.25);
+  box-shadow: 0 0 0 2px rgba(157, 194, 147, 0.06);
 }
 
 /* ==========================================================
@@ -286,141 +249,91 @@ html.dark .glass-zen-input:focus {
 }
 
 .green-gradient {
-  background: linear-gradient(135deg, #7FA771 0%, #9DC293 50%, #6B8F5E 100%);
+  background: linear-gradient(135deg, #9DC293 0%, #7FA771 50%, #6B8F5E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.green-glow {
-  box-shadow: 0 0 16px rgba(127, 167, 113, 0.12), 0 0 40px rgba(127, 167, 113, 0.03);
-}
-
-.green-glow-soft {
-  box-shadow: 0 0 8px rgba(127, 167, 113, 0.08);
-}
-
-.terra-glow {
-  box-shadow: 0 0 16px rgba(201, 122, 74, 0.10), 0 0 40px rgba(201, 122, 74, 0.03);
-}
-
 /* ==========================================================
-   BADGES — Organic, Nature-Distilled
+   BADGES — Minimal, flat pills
    ========================================================== */
 .badge-matcha {
-  background: linear-gradient(135deg, rgba(127, 167, 113, 0.12) 0%, rgba(127, 167, 113, 0.06) 100%);
-  border: 1px solid rgba(127, 167, 113, 0.15);
-  color: #7FA771;
+  background: rgba(127, 167, 113, 0.08);
+  color: #6B8F5E;
   border-radius: 9999px;
+  border: none;
 }
 
 html.dark .badge-matcha {
   color: #9DC293;
-  background: linear-gradient(135deg, rgba(127, 167, 113, 0.18) 0%, rgba(107, 143, 94, 0.08) 100%);
-  border-color: rgba(127, 167, 113, 0.15);
+  background: rgba(127, 167, 113, 0.12);
 }
 
 .badge-terra {
-  background: linear-gradient(135deg, rgba(201, 122, 74, 0.12) 0%, rgba(201, 122, 74, 0.06) 100%);
-  border: 1px solid rgba(201, 122, 74, 0.15);
+  background: rgba(201, 122, 74, 0.08);
   color: #C97A4A;
   border-radius: 9999px;
+  border: none;
 }
 
 html.dark .badge-terra {
   color: #E09A6E;
-  background: linear-gradient(135deg, rgba(201, 122, 74, 0.16) 0%, rgba(201, 122, 74, 0.06) 100%);
-  border-color: rgba(201, 122, 74, 0.18);
+  background: rgba(201, 122, 74, 0.12);
 }
 
 .badge-urgent {
-  background: linear-gradient(135deg, rgba(196, 91, 91, 0.10) 0%, rgba(196, 91, 91, 0.04) 100%);
-  border: 1px solid rgba(196, 91, 91, 0.14);
+  background: rgba(180, 68, 68, 0.08);
   color: #B44444;
   border-radius: 9999px;
+  border: none;
 }
 
 html.dark .badge-urgent {
   color: #D4A0A0;
-  background: linear-gradient(135deg, rgba(212, 160, 160, 0.16) 0%, rgba(196, 91, 91, 0.06) 100%);
-  border-color: rgba(212, 160, 160, 0.14);
+  background: rgba(212, 160, 160, 0.12);
 }
 
 /* ==========================================================
-   HEADLINE CARD — Feature highlight
+   HEADLINE CARD — Seamless featured content
    ========================================================== */
 .headline-card {
-  background: linear-gradient(
-    135deg,
-    rgba(201, 122, 74, 0.08) 0%,
-    rgba(255, 255, 255, 0.10) 40%,
-    rgba(127, 167, 113, 0.05) 100%
-  );
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(201, 122, 74, 0.12);
-  border-radius: 1rem;
-  box-shadow: 0 2px 16px -4px rgba(0, 0, 0, 0.04);
+  background: transparent;
+  border: none;
+  border-radius: 0.75rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
-html.dark .headline-card {
-  background: linear-gradient(
-    135deg,
-    rgba(127, 167, 113, 0.08) 0%,
-    rgba(237, 231, 214, 0.02) 40%,
-    rgba(155, 181, 146, 0.05) 100%
-  );
-  border-color: rgba(127, 167, 113, 0.12);
-  box-shadow: 0 2px 16px -4px rgba(0, 0, 0, 0.15);
-}
-
 .headline-card:hover {
-  border-color: rgba(201, 122, 74, 0.22);
-  box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.06);
-  transform: translateY(-1px);
+  background: rgba(201, 122, 74, 0.03);
 }
 
 html.dark .headline-card:hover {
-  border-color: rgba(127, 167, 113, 0.22);
+  background: rgba(127, 167, 113, 0.04);
 }
 
 /* ==========================================================
-   CTA BUTTON — Clean press
+   CTA BUTTON — Clean solid
    ========================================================== */
 .cta-button {
-  background: linear-gradient(135deg, rgba(201, 122, 74, 0.14) 0%, rgba(224, 154, 110, 0.08) 100%);
-  border: 1px solid rgba(201, 122, 74, 0.20);
-  color: #C97A4A;
-  border-radius: 0.75rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+  border-radius: 0.625rem;
   transition: all 0.25s ease;
-  box-shadow: 0 1px 6px -2px rgba(201, 122, 74, 0.06);
-}
-
-html.dark .cta-button {
-  background: linear-gradient(135deg, rgba(127, 167, 113, 0.14) 0%, rgba(107, 143, 94, 0.08) 100%);
-  border-color: rgba(127, 167, 113, 0.18);
-  color: #9DC293;
-  box-shadow: 0 1px 6px -2px rgba(127, 167, 113, 0.04);
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.08);
 }
 
 .cta-button:hover {
-  background: linear-gradient(135deg, rgba(201, 122, 74, 0.22) 0%, rgba(224, 154, 110, 0.14) 100%);
-  border-color: rgba(201, 122, 74, 0.32);
-  box-shadow: 0 2px 12px -2px rgba(201, 122, 74, 0.10);
+  opacity: 0.9;
   transform: translateY(-1px);
-}
-
-html.dark .cta-button:hover {
-  background: linear-gradient(135deg, rgba(127, 167, 113, 0.22) 0%, rgba(107, 143, 94, 0.14) 100%);
-  border-color: rgba(127, 167, 113, 0.28);
-  box-shadow: 0 2px 12px -2px rgba(127, 167, 113, 0.08);
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.12);
 }
 
 /* ==========================================================
-   FLOATING ELEMENTS — Organic Motion (Nature Distilled)
+   FLOATING ELEMENTS — Subtle organic motion
    ========================================================== */
 @keyframes float-gentle {
   0%, 100% { transform: translate(0, 0) scale(1); }
@@ -457,7 +370,7 @@ html.dark .cta-button:hover {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
 /* ==========================================================
-   MARKDOWN CONTENT — Clean Swiss Typography
+   MARKDOWN CONTENT — Swiss Typography
    ========================================================== */
 .markdown-content {
   color: var(--foreground);
@@ -488,7 +401,7 @@ html.dark .cta-button:hover {
 .markdown-content h3 {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--accent-foreground);
+  color: var(--primary);
   margin-bottom: 0.5rem;
   margin-top: 1.25rem;
 }
@@ -496,19 +409,16 @@ html.dark .cta-button:hover {
 .markdown-content p { margin-bottom: 1rem; }
 
 .markdown-content strong {
-  color: var(--accent-foreground);
+  color: var(--foreground);
   font-weight: 600;
+  opacity: 1;
 }
 
 .markdown-content a {
   color: var(--primary);
   text-decoration: none;
-  border-bottom: 1px solid rgba(201, 122, 74, 0.2);
+  border-bottom: 1px solid var(--border);
   transition: border-color 0.2s;
-}
-
-html.dark .markdown-content a {
-  border-bottom-color: rgba(127, 167, 113, 0.2);
 }
 
 .markdown-content a:hover { border-color: var(--primary); }
@@ -530,51 +440,40 @@ html.dark .markdown-content a {
 }
 
 .markdown-content li::marker {
-  color: var(--accent-foreground);
+  color: var(--primary);
 }
 
 .markdown-content blockquote {
-  border-left: 3px solid rgba(201, 122, 74, 0.3);
+  border-left: 2px solid var(--primary);
   padding: 0.75rem 1rem;
   margin: 1.25rem 0;
   color: var(--muted-foreground);
   font-style: italic;
-  background: rgba(201, 122, 74, 0.03);
-  border-radius: 0 0.5rem 0.5rem 0;
-}
-
-html.dark .markdown-content blockquote {
-  border-left-color: rgba(127, 167, 113, 0.3);
-  background: rgba(127, 167, 113, 0.03);
+  background: transparent;
+  border-radius: 0;
 }
 
 .markdown-content code {
-  background: rgba(51, 51, 51, 0.05);
+  background: var(--input);
   padding: 0.15rem 0.4rem;
   border-radius: 4px;
   font-size: 0.8125rem;
 }
 
-html.dark .markdown-content code { background: rgba(237, 231, 214, 0.05); }
-
 .markdown-content pre {
-  background: rgba(51, 51, 51, 0.04);
+  background: var(--input);
   padding: 1rem;
-  border-radius: 0.75rem;
+  border-radius: 0.625rem;
   overflow-x: auto;
   margin-bottom: 1rem;
   border: 1px solid var(--border);
-}
-
-html.dark .markdown-content pre {
-  background: rgba(0, 0, 0, 0.2);
 }
 
 .markdown-content pre code { background: none; padding: 0; }
 
 .markdown-content img {
   max-width: 100%;
-  border-radius: 0.75rem;
+  border-radius: 0.625rem;
   margin: 1.25rem 0;
 }
 
@@ -596,69 +495,46 @@ html.dark .markdown-content pre {
 }
 
 .markdown-content th {
-  background: rgba(201, 122, 74, 0.04);
   font-weight: 600;
   color: var(--primary);
-}
-
-html.dark .markdown-content th {
-  background: rgba(127, 167, 113, 0.05);
 }
 
 /* ==========================================================
    BLOG EDITOR
    ========================================================== */
 .blog-editor textarea {
-  background: rgba(51, 51, 51, 0.03);
+  background: var(--input);
   border: 1px solid var(--border);
   color: var(--foreground);
   font-family: var(--font-poppins), monospace;
   resize: none;
-  border-radius: 0.75rem;
-}
-
-html.dark .blog-editor textarea {
-  background: rgba(0, 0, 0, 0.15);
-  color: rgba(237, 231, 214, 0.85);
+  border-radius: 0.625rem;
 }
 
 .blog-editor textarea:focus {
   border-color: rgba(201, 122, 74, 0.25);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(201, 122, 74, 0.04);
 }
 
 html.dark .blog-editor textarea:focus {
-  border-color: rgba(127, 167, 113, 0.25);
-  box-shadow: 0 0 0 2px rgba(127, 167, 113, 0.04);
+  border-color: rgba(157, 194, 147, 0.25);
 }
 
 /* ==========================================================
-   ZEN DIVIDER — Organic Flow Line
+   DIVIDER — Thin, organic
    ========================================================== */
 .zen-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(201, 122, 74, 0.15), transparent);
-}
-
-html.dark .zen-divider {
-  background: linear-gradient(90deg, transparent, rgba(127, 167, 113, 0.12), transparent);
+  background: var(--border);
 }
 
 /* ==========================================================
    ICON CONTAINER
    ========================================================== */
 .icon-circle {
-  background: linear-gradient(135deg, rgba(201, 122, 74, 0.08) 0%, rgba(127, 167, 113, 0.04) 100%);
-  border: 1px solid rgba(201, 122, 74, 0.10);
+  background: var(--input);
   border-radius: 9999px;
-  box-shadow: 0 0 8px rgba(201, 122, 74, 0.04);
-}
-
-html.dark .icon-circle {
-  background: linear-gradient(135deg, rgba(127, 167, 113, 0.10) 0%, rgba(107, 143, 94, 0.04) 100%);
-  border-color: rgba(127, 167, 113, 0.10);
-  box-shadow: 0 0 8px rgba(127, 167, 113, 0.03);
+  border: none;
 }
 
 /* ==========================================================

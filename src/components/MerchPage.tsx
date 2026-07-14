@@ -85,7 +85,6 @@ export default function MerchPage() {
         window.open(item.modelUrl, '_blank')
         break
       default:
-        // embed — handled in modal
         break
     }
   }
@@ -112,7 +111,7 @@ export default function MerchPage() {
             className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-wide whitespace-nowrap transition-all duration-300 ${
               activeCategory === cat
                 ? 'badge-matcha'
-                : 'text-foreground/25 border border-border hover:border-primary/20 hover:text-foreground/40'
+                : 'text-foreground/20 hover:text-foreground/40'
             }`}
           >
             {cat === 'Semua' ? 'Semua' : categoryLabels[cat] || cat}
@@ -122,9 +121,9 @@ export default function MerchPage() {
 
       {/* Merch grid */}
       {loading ? (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="glass-zen-card p-4 animate-pulse">
+            <div key={i} className="animate-pulse">
               <div className="aspect-square bg-foreground/[0.03] rounded-lg mb-3" />
               <div className="h-3 bg-foreground/[0.03] rounded w-2/3 mb-2" />
               <div className="h-3 bg-foreground/[0.02] rounded w-1/2" />
@@ -144,15 +143,18 @@ export default function MerchPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-4">
           {filtered.map((item) => (
-            <button
+            <div
               key={item.id}
               onClick={() => openDetail(item)}
-              className="glass-zen-card overflow-hidden group text-left"
+              className="cursor-pointer group"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openDetail(item) }}
             >
               {/* Image */}
-              <div className="relative aspect-square overflow-hidden bg-foreground/[0.02]">
+              <div className="relative aspect-square overflow-hidden rounded-lg bg-foreground/[0.02] mb-3">
                 {item.imageUrl ? (
                   <img
                     src={proxyImageUrl(item.imageUrl)}
@@ -166,35 +168,36 @@ export default function MerchPage() {
                 )}
                 {/* 3D Badge */}
                 {item.is3D && item.modelUrl && (
-                  <div className="absolute top-2 right-2 flex items-center gap-1 bg-primary/15 backdrop-blur-sm px-2 py-0.5 rounded-full">
-                    <Box className="w-2.5 h-2.5 text-primary" />
-                    <span className="text-[8px] font-bold text-primary tracking-wider">
+                  <div className="absolute top-2 right-2 flex items-center gap-1 bg-white/15 backdrop-blur-sm px-2 py-0.5 rounded-full">
+                    <Box className="w-2.5 h-2.5 text-white/80" />
+                    <span className="text-[8px] font-bold text-white/80 tracking-wider">
                       {modelTypeLabels[item.modelType || 'embed'] || '3D'}
                     </span>
                   </div>
                 )}
                 {/* Category badge */}
                 <div className="absolute top-2 left-2">
-                  <span className="badge-matcha px-2 py-0.5 text-[8px] font-bold tracking-wider uppercase">
+                  <span className="bg-white/15 backdrop-blur-sm text-white/80 px-2 py-0.5 text-[8px] font-bold tracking-wider uppercase rounded-full">
                     {categoryLabels[item.category] || item.category}
                   </span>
                 </div>
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1.5 text-white text-[10px] font-semibold tracking-wider">
+                    <Eye className="w-3.5 h-3.5" />
+                    Lihat Detail
+                  </div>
+                </div>
               </div>
 
-              {/* Info */}
-              <div className="p-3">
-                <h3 className="text-xs font-semibold text-foreground/70 leading-snug line-clamp-2 mb-1.5">
-                  {item.name}
-                </h3>
-                <p className="text-sm font-bold text-primary/80 mb-2.5">
-                  {formatPrice(item.price)}
-                </p>
-                <span className="w-full flex items-center justify-center gap-1.5 bg-primary/8 text-primary/60 text-[10px] font-semibold tracking-wider py-2 rounded-lg transition-all duration-300 group-hover:bg-primary/15 group-hover:text-primary/80">
-                  <Eye className="w-3 h-3" />
-                  Lihat Detail
-                </span>
-              </div>
-            </button>
+              {/* Info — seamless, no card */}
+              <h3 className="text-xs font-semibold text-foreground/70 leading-snug line-clamp-2 mb-1">
+                {item.name}
+              </h3>
+              <p className="text-sm font-bold text-primary/80">
+                {formatPrice(item.price)}
+              </p>
+            </div>
           ))}
         </div>
       )}
@@ -214,7 +217,7 @@ export default function MerchPage() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close handle */}
-            <div className="sticky top-0 z-10 flex justify-center pt-3 pb-2 bg-popover/80 backdrop-blur-sm">
+            <div className="sticky top-0 z-10 flex justify-center pt-3 pb-2" style={{ background: 'var(--popover)' }}>
               <div className="w-10 h-1 rounded-full bg-foreground/15" />
             </div>
 
@@ -229,7 +232,7 @@ export default function MerchPage() {
             <div className="px-6 pb-8">
               {/* Image */}
               {selectedMerch.imageUrl && (
-                <div className="relative w-full aspect-square max-h-[40vh] overflow-hidden rounded-xl mb-6">
+                <div className="relative w-full aspect-square max-h-[40vh] overflow-hidden rounded-lg mb-6">
                   <img
                     src={proxyImageUrl(selectedMerch.imageUrl)}
                     alt={selectedMerch.name}
@@ -237,7 +240,7 @@ export default function MerchPage() {
                   />
                   {selectedMerch.is3D && selectedMerch.modelUrl && (
                     <div className="absolute top-3 right-3">
-                      <span className="badge-matcha px-2.5 py-1 text-[9px] font-bold tracking-wider flex items-center gap-1.5">
+                      <span className="bg-white/15 backdrop-blur-sm text-white/90 px-2.5 py-1 text-[9px] font-bold tracking-wider rounded-full flex items-center gap-1.5">
                         <Box className="w-3 h-3" />
                         {modelTypeLabels[selectedMerch.modelType || 'embed'] || '3D'}
                       </span>
@@ -250,7 +253,7 @@ export default function MerchPage() {
               {selectedMerch.is3D && selectedMerch.modelUrl && (
                 <div className="mb-5">
                   {selectedMerch.modelType === 'embed' ? (
-                    <div className="rounded-xl overflow-hidden border border-border bg-foreground/[0.02]">
+                    <div className="rounded-lg overflow-hidden border border-border bg-foreground/[0.02]">
                       <model-viewer
                         src={selectedMerch.modelUrl}
                         auto-rotate
@@ -261,7 +264,7 @@ export default function MerchPage() {
                   ) : (
                     <button
                       onClick={() => handle3DAction(selectedMerch)}
-                      className="w-full flex items-center justify-center gap-2 bg-primary/10 text-primary border border-primary/15 rounded-xl py-3 text-xs font-semibold tracking-wider hover:bg-primary/18 transition-colors duration-300"
+                      className="w-full flex items-center justify-center gap-2 bg-primary/10 text-primary border border-primary/15 rounded-lg py-3 text-xs font-semibold tracking-wider hover:bg-primary/18 transition-colors duration-300"
                     >
                       {selectedMerch.modelType === 'video' ? (
                         <>

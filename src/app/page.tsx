@@ -62,25 +62,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen nature-bg relative flex flex-col">
-      {/* Nature ambient blobs — organic, flowing */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div
-          className="absolute top-[-5%] left-[10%] w-[400px] h-[400px] rounded-full opacity-[0.06] animate-float-1"
-          style={{
-            background: 'radial-gradient(circle, #C97A4A 0%, #E09A6E 30%, transparent 70%)',
-            filter: 'blur(60px)',
-          }}
-        />
-        <div
-          className="absolute bottom-[5%] right-[5%] w-[350px] h-[350px] rounded-full opacity-[0.05] animate-float-2"
-          style={{
-            background: 'radial-gradient(circle, #7FA771 0%, #9DC293 30%, transparent 70%)',
-            filter: 'blur(50px)',
-          }}
-        />
-      </div>
-
-      {/* Header */}
+      {/* Header — clean flat */}
       <header className="glass-zen-header sticky top-0 z-50">
         <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <button
@@ -98,7 +80,7 @@ export default function Page() {
               />
             </div>
             {view === 'admin' ? (
-              <span className="font-semibold text-sm tracking-wide text-foreground/70">Admin</span>
+              <span className="font-semibold text-sm tracking-wide text-foreground/50">Admin</span>
             ) : (
               <Image
                 src="/ftrn-text.png"
@@ -106,7 +88,7 @@ export default function Page() {
                 width={60}
                 height={22}
                 className="object-contain"
-                style={{ filter: isDark ? 'brightness(0) invert(1)' : 'none' }}
+                style={{ filter: isDark ? 'brightness(0) invert(1)' : 'brightness(0)' }}
               />
             )}
           </button>
@@ -157,7 +139,7 @@ export default function Page() {
         </AnimatePresence>
       </main>
 
-      {/* Bottom Nav */}
+      {/* Bottom Nav — clean flat */}
       {view !== 'admin' && (
         <nav className="glass-zen-nav fixed bottom-0 left-0 right-0 z-50">
           <div className="max-w-2xl mx-auto flex items-center justify-around h-16 gap-1">
@@ -170,16 +152,14 @@ export default function Page() {
                   onClick={() => handleTabChange(tab.id)}
                   className="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-all duration-300"
                 >
-                  <div className={`p-1 rounded-lg transition-all duration-300 ${isActive ? 'bg-primary/8 terra-glow' : ''}`}>
-                    <Icon
-                      className={`w-5 h-5 transition-all duration-300 ${
-                        isActive ? 'text-primary' : 'text-foreground/20'
-                      }`}
-                      strokeWidth={isActive ? 2 : 1.2}
-                    />
-                  </div>
+                  <Icon
+                    className={`w-5 h-5 transition-all duration-300 ${
+                      isActive ? 'text-primary' : 'text-foreground/15'
+                    }`}
+                    strokeWidth={isActive ? 2 : 1.2}
+                  />
                   <span className={`text-[9px] font-medium tracking-wide transition-all duration-300 ${
-                    isActive ? 'text-primary' : 'text-foreground/20'
+                    isActive ? 'text-primary' : 'text-foreground/15'
                   }`}>
                     {tab.label}
                   </span>

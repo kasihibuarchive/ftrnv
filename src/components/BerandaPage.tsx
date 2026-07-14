@@ -47,18 +47,14 @@ export default function BerandaPage() {
     return (
       <div className="px-6 py-10 space-y-8">
         <div className="h-10 bg-foreground/[0.03] rounded w-1/2 animate-pulse" />
-        <div className="headline-card p-6 animate-pulse">
-          <div className="h-6 bg-foreground/[0.04] rounded w-3/4 mb-3" />
-          <div className="h-3 bg-foreground/[0.03] rounded w-full mb-2" />
-          <div className="h-3 bg-foreground/[0.03] rounded w-2/3" />
-        </div>
+        <div className="h-44 bg-foreground/[0.03] rounded-lg animate-pulse" />
       </div>
     )
   }
 
   return (
     <div className="px-6 pt-8 pb-6">
-      {/* Hero — Bold & Dynamic */}
+      {/* Hero — Bold & Seamless */}
       <div className="mb-10">
         <div className="badge-matcha px-3 py-1 inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-widest uppercase mb-4">
           <Sparkles className="w-3 h-3" />
@@ -71,7 +67,7 @@ export default function BerandaPage() {
             width={140}
             height={48}
             className="object-contain"
-            style={{ filter: 'brightness(0) invert(0.2)' }}
+            style={{ filter: 'brightness(0)' }}
           />
         </div>
         <p className="text-muted-foreground text-sm leading-relaxed max-w-sm font-medium">
@@ -82,8 +78,8 @@ export default function BerandaPage() {
 
       {/* Headline */}
       {headline && (
-        <div className="mb-8">
-          <p className="text-[11px] font-bold tracking-[0.2em] text-accent-foreground uppercase mb-4">
+        <div className="mb-10">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-primary uppercase mb-4">
             Pengumuman
           </p>
           <Link
@@ -92,63 +88,81 @@ export default function BerandaPage() {
           >
             <div className="headline-card overflow-hidden">
               {headline.coverImage && (
-                <div className="relative w-full h-44 overflow-hidden">
+                <div className="relative w-full h-44 overflow-hidden rounded-lg">
                   <img
                     src={proxyImageUrl(headline.coverImage)}
                     alt={headline.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                   <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-matcha-light animate-pulse-soft" />
-                    <span className="badge-urgent px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
+                    <div className="w-2 h-2 rounded-full bg-white/60 animate-pulse-soft" />
+                    <span className="bg-white/15 backdrop-blur-sm text-white/90 px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase rounded-full">
                       Headline
+                    </span>
+                  </div>
+                  {/* Title on image — always bright */}
+                  <div className="absolute bottom-0 left-0 right-0 px-4 pb-4">
+                    <h2 className="text-lg font-bold text-white leading-snug mb-2">
+                      {headline.title}
+                    </h2>
+                    <div className="flex items-center justify-between">
+                      <p className="text-[11px] text-white/50 font-medium flex items-center gap-2">
+                        <span>{timeAgo(headline.createdAt)}</span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-2.5 h-2.5" />
+                          {readingTime(headline.excerpt || headline.title)}
+                        </span>
+                      </p>
+                      <span className="flex items-center gap-1 text-white/70 text-xs font-semibold group-hover:gap-2 transition-all duration-300">
+                        Baca <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {!headline.coverImage && (
+                <div className="py-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full bg-primary/60 animate-pulse-soft" />
+                    <span className="text-[9px] font-bold tracking-wider text-primary uppercase">
+                      Headline
+                    </span>
+                  </div>
+                  <h2 className="text-xl font-bold text-foreground leading-snug mb-2">
+                    {headline.title}
+                  </h2>
+                  {headline.excerpt && (
+                    <p className="text-sm text-foreground/50 leading-relaxed font-medium">
+                      {headline.excerpt}
+                    </p>
+                  )}
+                  <div className="flex items-center justify-between mt-4">
+                    <p className="text-[11px] text-foreground/35 font-medium flex items-center gap-2">
+                      <span>{timeAgo(headline.createdAt)}</span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-2.5 h-2.5" />
+                        {readingTime(headline.excerpt || headline.title)}
+                      </span>
+                    </p>
+                    <span className="flex items-center gap-1 text-primary text-xs font-semibold group-hover:gap-2 transition-all duration-300">
+                      Baca <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
               )}
-              <div className="p-6">
-                {!headline.coverImage && (
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-2 h-2 rounded-full bg-matcha-light animate-pulse-soft" />
-                    <span className="badge-urgent px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
-                      Headline
-                    </span>
-                  </div>
-                )}
-                <h2 className="text-xl font-bold text-foreground leading-snug mb-3">
-                  {headline.title}
-                </h2>
-                {headline.excerpt && (
-                  <p className="text-sm text-foreground/50 leading-relaxed font-medium">
-                    {headline.excerpt}
-                  </p>
-                )}
-                <div className="flex items-center justify-between mt-5">
-                  <p className="text-[11px] text-foreground/35 font-medium flex items-center gap-2">
-                    <span>{timeAgo(headline.createdAt)}</span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-2.5 h-2.5" />
-                      {readingTime(headline.excerpt || headline.title)}
-                    </span>
-                  </p>
-                  <span className="flex items-center gap-1 text-primary text-xs font-semibold group-hover:gap-2 transition-all duration-300">
-                    Baca <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                </div>
-              </div>
             </div>
           </Link>
         </div>
       )}
 
-      {/* Featured */}
+      {/* Featured — Seamless list */}
       {featured.length > 0 && (
         <div>
-          <p className="text-[11px] font-bold tracking-[0.2em] text-accent-foreground uppercase mb-4">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-primary uppercase mb-4">
             Terbaru
           </p>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {featured.map((blog) => (
               <Link
                 key={blog.id}
@@ -157,18 +171,18 @@ export default function BerandaPage() {
               >
                 <div className="glass-zen-card overflow-hidden">
                   {blog.coverImage && (
-                    <div className="relative w-full h-32 overflow-hidden">
+                    <div className="relative w-full h-32 overflow-hidden rounded-lg mb-3">
                       <img
                         src={proxyImageUrl(blog.coverImage)}
                         alt={blog.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                     </div>
                   )}
-                  <div className="px-5 py-4 flex items-center gap-4">
+                  <div className="flex items-start gap-3">
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-2 mb-1.5">
                         {blog.category && (
                           <span className="badge-matcha px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase">
                             {blog.category}
@@ -179,7 +193,7 @@ export default function BerandaPage() {
                         {blog.title}
                       </h3>
                       {blog.excerpt && (
-                        <p className="text-xs text-foreground/35 mt-1.5 line-clamp-1 font-medium">
+                        <p className="text-xs text-foreground/40 mt-1 line-clamp-1 font-medium">
                           {blog.excerpt}
                         </p>
                       )}
@@ -191,9 +205,7 @@ export default function BerandaPage() {
                         </span>
                       </p>
                     </div>
-                    <div className="p-1.5 rounded-lg bg-primary/5 group-hover:bg-primary/10 transition-colors duration-300 shrink-0">
-                      <ChevronRight className="w-4 h-4 text-foreground/15 group-hover:text-primary transition-colors duration-300" />
-                    </div>
+                    <ChevronRight className="w-4 h-4 text-foreground/10 group-hover:text-primary transition-colors duration-300 shrink-0 mt-1" />
                   </div>
                 </div>
               </Link>
