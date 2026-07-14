@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Mail, Instagram, MessageCircle, Youtube, ExternalLink, Heart } from 'lucide-react'
+import { Mail, Instagram, MessageCircle, Youtube, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 
 const contacts = [
@@ -20,8 +20,8 @@ const contacts = [
   {
     icon: MessageCircle,
     label: 'WhatsApp',
-    value: '+62 882-1244-7588 (Dinda)',
-    href: 'https://wa.me/6288212447588',
+    value: 'Ghani: +62 851-7337-1536',
+    href: 'https://wa.me/6285173371536',
   },
   {
     icon: Youtube,
@@ -31,29 +31,23 @@ const contacts = [
   },
 ]
 
-export default function KontakPage() {
+interface KontakPageProps {
+  isDark: boolean
+}
+
+export default function KontakPage({ isDark }: KontakPageProps) {
   return (
     <div className="px-6 pt-8 pb-6">
       {/* Profile */}
       <div className="text-center mb-10">
-        <div className="icon-circle w-16 h-16 mx-auto mb-5 flex items-center justify-center">
+        <div className="mb-5">
           <Image
             src="/ftrn-logo.png"
-            alt="FTRN"
-            width={36}
-            height={36}
-            className="object-contain"
-            style={{ filter: 'brightness(0) invert(0.3)' }}
-          />
-        </div>
-        <div className="mb-2">
-          <Image
-            src="/ftrn-text.png"
-            alt="FTRN #5"
-            width={110}
-            height={38}
+            alt="FTRN #5 Temu-Taut"
+            width={180}
+            height={54}
             className="object-contain mx-auto"
-            style={{ filter: 'brightness(0)' }}
+            style={{ filter: isDark ? 'invert(1) brightness(1.1)' : 'none' }}
           />
         </div>
         <p className="text-xs text-primary/60 mt-2 font-semibold tracking-widest uppercase">
@@ -72,7 +66,7 @@ export default function KontakPage() {
         Hubungi Kami
       </p>
 
-      {/* Contact list — seamless */}
+      {/* Contact list */}
       <div className="space-y-2">
         {contacts.map((contact) => {
           const Icon = contact.icon
@@ -97,9 +91,8 @@ export default function KontakPage() {
         })}
       </div>
 
-      {/* Quote */}
+      {/* Quote — no sparkles, just text */}
       <div className="mt-10 text-center">
-        <Heart className="w-4 h-4 text-sakura/40 mx-auto mb-3" />
         <p className="text-xs text-foreground/50 font-medium leading-loose italic">
           Sampai jumpa di,<br />
           Festival Teater Remaja Nusantara #5<br />

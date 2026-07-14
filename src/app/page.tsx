@@ -25,7 +25,6 @@ export default function Page() {
   const [logoTaps, setLogoTaps] = useState(0)
   const [isDark, setIsDark] = useState(false)
 
-  // Persist theme preference
   useEffect(() => {
     const saved = localStorage.getItem('ftrn-theme')
     if (saved === 'dark') {
@@ -62,34 +61,23 @@ export default function Page() {
 
   return (
     <div className="min-h-screen nature-bg relative flex flex-col">
-      {/* Header — clean flat */}
+      {/* Header */}
       <header className="glass-zen-header sticky top-0 z-50">
         <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <button
             onClick={view === 'admin' ? handleBack : handleLogoTap}
-            className="flex items-center gap-3 group"
+            className="flex items-center gap-2 group"
           >
-            <div className="w-8 h-8 flex items-center justify-center">
-              <Image
-                src="/ftrn-logo.png"
-                alt="FTRN"
-                width={28}
-                height={28}
-                className="object-contain"
-                style={{ filter: isDark ? 'brightness(0) invert(1)' : 'none' }}
-              />
-            </div>
-            {view === 'admin' ? (
-              <span className="font-semibold text-sm tracking-wide text-foreground/50">Admin</span>
-            ) : (
-              <Image
-                src="/ftrn-text.png"
-                alt="FTRN #5"
-                width={60}
-                height={22}
-                className="object-contain"
-                style={{ filter: isDark ? 'brightness(0) invert(1)' : 'brightness(0)' }}
-              />
+            <Image
+              src="/ftrn-logo.png"
+              alt="FTRN #5"
+              width={120}
+              height={36}
+              className="object-contain h-8 w-auto"
+              style={{ filter: isDark ? 'invert(1) brightness(1.1)' : 'none' }}
+            />
+            {view === 'admin' && (
+              <span className="font-semibold text-sm tracking-wide text-foreground/50 ml-1">Admin</span>
             )}
           </button>
           {/* Theme Toggle */}
@@ -130,16 +118,16 @@ export default function Page() {
               transition={{ duration: 0.25 }}
               className="pb-28"
             >
-              {activeTab === 'beranda' && <BerandaPage />}
+              {activeTab === 'beranda' && <BerandaPage isDark={isDark} />}
               {activeTab === 'blog' && <BlogPage />}
               {activeTab === 'merch' && <MerchPage />}
-              {activeTab === 'kontak' && <KontakPage />}
+              {activeTab === 'kontak' && <KontakPage isDark={isDark} />}
             </motion.div>
           )}
         </AnimatePresence>
       </main>
 
-      {/* Bottom Nav — clean flat */}
+      {/* Bottom Nav */}
       {view !== 'admin' && (
         <nav className="glass-zen-nav fixed bottom-0 left-0 right-0 z-50">
           <div className="max-w-2xl mx-auto flex items-center justify-around h-16 gap-1">

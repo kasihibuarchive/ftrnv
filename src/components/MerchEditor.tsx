@@ -22,6 +22,7 @@ interface MerchEditorProps {
 }
 
 const modelTypes = [
+  { value: 'spline', label: 'Spline 3D', desc: 'Embed scene dari Spline (spline.design) — interaktif & visual' },
   { value: 'embed', label: 'Embed 3D Viewer', desc: 'Tampilkan model 3D langsung di halaman (glTF/GLB)' },
   { value: 'sketchfab', label: 'Sketchfab', desc: 'Link ke model Sketchfab' },
   { value: 'video', label: 'Video Preview', desc: 'Link video YouTube/dll sebagai preview' },
@@ -177,7 +178,8 @@ export default function MerchEditor({ merch, onSave, onCancel }: MerchEditorProp
               {/* URL Input */}
               <div>
                 <Label className="text-[10px] text-foreground/30 tracking-wider mb-1.5 block">
-                  {modelType === 'embed' ? 'URL Model 3D (glTF/GLB)' :
+                  {modelType === 'spline' ? 'URL Spline Embed' :
+                   modelType === 'embed' ? 'URL Model 3D (glTF/GLB)' :
                    modelType === 'sketchfab' ? 'URL Sketchfab' :
                    modelType === 'video' ? 'URL Video (YouTube/dll)' :
                    'URL AR Experience'}
@@ -186,6 +188,7 @@ export default function MerchEditor({ merch, onSave, onCancel }: MerchEditorProp
                   value={modelUrl}
                   onChange={(e) => setModelUrl(e.target.value)}
                   placeholder={
+                    modelType === 'spline' ? 'https://my.spline.design/...' :
                     modelType === 'embed' ? 'https://model.glb' :
                     modelType === 'sketchfab' ? 'https://sketchfab.com/...' :
                     modelType === 'video' ? 'https://youtube.com/...' :
@@ -195,7 +198,8 @@ export default function MerchEditor({ merch, onSave, onCancel }: MerchEditorProp
                 />
                 {selectedModelType && (
                   <p className="text-[9px] text-foreground/20 mt-1.5 tracking-wide">
-                    {modelType === 'embed' ? 'File glTF (.gltf) atau GLB (.glb) yang bisa di-embed langsung' :
+                    {modelType === 'spline' ? 'Salin link embed dari Spline — buka scene → Share → Embed → salin URL iframe' :
+                     modelType === 'embed' ? 'File glTF (.gltf) atau GLB (.glb) yang bisa di-embed langsung' :
                      modelType === 'sketchfab' ? 'Link ke halaman model Sketchfab' :
                      modelType === 'video' ? 'Video YouTube atau link video lain sebagai preview 3D' :
                      'Link ke experience AR (bisa dibuka di perangkat mobile)'}
