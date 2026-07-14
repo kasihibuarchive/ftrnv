@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Home as HomeIcon, BookOpen, Phone, ShoppingBag, Sun, Moon } from 'lucide-react'
 import Image from 'next/image'
@@ -23,13 +23,23 @@ export default function Page() {
   const [activeTab, setActiveTab] = useState<Tab>('beranda')
   const [view, setView] = useState<'tabs' | 'admin'>('tabs')
   const [logoTaps, setLogoTaps] = useState(0)
-  const [isLight, setIsLight] = useState(false)
+  const [isDark, setIsDark] = useState(false)
+
+  // Persist theme preference
+  useEffect(() => {
+    const saved = localStorage.getItem('ftrn-theme')
+    if (saved === 'dark') {
+      setIsDark(true)
+      document.documentElement.classList.add('dark')
+    }
+  }, [])
 
   const toggleTheme = useCallback(() => {
-    const next = !isLight
-    setIsLight(next)
-    document.documentElement.classList.toggle('light', next)
-  }, [isLight])
+    const next = !isDark
+    setIsDark(next)
+    document.documentElement.classList.toggle('dark', next)
+    localStorage.setItem('ftrn-theme', next ? 'dark' : 'light')
+  }, [isDark])
 
   const handleTabChange = useCallback((tab: Tab) => {
     setActiveTab(tab)
@@ -52,27 +62,27 @@ export default function Page() {
 
   return (
     <div className="min-h-screen nature-bg relative flex flex-col">
-      {/* Nature ambient blobs */}
+      {/* Nature ambient blobs — organic, flowing */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <div
-          className="absolute top-[-5%] left-[10%] w-[400px] h-[400px] rounded-full opacity-[0.1] animate-float-1"
+          className="absolute top-[-5%] left-[10%] w-[450px] h-[450px] rounded-full opacity-[0.08] animate-float-1"
           style={{
-            background: 'radial-gradient(circle, #6B8F5E 0%, #3D5A3A 40%, transparent 70%)',
-            filter: 'blur(40px)',
+            background: 'radial-gradient(circle, #C97A4A 0%, #E09A6E 30%, transparent 70%)',
+            filter: 'blur(60px)',
           }}
         />
         <div
-          className="absolute bottom-[5%] right-[5%] w-[350px] h-[350px] rounded-full opacity-[0.08] animate-float-2"
+          className="absolute bottom-[5%] right-[5%] w-[380px] h-[380px] rounded-full opacity-[0.06] animate-float-2"
           style={{
-            background: 'radial-gradient(circle, #9BB592 0%, #4A6B42 40%, transparent 70%)',
+            background: 'radial-gradient(circle, #7FA771 0%, #9DC293 30%, transparent 70%)',
             filter: 'blur(50px)',
           }}
         />
         <div
-          className="absolute top-[40%] left-[50%] w-[300px] h-[300px] rounded-full opacity-[0.05] animate-float-1"
+          className="absolute top-[40%] left-[50%] w-[300px] h-[300px] rounded-full opacity-[0.04] animate-float-1"
           style={{
-            background: 'radial-gradient(circle, #D4A0A0 0%, transparent 60%)',
-            filter: 'blur(35px)',
+            background: 'radial-gradient(circle, #EDE7D6 0%, transparent 60%)',
+            filter: 'blur(45px)',
             animationDelay: '-10s',
           }}
         />
@@ -85,18 +95,18 @@ export default function Page() {
             onClick={view === 'admin' ? handleBack : handleLogoTap}
             className="flex items-center gap-3 group"
           >
-            <div className="w-8 h-8 flex items-center justify-center group-hover:shadow-[0_0_20px_rgba(124,154,114,0.2)] transition-shadow duration-500">
+            <div className="w-8 h-8 flex items-center justify-center">
               <Image
                 src="/ftrn-logo.png"
                 alt="FTRN"
                 width={28}
                 height={28}
                 className="object-contain"
-                style={{ filter: isLight ? 'none' : 'brightness(0) invert(1)' }}
+                style={{ filter: isDark ? 'brightness(0) invert(1)' : 'none' }}
               />
             </div>
             {view === 'admin' ? (
-              <span className={`font-semibold text-sm tracking-wide ${isLight ? 'text-charcoal' : 'text-kinari'}`}>Admin</span>
+              <span className={`font-semibold text-sm tracking-wide ${isDark ? 'text-kinari' : 'text-charcoal'}`}>Admin</span>
             ) : (
               <Image
                 src="/ftrn-text.png"
@@ -104,7 +114,7 @@ export default function Page() {
                 width={60}
                 height={22}
                 className="object-contain"
-                style={{ filter: isLight ? 'none' : 'brightness(0) invert(1)' }}
+                style={{ filter: isDark ? 'brightness(0) invert(1)' : 'none' }}
               />
             )}
           </button>
@@ -112,12 +122,12 @@ export default function Page() {
           <button
             onClick={toggleTheme}
             className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-matcha/10"
-            title={isLight ? 'Mode Gelap' : 'Mode Terang'}
+            title={isDark ? 'Mode Terang' : 'Mode Gelap'}
           >
-            {isLight ? (
-              <Moon className="w-4 h-4 text-charcoal/60" />
-            ) : (
+            {isDark ? (
               <Sun className="w-4 h-4 text-kinari/40" />
+            ) : (
+              <Moon className="w-4 h-4 text-charcoal/40" />
             )}
           </button>
         </div>
@@ -168,16 +178,16 @@ export default function Page() {
                   onClick={() => handleTabChange(tab.id)}
                   className="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-all duration-300"
                 >
-                  <div className={`p-1 rounded-lg transition-all duration-300 ${isActive ? 'bg-matcha/15 green-glow-soft' : ''}`}>
+                  <div className={`p-1 rounded-lg transition-all duration-300 ${isActive ? 'bg-terra/10 terra-glow' : ''}`}>
                     <Icon
                       className={`w-5 h-5 transition-all duration-300 ${
-                        isActive ? 'text-matcha-light' : 'text-kinari/25'
+                        isActive ? 'text-terra' : 'text-charcoal/20'
                       }`}
                       strokeWidth={isActive ? 2 : 1.2}
                     />
                   </div>
                   <span className={`text-[9px] font-medium tracking-wide transition-all duration-300 ${
-                    isActive ? 'text-matcha-light' : 'text-kinari/20'
+                    isActive ? 'text-terra' : 'text-charcoal/20'
                   }`}>
                     {tab.label}
                   </span>

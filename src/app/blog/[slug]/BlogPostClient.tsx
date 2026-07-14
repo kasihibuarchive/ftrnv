@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Share2, Tag, Calendar, Clock } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
@@ -31,6 +31,16 @@ interface BlogPostClientProps {
 export default function BlogPostClient({ blog }: BlogPostClientProps) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ftrnv.vercel.app'
   const blogUrl = `${siteUrl}/blog/${blog.slug}`
+
+  // Apply saved theme on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('ftrn-theme')
+    if (saved === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [])
 
   const formatDate = (dateStr: string) =>
     new Date(dateStr).toLocaleDateString('id-ID', {
@@ -98,14 +108,14 @@ export default function BlogPostClient({ blog }: BlogPostClientProps) {
         <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-2 text-kinari/60 hover:text-kinari transition-colors duration-200"
+            className="flex items-center gap-2 text-charcoal/60 hover:text-charcoal transition-colors duration-200"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="text-xs font-semibold tracking-wide">Kembali</span>
           </Link>
           <button
             onClick={handleShare}
-            className="flex items-center gap-1.5 text-kinari/40 hover:text-matcha-light transition-colors duration-200"
+            className="flex items-center gap-1.5 text-charcoal/40 hover:text-terra transition-colors duration-200"
           >
             <Share2 className="w-4 h-4" />
             <span className="text-xs font-semibold tracking-wide">Bagikan</span>
@@ -122,7 +132,7 @@ export default function BlogPostClient({ blog }: BlogPostClientProps) {
               alt={blog.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1a2e1a] via-[#1a2e1a]/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#EDE7D6] via-[#EDE7D6]/60 to-transparent" />
             {/* Hero overlay content */}
             <div className="absolute bottom-0 left-0 right-0 px-6 pb-6">
               <div className="flex items-center gap-3 mb-3">
@@ -132,16 +142,16 @@ export default function BlogPostClient({ blog }: BlogPostClientProps) {
                     {blog.category}
                   </span>
                 )}
-                <span className="flex items-center gap-1.5 text-[11px] text-kinari/50 font-medium">
+                <span className="flex items-center gap-1.5 text-[11px] text-charcoal/50 font-medium">
                   <Calendar className="w-3 h-3" />
                   {formatDate(blog.createdAt)}
                 </span>
               </div>
-              <h1 className="text-2xl font-bold text-kinari leading-snug">
+              <h1 className="text-2xl font-bold text-charcoal leading-snug">
                 {blog.title}
               </h1>
               <div className="flex items-center justify-between mt-3">
-                <span className="flex items-center gap-1.5 text-[11px] text-kinari/40 font-medium">
+                <span className="flex items-center gap-1.5 text-[11px] text-charcoal/40 font-medium">
                   <Clock className="w-3 h-3" />
                   {readingTime(blog.content)}
                 </span>
@@ -160,16 +170,16 @@ export default function BlogPostClient({ blog }: BlogPostClientProps) {
                   {blog.category}
                 </span>
               )}
-              <span className="flex items-center gap-1.5 text-[11px] text-kinari/30 font-medium">
+              <span className="flex items-center gap-1.5 text-[11px] text-charcoal/30 font-medium">
                 <Calendar className="w-3 h-3" />
                 {formatDate(blog.createdAt)}
               </span>
-              <span className="flex items-center gap-1.5 text-[11px] text-kinari/30 font-medium">
+              <span className="flex items-center gap-1.5 text-[11px] text-charcoal/30 font-medium">
                 <Clock className="w-3 h-3" />
                 {readingTime(blog.content)}
               </span>
             </div>
-            <h1 className="text-2xl font-bold text-kinari leading-snug mb-2">
+            <h1 className="text-2xl font-bold text-charcoal leading-snug mb-2">
               {blog.title}
             </h1>
           </div>
@@ -178,7 +188,7 @@ export default function BlogPostClient({ blog }: BlogPostClientProps) {
         {/* Share bar (below hero or title) */}
         <div className="px-6 py-4">
           <div className="glass-zen-card px-4 py-3 flex items-center justify-between">
-            <span className="text-[11px] text-kinari/30 font-medium">Bagikan artikel ini</span>
+            <span className="text-[11px] text-charcoal/30 font-medium">Bagikan artikel ini</span>
             <div className="flex items-center gap-3">
               <button
                 onClick={shareToWhatsApp}
@@ -245,8 +255,8 @@ export default function BlogPostClient({ blog }: BlogPostClientProps) {
           <div className="zen-divider mb-6" />
           <div className="glass-zen-card px-5 py-4 flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold text-kinari/70">Tertarik dengan artikel ini?</p>
-              <p className="text-[11px] text-kinari/30 font-medium mt-0.5">Bagikan ke teman-temanmu!</p>
+              <p className="text-xs font-semibold text-charcoal/70">Tertarik dengan artikel ini?</p>
+              <p className="text-[11px] text-charcoal/30 font-medium mt-0.5">Bagikan ke teman-temanmu!</p>
             </div>
             <div className="flex items-center gap-2">
               <button
