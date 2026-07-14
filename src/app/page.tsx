@@ -70,11 +70,19 @@ export default function Page() {
           >
             <Image
               src="/ftrn-logo.png"
-              alt="FTRN #5"
-              width={120}
-              height={36}
-              className="object-contain h-8 w-auto"
-              style={{ filter: isDark ? 'invert(1) brightness(1.1)' : 'none' }}
+              alt="FTRN"
+              width={28}
+              height={28}
+              className="object-contain"
+              style={{ filter: isDark ? 'brightness(0) invert(1)' : 'none' }}
+            />
+            <Image
+              src="/ftrn-text.png"
+              alt="FTRN #5 Temu-Taut"
+              width={100}
+              height={30}
+              className="object-contain h-7 w-auto"
+              style={{ filter: isDark ? 'invert(1) brightness(1.1)' : 'brightness(0)' }}
             />
             {view === 'admin' && (
               <span className="font-semibold text-sm tracking-wide text-foreground/50 ml-1">Admin</span>

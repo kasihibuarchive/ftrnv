@@ -58,16 +58,24 @@ export default function BerandaPage({ isDark }: BerandaPageProps) {
 
   return (
     <div className="px-6 pt-8 pb-6">
-      {/* Hero — Logo & tagline */}
+      {/* Hero — Wayang logo + Text logo */}
       <div className="mb-10">
-        <div className="mb-4">
+        <div className="flex items-center gap-3 mb-4">
           <Image
             src="/ftrn-logo.png"
-            alt="FTRN #5 Temu-Taut"
-            width={200}
-            height={60}
+            alt="FTRN Wayang"
+            width={48}
+            height={48}
             className="object-contain"
-            style={{ filter: isDark ? 'invert(1) brightness(1.1)' : 'none' }}
+            style={{ filter: isDark ? 'brightness(0) invert(1)' : 'none' }}
+          />
+          <Image
+            src="/ftrn-text.png"
+            alt="FTRN #5 Temu-Taut"
+            width={140}
+            height={42}
+            className="object-contain"
+            style={{ filter: isDark ? 'invert(1) brightness(1.1)' : 'brightness(0)' }}
           />
         </div>
         <p className="badge-matcha px-3 py-1 inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-widest uppercase mb-4">

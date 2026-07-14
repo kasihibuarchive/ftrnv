@@ -40,14 +40,22 @@ export default function KontakPage({ isDark }: KontakPageProps) {
     <div className="px-6 pt-8 pb-6">
       {/* Profile */}
       <div className="text-center mb-10">
-        <div className="mb-5">
+        <div className="flex items-center justify-center gap-3 mb-5">
           <Image
             src="/ftrn-logo.png"
+            alt="FTRN Wayang"
+            width={48}
+            height={48}
+            className="object-contain"
+            style={{ filter: isDark ? 'brightness(0) invert(1)' : 'none' }}
+          />
+          <Image
+            src="/ftrn-text.png"
             alt="FTRN #5 Temu-Taut"
-            width={180}
-            height={54}
-            className="object-contain mx-auto"
-            style={{ filter: isDark ? 'invert(1) brightness(1.1)' : 'none' }}
+            width={130}
+            height={40}
+            className="object-contain"
+            style={{ filter: isDark ? 'invert(1) brightness(1.1)' : 'brightness(0)' }}
           />
         </div>
         <p className="text-xs text-primary/60 mt-2 font-semibold tracking-widest uppercase">
