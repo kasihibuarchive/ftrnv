@@ -30,6 +30,23 @@ export function rowToBlog(row: Record<string, unknown>) {
   }
 }
 
+export function rowToMerch(row: Record<string, unknown>) {
+  return {
+    id: row.id as string,
+    name: row.name as string,
+    slug: row.slug as string,
+    description: row.description as string | null,
+    price: row.price as number,
+    imageUrl: row.imageUrl as string | null,
+    category: row.category as string,
+    is3D: Number(row.is3D) === 1,
+    modelUrl: row.modelUrl as string | null,
+    published: Number(row.published) === 1,
+    createdAt: row.createdAt as string,
+    updatedAt: row.updatedAt as string,
+  }
+}
+
 export function rowToSession(row: Record<string, unknown>) {
   return {
     id: row.id as string,

@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown'
 import { proxyImageUrl } from '@/lib/image-proxy'
 import { timeAgo, readingTime } from '@/lib/utils-shared'
 import { toast } from '@/hooks/use-toast'
+import MerchAdboard from '@/components/MerchAdboard'
 
 interface Blog {
   id: string
@@ -288,6 +289,9 @@ export default function BlogPostClient({ blog }: BlogPostClientProps) {
             </div>
           </div>
         </div>
+
+        {/* Merch Adboard */}
+        <MerchAdboard />
 
         {/* Back link */}
         <div className="px-6 pb-28">

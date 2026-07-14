@@ -2,18 +2,20 @@
 
 import React, { useState, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Home as HomeIcon, BookOpen, Phone } from 'lucide-react'
+import { Home as HomeIcon, BookOpen, Phone, ShoppingBag, Sun, Moon } from 'lucide-react'
 import Image from 'next/image'
 import BerandaPage from '@/components/BerandaPage'
 import BlogPage from '@/components/BlogPage'
+import MerchPage from '@/components/MerchPage'
 import KontakPage from '@/components/KontakPage'
 import AdminPage from '@/components/AdminPage'
 
-type Tab = 'beranda' | 'blog' | 'kontak'
+type Tab = 'beranda' | 'blog' | 'merch' | 'kontak'
 
 const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: 'beranda', label: 'Beranda', icon: HomeIcon },
   { id: 'blog', label: 'Blog', icon: BookOpen },
+  { id: 'merch', label: 'Merch', icon: ShoppingBag },
   { id: 'kontak', label: 'Kontak', icon: Phone },
 ]
 
@@ -21,6 +23,13 @@ export default function Page() {
   const [activeTab, setActiveTab] = useState<Tab>('beranda')
   const [view, setView] = useState<'tabs' | 'admin'>('tabs')
   const [logoTaps, setLogoTaps] = useState(0)
+  const [isLight, setIsLight] = useState(false)
+
+  const toggleTheme = useCallback(() => {
+    const next = !isLight
+    setIsLight(next)
+    document.documentElement.classList.toggle('light', next)
+  }, [isLight])
 
   const handleTabChange = useCallback((tab: Tab) => {
     setActiveTab(tab)
@@ -83,11 +92,11 @@ export default function Page() {
                 width={28}
                 height={28}
                 className="object-contain"
-                style={{ filter: 'brightness(0) invert(1)' }}
+                style={{ filter: isLight ? 'none' : 'brightness(0) invert(1)' }}
               />
             </div>
             {view === 'admin' ? (
-              <span className="text-kinari font-semibold text-sm tracking-wide">Admin</span>
+              <span className={`font-semibold text-sm tracking-wide ${isLight ? 'text-charcoal' : 'text-kinari'}`}>Admin</span>
             ) : (
               <Image
                 src="/ftrn-text.png"
@@ -95,8 +104,20 @@ export default function Page() {
                 width={60}
                 height={22}
                 className="object-contain"
-                style={{ filter: 'brightness(0) invert(1)' }}
+                style={{ filter: isLight ? 'none' : 'brightness(0) invert(1)' }}
               />
+            )}
+          </button>
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-matcha/10"
+            title={isLight ? 'Mode Gelap' : 'Mode Terang'}
+          >
+            {isLight ? (
+              <Moon className="w-4 h-4 text-charcoal/60" />
+            ) : (
+              <Sun className="w-4 h-4 text-kinari/40" />
             )}
           </button>
         </div>
@@ -127,6 +148,7 @@ export default function Page() {
             >
               {activeTab === 'beranda' && <BerandaPage />}
               {activeTab === 'blog' && <BlogPage />}
+              {activeTab === 'merch' && <MerchPage />}
               {activeTab === 'kontak' && <KontakPage />}
             </motion.div>
           )}
@@ -136,7 +158,7 @@ export default function Page() {
       {/* Bottom Nav */}
       {view !== 'admin' && (
         <nav className="glass-zen-nav fixed bottom-0 left-0 right-0 z-50">
-          <div className="max-w-2xl mx-auto flex items-center justify-around h-16">
+          <div className="max-w-2xl mx-auto flex items-center justify-around h-16 gap-1">
             {tabs.map((tab) => {
               const Icon = tab.icon
               const isActive = activeTab === tab.id && view === 'tabs'

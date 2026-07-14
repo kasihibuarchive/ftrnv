@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useEffect, useState, useCallback } from 'react'
-import { Plus, Pencil, Trash2, LogOut, FileText } from 'lucide-react'
+import { Plus, Pencil, Trash2, LogOut, FileText, ShoppingBag } from 'lucide-react'
 import BlogEditor from './BlogEditor'
+import MerchEditor from './MerchEditor'
 import { toast } from 'sonner'
 
 interface Blog {
@@ -12,6 +13,15 @@ interface Blog {
   createdAt: string; updatedAt: string
 }
 
+interface MerchItem {
+  id: string; name: string; slug: string; description: string | null
+  price: number; imageUrl: string | null; category: string
+  is3D: boolean; modelUrl: string | null; published: boolean
+  createdAt: string; updatedAt: string
+}
+
+type AdminSection = 'blog' | 'merch'
+
 interface AdminPageProps {
   onBack: () => void
 }
@@ -20,10 +30,20 @@ export default function AdminPage({ onBack }: AdminPageProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
   const [loginLoading, setLoginLoading] = useState(false)
+  const [activeSection, setActiveSection] = useState<AdminSection>('blog')
+
+  // Blog state
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [blogsLoading, setBlogsLoading] = useState(false)
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null)
-  const [isCreating, setIsCreating] = useState(false)
+  const [isCreatingBlog, setIsCreatingBlog] = useState(false)
+
+  // Merch state
+  const [merch, setMerch] = useState<MerchItem[]>([])
+  const [merchLoading, setMerchLoading] = useState(false)
+  const [editingMerch, setEditingMerch] = useState<MerchItem | null>(null)
+  const [isCreatingMerch, setIsCreatingMerch] = useState(false)
+
   const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
@@ -34,7 +54,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
   const verifyToken = async (t: string) => {
     try {
       const res = await fetch('/api/admin/verify', { headers: { Authorization: `Bearer ${t}` } })
-      if (res.ok) { setToken(t); setIsAuthenticated(true); fetchAllBlogs(t) }
+      if (res.ok) { setToken(t); setIsAuthenticated(true); fetchAllBlogs(t); fetchAllMerch(t) }
       else localStorage.removeItem('ftrn_admin_token')
     } catch { localStorage.removeItem('ftrn_admin_token') }
   }
@@ -52,7 +72,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
         const data = await res.json()
         setToken(data.token); setIsAuthenticated(true)
         localStorage.setItem('ftrn_admin_token', data.token)
-        fetchAllBlogs(data.token); toast.success('Login berhasil!')
+        fetchAllBlogs(data.token); fetchAllMerch(data.token); toast.success('Login berhasil!')
       } else { toast.error('Password salah!') }
     } catch { toast.error('Gagal login') } finally { setLoginLoading(false) }
   }
@@ -60,9 +80,12 @@ export default function AdminPage({ onBack }: AdminPageProps) {
   const handleLogout = () => {
     setIsAuthenticated(false); setToken(null)
     localStorage.removeItem('ftrn_admin_token')
-    setBlogs([]); setEditingBlog(null); setIsCreating(false); onBack()
+    setBlogs([]); setEditingBlog(null); setIsCreatingBlog(false)
+    setMerch([]); setEditingMerch(null); setIsCreatingMerch(false)
+    onBack()
   }
 
+  // Blog CRUD
   const fetchAllBlogs = async (t?: string) => {
     const authToken = t || token
     if (!authToken) return
@@ -83,7 +106,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
         method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(data),
       })
-      if (res.ok) { toast.success('Blog berhasil dibuat!'); setIsCreating(false); fetchAllBlogs() }
+      if (res.ok) { toast.success('Blog berhasil dibuat!'); setIsCreatingBlog(false); fetchAllBlogs() }
       else { const err = await res.json(); toast.error(err.error || 'Gagal') }
     } catch { toast.error('Gagal') }
   }, [token])
@@ -115,6 +138,59 @@ export default function AdminPage({ onBack }: AdminPageProps) {
     } catch { toast.error('Gagal') }
   }
 
+  // Merch CRUD
+  const fetchAllMerch = async (t?: string) => {
+    const authToken = t || token
+    if (!authToken) return
+    setMerchLoading(true)
+    try {
+      const res = await fetch('/api/merch?all=true', { headers: { Authorization: `Bearer ${authToken}` } })
+      if (res.ok) setMerch(await res.json())
+    } catch { /* */ } finally { setMerchLoading(false) }
+  }
+
+  const handleCreateMerch = useCallback(async (data: {
+    name: string; slug: string; description?: string
+    price: number; imageUrl?: string; category: string
+    is3D: boolean; modelUrl?: string; published: boolean
+  }) => {
+    try {
+      const res = await fetch('/api/merch', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(data),
+      })
+      if (res.ok) { toast.success('Merch berhasil dibuat!'); setIsCreatingMerch(false); fetchAllMerch() }
+      else { const err = await res.json(); toast.error(err.error || 'Gagal') }
+    } catch { toast.error('Gagal') }
+  }, [token])
+
+  const handleUpdateMerch = useCallback(async (data: {
+    name: string; slug: string; description?: string
+    price: number; imageUrl?: string; category: string
+    is3D: boolean; modelUrl?: string; published: boolean
+  }) => {
+    if (!editingMerch) return
+    try {
+      const res = await fetch(`/api/merch/${editingMerch.id}`, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(data),
+      })
+      if (res.ok) { toast.success('Merch berhasil diupdate!'); setEditingMerch(null); fetchAllMerch() }
+      else { const err = await res.json(); toast.error(err.error || 'Gagal') }
+    } catch { toast.error('Gagal') }
+  }, [editingMerch, token])
+
+  const handleDeleteMerch = async (merchId: string) => {
+    if (!confirm('Hapus merchandise ini?')) return
+    try {
+      const res = await fetch(`/api/merch/${merchId}`, {
+        method: 'DELETE', headers: { Authorization: `Bearer ${token}` },
+      })
+      if (res.ok) { toast.success('Merch berhasil dihapus!'); fetchAllMerch() }
+      else toast.error('Gagal menghapus')
+    } catch { toast.error('Gagal') }
+  }
+
   // Login
   if (!isAuthenticated) {
     return (
@@ -125,7 +201,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
               <span className="text-matcha-light text-lg font-light">A</span>
             </div>
             <h2 className="text-sm font-light text-kinari/70 tracking-wider mb-1">Panel Admin</h2>
-            <p className="text-[10px] text-kinari/20 tracking-wider mb-6">Kelola Blog FTRN #5</p>
+            <p className="text-[10px] text-kinari/20 tracking-wider mb-6">Kelola FTRN #5</p>
             <form onSubmit={handleLogin} className="space-y-3">
               <input
                 type="password"
@@ -148,28 +224,60 @@ export default function AdminPage({ onBack }: AdminPageProps) {
     )
   }
 
-  // Editor
-  if (isCreating || editingBlog) {
+  // Blog Editor
+  if (isCreatingBlog || editingBlog) {
     return (
       <div className="pb-6">
         <div className="px-6 py-4 flex items-center gap-3">
           <button
-            onClick={() => { setIsCreating(false); setEditingBlog(null) }}
+            onClick={() => { setIsCreatingBlog(false); setEditingBlog(null) }}
             className="text-matcha-light/40 text-xs tracking-wider hover:text-matcha-light transition-colors duration-300"
           >
             ← Kembali
           </button>
           <span className="text-xs text-kinari/30 tracking-wider">
-            {isCreating ? 'Buat Baru' : 'Edit'}
+            {isCreatingBlog ? 'Buat Baru' : 'Edit'}
           </span>
         </div>
         <BlogEditor
           blog={editingBlog}
-          onSave={isCreating ? handleCreateBlog : handleUpdateBlog}
-          onCancel={() => { setIsCreating(false); setEditingBlog(null) }}
+          onSave={isCreatingBlog ? handleCreateBlog : handleUpdateBlog}
+          onCancel={() => { setIsCreatingBlog(false); setEditingBlog(null) }}
         />
       </div>
     )
+  }
+
+  // Merch Editor
+  if (isCreatingMerch || editingMerch) {
+    return (
+      <div className="pb-6">
+        <div className="px-6 py-4 flex items-center gap-3">
+          <button
+            onClick={() => { setIsCreatingMerch(false); setEditingMerch(null) }}
+            className="text-matcha-light/40 text-xs tracking-wider hover:text-matcha-light transition-colors duration-300"
+          >
+            ← Kembali
+          </button>
+          <span className="text-xs text-kinari/30 tracking-wider">
+            {isCreatingMerch ? 'Buat Baru' : 'Edit'}
+          </span>
+        </div>
+        <MerchEditor
+          merch={editingMerch}
+          onSave={isCreatingMerch ? handleCreateMerch : handleUpdateMerch}
+          onCancel={() => { setIsCreatingMerch(false); setEditingMerch(null) }}
+        />
+      </div>
+    )
+  }
+
+  const categoryLabels: Record<string, string> = {
+    tshirt: 'T-Shirt',
+    stiker: 'Stiker',
+    totebag: 'Totebag',
+    topi: 'Topi',
+    custom: 'Custom',
   }
 
   // Dashboard
@@ -177,12 +285,17 @@ export default function AdminPage({ onBack }: AdminPageProps) {
     <div className="px-6 pt-8 pb-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-light text-kinari/70 tracking-wide">Kelola Blog</h2>
-          <p className="text-[10px] text-kinari/15 tracking-wider mt-0.5">{blogs.length} artikel</p>
+          <h2 className="text-lg font-light text-kinari/70 tracking-wide">Kelola Konten</h2>
+          <p className="text-[10px] text-kinari/15 tracking-wider mt-0.5">
+            {activeSection === 'blog' ? `${blogs.length} artikel` : `${merch.length} merchandise`}
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setIsCreating(true)}
+            onClick={() => {
+              if (activeSection === 'blog') setIsCreatingBlog(true)
+              else setIsCreatingMerch(true)
+            }}
             className="flex items-center gap-1.5 bg-matcha/15 text-matcha-light text-[11px] tracking-wider px-3.5 py-2 rounded-xl hover:bg-matcha/25 transition-colors duration-500"
           >
             <Plus className="w-3.5 h-3.5" />
@@ -194,38 +307,116 @@ export default function AdminPage({ onBack }: AdminPageProps) {
         </div>
       </div>
 
-      {blogsLoading ? (
-        <div className="space-y-2">
-          {[1,2,3].map(i => <div key={i} className="glass-zen-card p-4 animate-pulse"><div className="h-4 bg-kinari/[0.03] rounded w-2/3" /></div>)}
-        </div>
-      ) : blogs.length === 0 ? (
-        <div className="py-16 text-center">
-          <p className="text-kinari/15 text-sm">Belum ada artikel</p>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {blogs.map((blog) => (
-            <div key={blog.id} className="glass-zen-card px-5 py-3.5 flex items-center gap-3">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-kinari/60 font-light line-clamp-1">{blog.title}</p>
-                <div className="flex items-center gap-2 mt-1">
-                  {blog.category && <span className="text-[9px] text-matcha/30 tracking-wider">{blog.category}</span>}
-                  <span className={`text-[9px] tracking-wider ${blog.published ? 'text-matcha-light/40' : 'text-sakura/40'}`}>
-                    {blog.published ? 'Terbit' : 'Draft'}
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-center gap-0.5 shrink-0">
-                <button onClick={() => setEditingBlog(blog)} className="p-2 text-kinari/10 hover:text-matcha-light/50 transition-colors duration-300">
-                  <Pencil className="w-3.5 h-3.5" />
-                </button>
-                <button onClick={() => handleDeleteBlog(blog.id)} className="p-2 text-kinari/10 hover:text-sakura/50 transition-colors duration-300">
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
+      {/* Section tabs */}
+      <div className="flex gap-1 p-1 glass-zen-card rounded-xl mb-6">
+        <button
+          onClick={() => setActiveSection('blog')}
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[11px] font-semibold tracking-wider transition-all duration-300 ${
+            activeSection === 'blog'
+              ? 'bg-matcha/15 text-matcha-light'
+              : 'text-kinari/25 hover:text-kinari/40'
+          }`}
+        >
+          <FileText className="w-3.5 h-3.5" />
+          Blog
+        </button>
+        <button
+          onClick={() => setActiveSection('merch')}
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[11px] font-semibold tracking-wider transition-all duration-300 ${
+            activeSection === 'merch'
+              ? 'bg-matcha/15 text-matcha-light'
+              : 'text-kinari/25 hover:text-kinari/40'
+          }`}
+        >
+          <ShoppingBag className="w-3.5 h-3.5" />
+          Merch
+        </button>
+      </div>
+
+      {/* Blog section */}
+      {activeSection === 'blog' && (
+        <>
+          {blogsLoading ? (
+            <div className="space-y-2">
+              {[1,2,3].map(i => <div key={i} className="glass-zen-card p-4 animate-pulse"><div className="h-4 bg-kinari/[0.03] rounded w-2/3" /></div>)}
             </div>
-          ))}
-        </div>
+          ) : blogs.length === 0 ? (
+            <div className="py-16 text-center">
+              <p className="text-kinari/15 text-sm">Belum ada artikel</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {blogs.map((blog) => (
+                <div key={blog.id} className="glass-zen-card px-5 py-3.5 flex items-center gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-kinari/60 font-light line-clamp-1">{blog.title}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      {blog.category && <span className="text-[9px] text-matcha/30 tracking-wider">{blog.category}</span>}
+                      <span className={`text-[9px] tracking-wider ${blog.published ? 'text-matcha-light/40' : 'text-sakura/40'}`}>
+                        {blog.published ? 'Terbit' : 'Draft'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-0.5 shrink-0">
+                    <button onClick={() => setEditingBlog(blog)} className="p-2 text-kinari/10 hover:text-matcha-light/50 transition-colors duration-300">
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+                    <button onClick={() => handleDeleteBlog(blog.id)} className="p-2 text-kinari/10 hover:text-sakura/50 transition-colors duration-300">
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Merch section */}
+      {activeSection === 'merch' && (
+        <>
+          {merchLoading ? (
+            <div className="space-y-2">
+              {[1,2,3].map(i => <div key={i} className="glass-zen-card p-4 animate-pulse"><div className="h-4 bg-kinari/[0.03] rounded w-2/3" /></div>)}
+            </div>
+          ) : merch.length === 0 ? (
+            <div className="py-16 text-center">
+              <p className="text-kinari/15 text-sm">Belum ada merchandise</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {merch.map((item) => (
+                <div key={item.id} className="glass-zen-card px-5 py-3.5 flex items-center gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-kinari/60 font-light line-clamp-1">{item.name}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-[9px] text-matcha/30 tracking-wider">
+                        {categoryLabels[item.category] || item.category}
+                      </span>
+                      {item.is3D && (
+                        <span className="text-[9px] text-matcha-light/30 tracking-wider">3D</span>
+                      )}
+                      <span className="text-[9px] text-kinari/20 tracking-wider">
+                        Rp {item.price.toLocaleString('id-ID')}
+                      </span>
+                      <span className={`text-[9px] tracking-wider ${item.published ? 'text-matcha-light/40' : 'text-sakura/40'}`}>
+                        {item.published ? 'Terbit' : 'Draft'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-0.5 shrink-0">
+                    <button onClick={() => setEditingMerch(item)} className="p-2 text-kinari/10 hover:text-matcha-light/50 transition-colors duration-300">
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+                    <button onClick={() => handleDeleteMerch(item.id)} className="p-2 text-kinari/10 hover:text-sakura/50 transition-colors duration-300">
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   )

@@ -27,6 +27,23 @@ const CREATE_ADMIN_SESSION_TABLE = `
   )
 `
 
+const CREATE_MERCH_TABLE = `
+  CREATE TABLE IF NOT EXISTS Merch (
+    id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(8)) || '-' || hex(randomblob(4)) || '-' || hex(randomblob(4)) || '-' || hex(randomblob(4)) || '-' || hex(randomblob(12)))),
+    name TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE,
+    description TEXT,
+    price INTEGER NOT NULL DEFAULT 0,
+    imageUrl TEXT,
+    category TEXT NOT NULL DEFAULT 'custom',
+    is3D INTEGER NOT NULL DEFAULT 0,
+    modelUrl TEXT,
+    published INTEGER NOT NULL DEFAULT 0,
+    createdAt TEXT NOT NULL DEFAULT (datetime('now')),
+    updatedAt TEXT NOT NULL DEFAULT (datetime('now'))
+  )
+`
+
 
 const SEED_BLOGS = [
   {
@@ -189,6 +206,7 @@ async function runSetup() {
   // Create tables
   await libsql.execute(CREATE_BLOG_TABLE)
   await libsql.execute(CREATE_ADMIN_SESSION_TABLE)
+  await libsql.execute(CREATE_MERCH_TABLE)
 
   // Check if data already exists
   const existing = await libsql.execute('SELECT id FROM Blog LIMIT 1')
