@@ -65,25 +65,17 @@ export default function Page() {
       {/* Nature ambient blobs — organic, flowing */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <div
-          className="absolute top-[-5%] left-[10%] w-[450px] h-[450px] rounded-full opacity-[0.08] animate-float-1"
+          className="absolute top-[-5%] left-[10%] w-[400px] h-[400px] rounded-full opacity-[0.06] animate-float-1"
           style={{
             background: 'radial-gradient(circle, #C97A4A 0%, #E09A6E 30%, transparent 70%)',
             filter: 'blur(60px)',
           }}
         />
         <div
-          className="absolute bottom-[5%] right-[5%] w-[380px] h-[380px] rounded-full opacity-[0.06] animate-float-2"
+          className="absolute bottom-[5%] right-[5%] w-[350px] h-[350px] rounded-full opacity-[0.05] animate-float-2"
           style={{
             background: 'radial-gradient(circle, #7FA771 0%, #9DC293 30%, transparent 70%)',
             filter: 'blur(50px)',
-          }}
-        />
-        <div
-          className="absolute top-[40%] left-[50%] w-[300px] h-[300px] rounded-full opacity-[0.04] animate-float-1"
-          style={{
-            background: 'radial-gradient(circle, #EDE7D6 0%, transparent 60%)',
-            filter: 'blur(45px)',
-            animationDelay: '-10s',
           }}
         />
       </div>
@@ -106,7 +98,7 @@ export default function Page() {
               />
             </div>
             {view === 'admin' ? (
-              <span className={`font-semibold text-sm tracking-wide ${isDark ? 'text-kinari' : 'text-charcoal'}`}>Admin</span>
+              <span className="font-semibold text-sm tracking-wide text-foreground/70">Admin</span>
             ) : (
               <Image
                 src="/ftrn-text.png"
@@ -121,13 +113,13 @@ export default function Page() {
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-matcha/10"
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-foreground/5"
             title={isDark ? 'Mode Terang' : 'Mode Gelap'}
           >
             {isDark ? (
-              <Sun className="w-4 h-4 text-kinari/40" />
+              <Sun className="w-4 h-4 text-foreground/40" />
             ) : (
-              <Moon className="w-4 h-4 text-charcoal/40" />
+              <Moon className="w-4 h-4 text-foreground/30" />
             )}
           </button>
         </div>
@@ -178,16 +170,16 @@ export default function Page() {
                   onClick={() => handleTabChange(tab.id)}
                   className="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-all duration-300"
                 >
-                  <div className={`p-1 rounded-lg transition-all duration-300 ${isActive ? 'bg-terra/10 terra-glow' : ''}`}>
+                  <div className={`p-1 rounded-lg transition-all duration-300 ${isActive ? 'bg-primary/8 terra-glow' : ''}`}>
                     <Icon
                       className={`w-5 h-5 transition-all duration-300 ${
-                        isActive ? 'text-terra' : 'text-charcoal/20'
+                        isActive ? 'text-primary' : 'text-foreground/20'
                       }`}
                       strokeWidth={isActive ? 2 : 1.2}
                     />
                   </div>
                   <span className={`text-[9px] font-medium tracking-wide transition-all duration-300 ${
-                    isActive ? 'text-terra' : 'text-charcoal/20'
+                    isActive ? 'text-primary' : 'text-foreground/20'
                   }`}>
                     {tab.label}
                   </span>

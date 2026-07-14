@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { ShoppingBag, Eye, Box, Package } from 'lucide-react'
+import { ShoppingBag, Eye, Box, Package, X, ExternalLink } from 'lucide-react'
 import { proxyImageUrl } from '@/lib/image-proxy'
 
 interface MerchItem {
@@ -14,6 +14,7 @@ interface MerchItem {
   category: string
   is3D: boolean
   modelUrl: string | null
+  modelType: string | null
   published: boolean
   createdAt: string
   updatedAt: string
@@ -29,6 +30,13 @@ const categoryLabels: Record<string, string> = {
   custom: 'Custom',
 }
 
+const modelTypeLabels: Record<string, string> = {
+  embed: '3D Viewer',
+  sketchfab: 'Sketchfab',
+  video: 'Video Preview',
+  ar: 'AR Link',
+}
+
 function formatPrice(price: number) {
   return `Rp ${price.toLocaleString('id-ID')}`
 }
@@ -37,6 +45,7 @@ export default function MerchPage() {
   const [merch, setMerch] = useState<MerchItem[]>([])
   const [loading, setLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState('Semua')
+  const [selectedMerch, setSelectedMerch] = useState<MerchItem | null>(null)
 
   useEffect(() => {
     fetchMerch()
@@ -58,15 +67,38 @@ export default function MerchPage() {
     return matchCat
   })
 
+  const openDetail = (item: MerchItem) => {
+    setSelectedMerch(item)
+  }
+
+  const closeDetail = () => {
+    setSelectedMerch(null)
+  }
+
+  const handle3DAction = (item: MerchItem) => {
+    if (!item.modelUrl) return
+    const type = item.modelType || 'embed'
+    switch (type) {
+      case 'sketchfab':
+      case 'ar':
+      case 'video':
+        window.open(item.modelUrl, '_blank')
+        break
+      default:
+        // embed — handled in modal
+        break
+    }
+  }
+
   return (
     <div className="px-6 pt-8 pb-6">
       {/* Title */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-kinari">
+        <h2 className="text-2xl font-bold text-foreground">
           Merch
           <span className="green-gradient ml-2 text-lg">Official</span>
         </h2>
-        <p className="text-xs text-kinari/30 mt-1 font-medium">
+        <p className="text-xs text-foreground/35 mt-1 font-medium">
           Koleksi merchandise resmi FTRN #5
         </p>
       </div>
@@ -80,7 +112,7 @@ export default function MerchPage() {
             className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-wide whitespace-nowrap transition-all duration-300 ${
               activeCategory === cat
                 ? 'badge-matcha'
-                : 'text-kinari/25 border border-kinari/[0.06] hover:border-matcha/20 hover:text-kinari/40'
+                : 'text-foreground/25 border border-border hover:border-primary/20 hover:text-foreground/40'
             }`}
           >
             {cat === 'Semua' ? 'Semua' : categoryLabels[cat] || cat}
@@ -93,33 +125,34 @@ export default function MerchPage() {
         <div className="grid grid-cols-2 gap-3">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="glass-zen-card p-4 animate-pulse">
-              <div className="aspect-square bg-kinari/[0.04] rounded-lg mb-3" />
-              <div className="h-3 bg-kinari/[0.04] rounded w-2/3 mb-2" />
-              <div className="h-3 bg-kinari/[0.02] rounded w-1/2" />
+              <div className="aspect-square bg-foreground/[0.03] rounded-lg mb-3" />
+              <div className="h-3 bg-foreground/[0.03] rounded w-2/3 mb-2" />
+              <div className="h-3 bg-foreground/[0.02] rounded w-1/2" />
             </div>
           ))}
         </div>
       ) : filtered.length === 0 ? (
         <div className="py-16 text-center">
           <div className="icon-circle w-14 h-14 mx-auto mb-3 flex items-center justify-center">
-            <Package className="w-5 h-5 text-matcha-light/30" />
+            <Package className="w-5 h-5 text-primary/35" />
           </div>
-          <p className="text-kinari/30 text-sm font-semibold">
+          <p className="text-foreground/35 text-sm font-semibold">
             Merchandise belum tersedia
           </p>
-          <p className="text-kinari/15 text-xs mt-1 font-medium">
+          <p className="text-foreground/18 text-xs mt-1 font-medium">
             Nantikan koleksi merchandise FTRN #5
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-3">
           {filtered.map((item) => (
-            <div
+            <button
               key={item.id}
-              className="glass-zen-card overflow-hidden group"
+              onClick={() => openDetail(item)}
+              className="glass-zen-card overflow-hidden group text-left"
             >
               {/* Image */}
-              <div className="relative aspect-square overflow-hidden bg-kinari/[0.02]">
+              <div className="relative aspect-square overflow-hidden bg-foreground/[0.02]">
                 {item.imageUrl ? (
                   <img
                     src={proxyImageUrl(item.imageUrl)}
@@ -128,15 +161,15 @@ export default function MerchPage() {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <ShoppingBag className="w-8 h-8 text-kinari/[0.06]" />
+                    <ShoppingBag className="w-8 h-8 text-foreground/[0.06]" />
                   </div>
                 )}
                 {/* 3D Badge */}
                 {item.is3D && item.modelUrl && (
-                  <div className="absolute top-2 right-2 flex items-center gap-1 bg-matcha/20 backdrop-blur-sm px-2 py-0.5 rounded-full">
-                    <Box className="w-2.5 h-2.5 text-matcha-light" />
-                    <span className="text-[8px] font-bold text-matcha-light tracking-wider">
-                      3D
+                  <div className="absolute top-2 right-2 flex items-center gap-1 bg-primary/15 backdrop-blur-sm px-2 py-0.5 rounded-full">
+                    <Box className="w-2.5 h-2.5 text-primary" />
+                    <span className="text-[8px] font-bold text-primary tracking-wider">
+                      {modelTypeLabels[item.modelType || 'embed'] || '3D'}
                     </span>
                   </div>
                 )}
@@ -150,19 +183,143 @@ export default function MerchPage() {
 
               {/* Info */}
               <div className="p-3">
-                <h3 className="text-xs font-semibold text-kinari/70 leading-snug line-clamp-2 mb-1.5">
+                <h3 className="text-xs font-semibold text-foreground/70 leading-snug line-clamp-2 mb-1.5">
                   {item.name}
                 </h3>
-                <p className="text-sm font-bold text-matcha-light/70 mb-2.5">
+                <p className="text-sm font-bold text-primary/80 mb-2.5">
                   {formatPrice(item.price)}
                 </p>
-                <button className="w-full flex items-center justify-center gap-1.5 bg-matcha/10 hover:bg-matcha/20 text-matcha-light/60 hover:text-matcha-light text-[10px] font-semibold tracking-wider py-2 rounded-lg transition-all duration-300">
+                <span className="w-full flex items-center justify-center gap-1.5 bg-primary/8 text-primary/60 text-[10px] font-semibold tracking-wider py-2 rounded-lg transition-all duration-300 group-hover:bg-primary/15 group-hover:text-primary/80">
                   <Eye className="w-3 h-3" />
                   Lihat Detail
-                </button>
+                </span>
               </div>
-            </div>
+            </button>
           ))}
+        </div>
+      )}
+
+      {/* Detail Modal */}
+      {selectedMerch && (
+        <div
+          className="fixed inset-0 z-[100] flex items-end justify-center"
+          onClick={closeDetail}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+
+          {/* Modal Sheet */}
+          <div
+            className="relative w-full max-w-2xl max-h-[85vh] glass-zen-strong rounded-t-2xl overflow-y-auto no-scrollbar animate-in slide-in-from-bottom-4 duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close handle */}
+            <div className="sticky top-0 z-10 flex justify-center pt-3 pb-2 bg-popover/80 backdrop-blur-sm">
+              <div className="w-10 h-1 rounded-full bg-foreground/15" />
+            </div>
+
+            {/* Close button */}
+            <button
+              onClick={closeDetail}
+              className="absolute top-3 right-4 w-8 h-8 rounded-full flex items-center justify-center bg-foreground/5 hover:bg-foreground/10 transition-colors duration-200"
+            >
+              <X className="w-4 h-4 text-foreground/40" />
+            </button>
+
+            <div className="px-6 pb-8">
+              {/* Image */}
+              {selectedMerch.imageUrl && (
+                <div className="relative w-full aspect-square max-h-[40vh] overflow-hidden rounded-xl mb-6">
+                  <img
+                    src={proxyImageUrl(selectedMerch.imageUrl)}
+                    alt={selectedMerch.name}
+                    className="w-full h-full object-cover"
+                  />
+                  {selectedMerch.is3D && selectedMerch.modelUrl && (
+                    <div className="absolute top-3 right-3">
+                      <span className="badge-matcha px-2.5 py-1 text-[9px] font-bold tracking-wider flex items-center gap-1.5">
+                        <Box className="w-3 h-3" />
+                        {modelTypeLabels[selectedMerch.modelType || 'embed'] || '3D'}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 3D Viewer / External Link */}
+              {selectedMerch.is3D && selectedMerch.modelUrl && (
+                <div className="mb-5">
+                  {selectedMerch.modelType === 'embed' ? (
+                    <div className="rounded-xl overflow-hidden border border-border bg-foreground/[0.02]">
+                      <model-viewer
+                        src={selectedMerch.modelUrl}
+                        auto-rotate
+                        camera-controls
+                        style={{ width: '100%', height: '300px' }}
+                      />
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handle3DAction(selectedMerch)}
+                      className="w-full flex items-center justify-center gap-2 bg-primary/10 text-primary border border-primary/15 rounded-xl py-3 text-xs font-semibold tracking-wider hover:bg-primary/18 transition-colors duration-300"
+                    >
+                      {selectedMerch.modelType === 'video' ? (
+                        <>
+                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                          Tonton Video Preview
+                        </>
+                      ) : selectedMerch.modelType === 'ar' ? (
+                        <>
+                          <Box className="w-4 h-4" />
+                          Buka AR Experience
+                        </>
+                      ) : (
+                        <>
+                          <ExternalLink className="w-4 h-4" />
+                          Lihat di {modelTypeLabels[selectedMerch.modelType || 'sketchfab']}
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Category badge */}
+              <span className="badge-matcha px-2.5 py-1 text-[9px] font-bold tracking-wider uppercase mb-3 inline-block">
+                {categoryLabels[selectedMerch.category] || selectedMerch.category}
+              </span>
+
+              {/* Name */}
+              <h2 className="text-xl font-bold text-foreground leading-snug mb-2">
+                {selectedMerch.name}
+              </h2>
+
+              {/* Price */}
+              <p className="text-lg font-bold text-primary mb-4">
+                {formatPrice(selectedMerch.price)}
+              </p>
+
+              {/* Description */}
+              {selectedMerch.description && (
+                <p className="text-sm text-foreground/55 leading-relaxed font-medium mb-6">
+                  {selectedMerch.description}
+                </p>
+              )}
+
+              {/* CTA */}
+              <a
+                href="https://wa.me/6288212447588"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-button w-full flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Hubungi via WhatsApp
+              </a>
+            </div>
+          </div>
         </div>
       )}
     </div>

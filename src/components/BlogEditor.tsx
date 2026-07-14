@@ -77,9 +77,7 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
   const insertAtCursor = useCallback((text: string) => {
     const ta = textareaRef.current
     if (!ta) return
-    // Read selection positions BEFORE the state update to avoid stale references
     const s = ta.selectionStart, e = ta.selectionEnd
-    // Use functional state update to avoid stale closure over `content`
     setContent(prev => prev.substring(0, s) + text + prev.substring(e))
     setTimeout(() => { ta.focus(); ta.setSelectionRange(s + text.length, s + text.length) }, 0)
   }, [])
@@ -88,7 +86,6 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
     const ta = textareaRef.current
     if (!ta) return
     const s = ta.selectionStart, e = ta.selectionEnd
-    // Read selected text directly from the DOM textarea value to avoid stale state
     const sel = ta.value.substring(s, e)
     switch (action) {
       case 'bold': insertAtCursor(sel ? `**${sel}**` : '**teks**'); break
@@ -124,34 +121,34 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
     } finally { setSaving(false) }
   }
 
-  const inputCls = "w-full glass-zen-input px-4 py-3 text-sm text-kinari/70 placeholder:text-kinari/12 outline-none tracking-wide"
-  const dialogCls = "bg-[#1a2e1a]/95 border-kinari/[0.06] text-kinari/70"
+  const inputCls = "w-full glass-zen-input px-4 py-3 text-sm text-foreground/75 placeholder:text-foreground/15 outline-none tracking-wide"
+  const dialogCls = "bg-popover/95 border-border text-foreground/75"
 
   return (
     <div className="px-6 space-y-5 pb-8">
       {/* Meta */}
       <div className="glass-zen-strong p-6 space-y-4">
         <div>
-          <Label className="text-[10px] text-kinari/25 tracking-wider mb-1.5 block">Judul</Label>
+          <Label className="text-[10px] text-foreground/30 tracking-wider mb-1.5 block">Judul</Label>
           <input value={title} onChange={(e) => handleTitleChange(e.target.value)} placeholder="Judul artikel..." className={inputCls} />
         </div>
         <div>
-          <Label className="text-[10px] text-kinari/25 tracking-wider mb-1.5 block">Slug</Label>
+          <Label className="text-[10px] text-foreground/30 tracking-wider mb-1.5 block">Slug</Label>
           <input value={slug} onChange={(e) => setSlug(e.target.value)} placeholder="slug-artikel" className={`${inputCls} font-mono text-xs`} />
         </div>
         <div>
-          <Label className="text-[10px] text-kinari/25 tracking-wider mb-1.5 block">Ringkasan</Label>
+          <Label className="text-[10px] text-foreground/30 tracking-wider mb-1.5 block">Ringkasan</Label>
           <input value={excerpt} onChange={(e) => setExcerpt(e.target.value)} placeholder="Deskripsi singkat..." className={inputCls} />
         </div>
         <div>
-          <Label className="text-[10px] text-kinari/25 tracking-wider mb-1.5 block">URL Cover Image</Label>
+          <Label className="text-[10px] text-foreground/30 tracking-wider mb-1.5 block">URL Cover Image</Label>
           <input value={coverImage} onChange={(e) => setCoverImage(e.target.value)} placeholder="https://..." className={inputCls} />
         </div>
         <div>
-          <Label className="text-[10px] text-kinari/25 tracking-wider mb-1.5 block">Kategori</Label>
+          <Label className="text-[10px] text-foreground/30 tracking-wider mb-1.5 block">Kategori</Label>
           <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger className="glass-zen-input border-0 h-10 text-sm text-kinari/60">{<SelectValue placeholder="Pilih kategori" />}</SelectTrigger>
-            <SelectContent className="bg-[#1a2e1a] border-kinari/[0.06]">
+            <SelectTrigger className="glass-zen-input border-0 h-10 text-sm text-foreground/65">{<SelectValue placeholder="Pilih kategori" />}</SelectTrigger>
+            <SelectContent className="bg-popover border-border">
               <SelectItem value="pendaftaran">Pendaftaran</SelectItem>
               <SelectItem value="informasi">Informasi</SelectItem>
               <SelectItem value="juklak">Juklak</SelectItem>
@@ -164,15 +161,15 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
 
         <div className="space-y-3">
           <div className="flex items-center justify-between py-1">
-            <span className="text-xs text-kinari/40 tracking-wider">Highlight</span>
+            <span className="text-xs text-foreground/45 tracking-wider">Highlight</span>
             <Switch checked={isHighlight} onCheckedChange={setIsHighlight} />
           </div>
           {isHighlight && (
             <div className="flex items-center justify-between py-1">
-              <span className="text-xs text-kinari/40 tracking-wider">Tipe Highlight</span>
+              <span className="text-xs text-foreground/45 tracking-wider">Tipe Highlight</span>
               <Select value={highlightType} onValueChange={setHighlightType}>
-                <SelectTrigger className="glass-zen-input border-0 h-9 w-28 text-xs text-kinari/60">{<SelectValue placeholder="Pilih" />}</SelectTrigger>
-                <SelectContent className="bg-[#1a2e1a] border-kinari/[0.06]">
+                <SelectTrigger className="glass-zen-input border-0 h-9 w-28 text-xs text-foreground/65">{<SelectValue placeholder="Pilih" />}</SelectTrigger>
+                <SelectContent className="bg-popover border-border">
                   <SelectItem value="headline">Headline</SelectItem>
                   <SelectItem value="featured">Featured</SelectItem>
                 </SelectContent>
@@ -180,7 +177,7 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
             </div>
           )}
           <div className="flex items-center justify-between py-1">
-            <span className="text-xs text-kinari/40 tracking-wider">Terbitkan</span>
+            <span className="text-xs text-foreground/45 tracking-wider">Terbitkan</span>
             <Switch checked={published} onCheckedChange={setPublished} />
           </div>
         </div>
@@ -188,21 +185,21 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
 
       {/* Editor */}
       <div className="glass-zen-strong overflow-hidden">
-        <div className="flex items-center gap-0.5 px-3 py-2 border-b border-kinari/[0.04] overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-0.5 px-3 py-2 border-b border-border overflow-x-auto no-scrollbar">
           {toolbarButtons.map((btn) => (
             <button key={btn.action} onClick={() => handleToolbarAction(btn.action)}
-              className="p-2 rounded-lg text-kinari/15 hover:text-matcha-light/50 hover:bg-kinari/[0.04] transition-colors duration-300 shrink-0">
+              className="p-2 rounded-lg text-foreground/15 hover:text-primary/55 hover:bg-foreground/[0.03] transition-colors duration-300 shrink-0">
               <btn.icon className="w-3.5 h-3.5" />
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-kinari/[0.04]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-border">
           <div className="blog-editor">
-            <div className="px-3 py-2 text-[9px] text-kinari/10 tracking-[0.2em] uppercase border-b border-kinari/[0.03]">Markdown</div>
+            <div className="px-3 py-2 text-[9px] text-foreground/12 tracking-[0.2em] uppercase border-b border-border">Markdown</div>
             <textarea ref={textareaRef} value={content} onChange={(e) => setContent(e.target.value)} placeholder="Tulis di sini..." className="w-full h-[400px] p-3 text-sm leading-relaxed resize-none" />
           </div>
           <div>
-            <div className="px-3 py-2 text-[9px] text-kinari/10 tracking-[0.2em] uppercase border-b border-kinari/[0.03]">Pratinjau</div>
+            <div className="px-3 py-2 text-[9px] text-foreground/12 tracking-[0.2em] uppercase border-b border-border">Pratinjau</div>
             <div className="h-[400px] overflow-y-auto no-scrollbar p-3">
               <div className="markdown-content"><ReactMarkdown
                 components={{
@@ -219,11 +216,11 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
 
       {/* Save */}
       <div className="flex gap-3">
-        <button onClick={onCancel} className="flex-1 py-3 rounded-xl text-xs text-kinari/25 border border-kinari/[0.05] hover:border-kinari/10 tracking-wider transition-colors duration-300">
+        <button onClick={onCancel} className="flex-1 py-3 rounded-xl text-xs text-foreground/28 border border-border hover:border-foreground/10 tracking-wider transition-colors duration-300">
           Batal
         </button>
         <button onClick={handleSave} disabled={saving || !title.trim() || !slug.trim()}
-          className="flex-1 py-3 rounded-xl text-xs bg-matcha/15 text-matcha-light tracking-wider hover:bg-matcha/25 transition-colors duration-500 disabled:opacity-30">
+          className="flex-1 py-3 rounded-xl text-xs bg-primary/15 text-primary tracking-wider hover:bg-primary/25 transition-colors duration-500 disabled:opacity-30">
           {saving ? 'Menyimpan...' : 'Simpan'}
         </button>
       </div>
@@ -231,33 +228,33 @@ export default function BlogEditor({ blog, onSave, onCancel }: BlogEditorProps) 
       {/* Dialogs */}
       <Dialog open={linkDialogOpen} onOpenChange={setLinkDialogOpen}>
         <DialogContent className={dialogCls}>
-          <DialogHeader><DialogTitle className="text-kinari/60 text-sm font-light">Sisipkan Tautan</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle className="text-foreground/65 text-sm font-light">Sisipkan Tautan</DialogTitle></DialogHeader>
           <div className="space-y-3 py-2">
-            <div><Label className="text-[10px] text-kinari/20">Teks</Label><input value={linkText} onChange={(e) => setLinkText(e.target.value)} placeholder="Teks tautan" className={inputCls} /></div>
-            <div><Label className="text-[10px] text-kinari/20">URL</Label><input value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="https://..." className={inputCls} /></div>
+            <div><Label className="text-[10px] text-foreground/22">Teks</Label><input value={linkText} onChange={(e) => setLinkText(e.target.value)} placeholder="Teks tautan" className={inputCls} /></div>
+            <div><Label className="text-[10px] text-foreground/22">URL</Label><input value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="https://..." className={inputCls} /></div>
           </div>
-          <DialogFooter><button onClick={insertLink} disabled={!linkUrl} className="bg-matcha/15 text-matcha-light text-xs px-4 py-2 rounded-xl disabled:opacity-30 tracking-wider">Sisipkan</button></DialogFooter>
+          <DialogFooter><button onClick={insertLink} disabled={!linkUrl} className="bg-primary/15 text-primary text-xs px-4 py-2 rounded-xl disabled:opacity-30 tracking-wider">Sisipkan</button></DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog open={imageDialogOpen} onOpenChange={setImageDialogOpen}>
         <DialogContent className={dialogCls}>
-          <DialogHeader><DialogTitle className="text-kinari/60 text-sm font-light">Sisipkan Gambar</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle className="text-foreground/65 text-sm font-light">Sisipkan Gambar</DialogTitle></DialogHeader>
           <div className="space-y-3 py-2">
-            <div><Label className="text-[10px] text-kinari/20">Alt Text</Label><input value={imageAlt} onChange={(e) => setImageAlt(e.target.value)} placeholder="Deskripsi gambar" className={inputCls} /></div>
-            <div><Label className="text-[10px] text-kinari/20">URL Gambar</Label><input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." className={inputCls} /></div>
+            <div><Label className="text-[10px] text-foreground/22">Alt Text</Label><input value={imageAlt} onChange={(e) => setImageAlt(e.target.value)} placeholder="Deskripsi gambar" className={inputCls} /></div>
+            <div><Label className="text-[10px] text-foreground/22">URL Gambar</Label><input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." className={inputCls} /></div>
           </div>
-          <DialogFooter><button onClick={insertImage} disabled={!imageUrl} className="bg-matcha/15 text-matcha-light text-xs px-4 py-2 rounded-xl disabled:opacity-30 tracking-wider">Sisipkan</button></DialogFooter>
+          <DialogFooter><button onClick={insertImage} disabled={!imageUrl} className="bg-primary/15 text-primary text-xs px-4 py-2 rounded-xl disabled:opacity-30 tracking-wider">Sisipkan</button></DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog open={videoDialogOpen} onOpenChange={setVideoDialogOpen}>
         <DialogContent className={dialogCls}>
-          <DialogHeader><DialogTitle className="text-kinari/60 text-sm font-light">Sisipkan Video</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle className="text-foreground/65 text-sm font-light">Sisipkan Video</DialogTitle></DialogHeader>
           <div className="space-y-3 py-2">
-            <div><Label className="text-[10px] text-kinari/20">URL Video</Label><input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://youtube.com/..." className={inputCls} /></div>
+            <div><Label className="text-[10px] text-foreground/22">URL Video</Label><input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://youtube.com/..." className={inputCls} /></div>
           </div>
-          <DialogFooter><button onClick={insertVideo} disabled={!videoUrl} className="bg-matcha/15 text-matcha-light text-xs px-4 py-2 rounded-xl disabled:opacity-30 tracking-wider">Sisipkan</button></DialogFooter>
+          <DialogFooter><button onClick={insertVideo} disabled={!videoUrl} className="bg-primary/15 text-primary text-xs px-4 py-2 rounded-xl disabled:opacity-30 tracking-wider">Sisipkan</button></DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

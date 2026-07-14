@@ -74,7 +74,7 @@ export async function PUT(
 
     const { id } = await params
     const body = await request.json()
-    const { name, slug, description, price, imageUrl, category, is3D, modelUrl, published } = body
+    const { name, slug, description, price, imageUrl, category, is3D, modelUrl, modelType, published } = body
 
     // Check for duplicate slug (excluding current merch)
     if (slug) {
@@ -92,7 +92,7 @@ export async function PUT(
     const publishedVal = published ? 1 : 0
 
     await turso.execute({
-      sql: `UPDATE Merch SET name = ?, slug = ?, description = ?, price = ?, imageUrl = ?, category = ?, is3D = ?, modelUrl = ?, published = ?, updatedAt = ? WHERE id = ?`,
+      sql: `UPDATE Merch SET name = ?, slug = ?, description = ?, price = ?, imageUrl = ?, category = ?, is3D = ?, modelUrl = ?, modelType = ?, published = ?, updatedAt = ? WHERE id = ?`,
       args: [
         name,
         slug,
@@ -102,6 +102,7 @@ export async function PUT(
         category ?? 'custom',
         is3DVal,
         modelUrl ?? null,
+        modelType ?? 'embed',
         publishedVal,
         now,
         id,

@@ -41,6 +41,7 @@ export function rowToMerch(row: Record<string, unknown>) {
     category: row.category as string,
     is3D: Number(row.is3D) === 1,
     modelUrl: row.modelUrl as string | null,
+    modelType: (row.modelType as string) || 'embed',
     published: Number(row.published) === 1,
     createdAt: row.createdAt as string,
     updatedAt: row.updatedAt as string,

@@ -120,10 +120,10 @@ export default function RootLayout({
           position="top-center"
           toastOptions={{
             style: {
-              background: "rgba(26, 46, 26, 0.85)",
-              backdropFilter: "blur(30px)",
-              border: "1px solid rgba(245, 240, 232, 0.06)",
-              color: "#F5F0E8",
+              background: "var(--popover)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid var(--border)",
+              color: "var(--foreground)",
               borderRadius: "12px",
               fontSize: "13px",
               fontFamily: "var(--font-poppins), sans-serif",

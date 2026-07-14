@@ -51,8 +51,8 @@ export default function MerchAdboard() {
   return (
     <div className="px-6 pb-6">
       <div className="flex items-center gap-2 mb-3">
-        <ShoppingBag className="w-3.5 h-3.5 text-matcha-light/40" />
-        <span className="text-[10px] font-semibold text-kinari/30 tracking-wider uppercase">
+        <ShoppingBag className="w-3.5 h-3.5 text-primary/40" />
+        <span className="text-[10px] font-semibold text-foreground/30 tracking-wider uppercase">
           Merchandise
         </span>
       </div>
@@ -72,7 +72,7 @@ export default function MerchAdboard() {
           >
             <div className="glass-zen-card overflow-hidden">
               {/* Thumbnail */}
-              <div className="relative w-full h-[90px] overflow-hidden bg-kinari/[0.02]">
+              <div className="relative w-full h-[90px] overflow-hidden bg-foreground/[0.02]">
                 {item.imageUrl ? (
                   <img
                     src={proxyImageUrl(item.imageUrl)}
@@ -81,17 +81,17 @@ export default function MerchAdboard() {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <ShoppingBag className="w-5 h-5 text-kinari/[0.06]" />
+                    <ShoppingBag className="w-5 h-5 text-foreground/[0.06]" />
                   </div>
                 )}
               </div>
 
               {/* Info */}
               <div className="p-2">
-                <p className="text-[10px] font-semibold text-kinari/50 line-clamp-1 leading-tight mb-0.5">
+                <p className="text-[10px] font-semibold text-foreground/55 line-clamp-1 leading-tight mb-0.5">
                   {item.name}
                 </p>
-                <p className="text-[10px] font-bold text-matcha-light/50">
+                <p className="text-[10px] font-bold text-primary/60">
                   {formatPrice(item.price)}
                 </p>
               </div>

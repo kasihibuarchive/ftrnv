@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, slug, description, price, imageUrl, category, is3D, modelUrl, published } = body
+    const { name, slug, description, price, imageUrl, category, is3D, modelUrl, modelType, published } = body
 
     if (!name || !slug) {
       return NextResponse.json({ error: 'Name and slug are required' }, { status: 400 })
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     const publishedVal = published ? 1 : 0
 
     const result = await turso.execute({
-      sql: `INSERT INTO Merch (name, slug, description, price, imageUrl, category, is3D, modelUrl, published, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      sql: `INSERT INTO Merch (name, slug, description, price, imageUrl, category, is3D, modelUrl, modelType, published, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [
         name,
         slug,
@@ -85,6 +85,7 @@ export async function POST(request: NextRequest) {
         category || 'custom',
         is3DVal,
         modelUrl || null,
+        modelType || 'embed',
         publishedVal,
         now,
         now,

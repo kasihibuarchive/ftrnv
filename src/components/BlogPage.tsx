@@ -44,22 +44,22 @@ export default function BlogPage() {
     <div className="px-6 pt-8 pb-6">
       {/* Title */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-kinari">
+        <h2 className="text-2xl font-bold text-foreground">
           Blog
           <span className="green-gradient ml-2 text-lg">Artikel</span>
         </h2>
-        <p className="text-xs text-kinari/30 mt-1 font-medium">Temukan informasi terbaru seputar FTRN #5</p>
+        <p className="text-xs text-foreground/35 mt-1 font-medium">Temukan informasi terbaru seputar FTRN #5</p>
       </div>
 
       {/* Search */}
       <div className="glass-zen-input flex items-center gap-3 px-4 py-3 mb-5">
-        <Search className="w-4 h-4 text-matcha-light/40 shrink-0" />
+        <Search className="w-4 h-4 text-foreground/30 shrink-0" />
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Cari artikel..."
-          className="bg-transparent text-sm text-kinari/70 placeholder:text-kinari/20 outline-none flex-1 font-medium"
+          className="bg-transparent text-sm text-foreground/75 placeholder:text-foreground/20 outline-none flex-1 font-medium"
         />
       </div>
 
@@ -72,7 +72,7 @@ export default function BlogPage() {
             className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-wide whitespace-nowrap transition-all duration-300 ${
               activeCategory === cat
                 ? 'badge-matcha'
-                : 'text-kinari/25 border border-kinari/[0.06] hover:border-matcha/20 hover:text-kinari/40'
+                : 'text-foreground/25 border border-border hover:border-primary/20 hover:text-foreground/40'
             }`}
           >
             {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -85,18 +85,18 @@ export default function BlogPage() {
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="glass-zen-card p-5 animate-pulse">
-              <div className="h-4 bg-kinari/[0.04] rounded w-2/3 mb-3" />
-              <div className="h-3 bg-kinari/[0.02] rounded w-full" />
+              <div className="h-4 bg-foreground/[0.04] rounded w-2/3 mb-3" />
+              <div className="h-3 bg-foreground/[0.02] rounded w-full" />
             </div>
           ))}
         </div>
       ) : filtered.length === 0 ? (
         <div className="py-16 text-center">
           <div className="icon-circle w-14 h-14 mx-auto mb-3 flex items-center justify-center">
-            <FileText className="w-5 h-5 text-matcha-light/30" />
+            <FileText className="w-5 h-5 text-primary/35" />
           </div>
-          <p className="text-kinari/30 text-sm font-semibold">Artikel tidak ditemukan</p>
-          <p className="text-kinari/15 text-xs mt-1 font-medium">Coba kata kunci lain</p>
+          <p className="text-foreground/35 text-sm font-semibold">Artikel tidak ditemukan</p>
+          <p className="text-foreground/18 text-xs mt-1 font-medium">Coba kata kunci lain</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -126,15 +126,15 @@ export default function BlogPage() {
                         </span>
                       )}
                     </div>
-                    <h3 className="text-sm font-semibold text-kinari/80 leading-snug">
+                    <h3 className="text-sm font-semibold text-foreground/80 leading-snug">
                       {blog.title}
                     </h3>
                     {blog.excerpt && (
-                      <p className="text-xs text-kinari/30 mt-1.5 line-clamp-1 font-medium leading-relaxed">
+                      <p className="text-xs text-foreground/35 mt-1.5 line-clamp-1 font-medium leading-relaxed">
                         {blog.excerpt}
                       </p>
                     )}
-                    <p className="text-[11px] text-kinari/20 mt-2 font-medium flex items-center gap-2">
+                    <p className="text-[11px] text-foreground/25 mt-2 font-medium flex items-center gap-2">
                       <span>{timeAgo(blog.createdAt)}</span>
                       <span className="flex items-center gap-1">
                         <Clock className="w-2.5 h-2.5" />
@@ -142,8 +142,8 @@ export default function BlogPage() {
                       </span>
                     </p>
                   </div>
-                  <div className="p-1.5 rounded-lg bg-matcha/5 group-hover:bg-matcha/10 transition-colors duration-300 shrink-0">
-                    <ChevronRight className="w-4 h-4 text-kinari/10 group-hover:text-matcha-light transition-colors duration-300" />
+                  <div className="p-1.5 rounded-lg bg-primary/5 group-hover:bg-primary/10 transition-colors duration-300 shrink-0">
+                    <ChevronRight className="w-4 h-4 text-foreground/12 group-hover:text-primary transition-colors duration-300" />
                   </div>
                 </div>
               </div>
