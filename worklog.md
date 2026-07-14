@@ -132,3 +132,30 @@ Work Log:
 
 Lint: 0 errors, 2 pre-existing warnings (unused eslint-disable directives)
 Dev server: running
+
+---
+Task ID: 8
+Agent: Main Agent
+Task: Fix theme contrast, reduce glassmorphism, fix merch click, add 3D type options
+
+Work Log:
+- Identified root cause of theme contrast issue: all components used hardcoded Tailwind palette colors (text-kinari, text-charcoal, text-matcha-light) that don't change with theme toggle
+- Replaced all hardcoded colors with semantic CSS variable-based classes (text-foreground, text-primary, text-muted-foreground, text-accent-foreground, text-destructive, etc.) that automatically adapt to light/dark mode
+- Redesigned globals.css: Glassmorphism 10% (blur 6-12px, low saturation), Nature Distilled 60% (organic gradients, ambient blobs), Swiss Minimalism 30% (clean borders, minimal shadows, strong typography hierarchy)
+- Fixed Merchandise items: replaced `<div>` with `<button>`, added detail modal (bottom sheet) with image, description, price, 3D viewer/link, WhatsApp CTA
+- Added 3D type options in MerchEditor: Embed 3D Viewer (model-viewer), Sketchfab link, Video Preview link, AR Link — each with description text and appropriate URL placeholder
+- Added modelType column to Merch DB schema and rowToMerch helper
+- Created /api/migrate endpoint for one-time column addition
+- Updated all API routes (POST and PUT for merch) to handle modelType field
+- Fixed BlogPostClient header colors (text-foreground instead of text-charcoal)
+- Fixed Toaster styling to use CSS variables instead of hardcoded dark colors
+- Fixed blog not-found page colors (text-foreground instead of text-kinari)
+- Updated 10 component files + 3 API route files + 1 lib file
+- Build successful, deployed to Vercel via git push
+
+Stage Summary:
+- Theme contrast now works correctly in both light and dark modes
+- Glassmorphism reduced from heavy blur to minimal (8-12px blur, 105-110% saturation)
+- Merch items are clickable with detail modal including 3D viewer support
+- 3D options: Embed 3D Viewer, Sketchfab, Video Preview, AR Link
+- Migration endpoint available at POST /api/migrate (requires admin auth)
