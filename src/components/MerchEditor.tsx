@@ -1,11 +1,19 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select'
+
+interface Category {
+  id: string
+  slug: string
+  label: string
+  order: number
+  createdAt: string
+}
 
 interface MerchEditorProps {
   merch?: {
@@ -35,12 +43,31 @@ export default function MerchEditor({ merch, onSave, onCancel }: MerchEditorProp
   const [description, setDescription] = useState(merch?.description || '')
   const [price, setPrice] = useState(merch?.price?.toString() || '0')
   const [imageUrl, setImageUrl] = useState(merch?.imageUrl || '')
-  const [category, setCategory] = useState(merch?.category || 'custom')
+  const [category, setCategory] = useState(merch?.category || '')
   const [is3D, setIs3D] = useState(merch?.is3D || false)
   const [modelUrl, setModelUrl] = useState(merch?.modelUrl || '')
   const [modelType, setModelType] = useState(merch?.modelType || 'embed')
   const [published, setPublished] = useState(merch?.published || false)
   const [saving, setSaving] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
+
+  useEffect(() => {
+    fetchCategories()
+  }, [])
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch('/api/merch-categories')
+      if (res.ok) {
+        const data = await res.json()
+        setCategories(data)
+        // Auto-select first category if none selected
+        if (!merch?.category && data.length > 0) {
+          setCategory(data[0].slug)
+        }
+      }
+    } catch { /* */ }
+  }
 
   const generateSlug = (text: string) =>
     text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim()
@@ -51,7 +78,7 @@ export default function MerchEditor({ merch, onSave, onCancel }: MerchEditorProp
   }
 
   const handleSave = async () => {
-    if (!name.trim() || !slug.trim()) return
+    if (!name.trim() || !slug.trim() || !category) return
     setSaving(true)
     try {
       await onSave({
@@ -133,11 +160,11 @@ export default function MerchEditor({ merch, onSave, onCancel }: MerchEditorProp
               <SelectValue placeholder="Pilih kategori" />
             </SelectTrigger>
             <SelectContent className="bg-popover border-border">
-              <SelectItem value="tshirt">T-Shirt</SelectItem>
-              <SelectItem value="stiker">Stiker</SelectItem>
-              <SelectItem value="totebag">Totebag</SelectItem>
-              <SelectItem value="topi">Topi</SelectItem>
-              <SelectItem value="custom">Custom</SelectItem>
+              {categories.map((cat) => (
+                <SelectItem key={cat.id} value={cat.slug}>
+                  {cat.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -225,7 +252,7 @@ export default function MerchEditor({ merch, onSave, onCancel }: MerchEditorProp
         </button>
         <button
           onClick={handleSave}
-          disabled={saving || !name.trim() || !slug.trim()}
+          disabled={saving || !name.trim() || !slug.trim() || !category}
           className="flex-1 py-3 rounded-xl text-xs bg-primary/15 text-primary tracking-wider hover:bg-primary/25 transition-colors duration-500 disabled:opacity-30"
         >
           {saving ? 'Menyimpan...' : 'Simpan'}

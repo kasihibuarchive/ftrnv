@@ -20,12 +20,8 @@ interface MerchItem {
   updatedAt: string
 }
 
-const categoryLabels: Record<string, string> = {
-  tshirt: 'T-Shirt',
-  stiker: 'Stiker',
-  totebag: 'Totebag',
-  topi: 'Topi',
-  custom: 'Custom',
+interface Category {
+  id: string; slug: string; label: string; order: number; createdAt: string
 }
 
 const modelTypeLabels: Record<string, string> = {
@@ -45,12 +41,25 @@ function formatPrice(price: number) {
 
 export default function MerchAdboard() {
   const [merch, setMerch] = useState<MerchItem[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedMerch, setSelectedMerch] = useState<MerchItem | null>(null)
 
   useEffect(() => {
     fetchMerch()
+    fetchCategories()
   }, [])
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch('/api/merch-categories')
+      if (res.ok) setCategories(await res.json())
+    } catch { /* */ }
+  }
+
+  // Build label lookup
+  const categoryLabels: Record<string, string> = {}
+  categories.forEach(c => { categoryLabels[c.slug] = c.label })
 
   const fetchMerch = async () => {
     try {

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState, useCallback } from 'react'
-import { Plus, Pencil, Trash2, LogOut, FileText, ShoppingBag } from 'lucide-react'
+import { Plus, Pencil, Trash2, LogOut, FileText, ShoppingBag, Tag } from 'lucide-react'
 import BlogEditor from './BlogEditor'
 import MerchEditor from './MerchEditor'
 import { toast } from 'sonner'
@@ -20,7 +20,11 @@ interface MerchItem {
   createdAt: string; updatedAt: string
 }
 
-type AdminSection = 'blog' | 'merch'
+interface Category {
+  id: string; slug: string; label: string; order: number; createdAt: string
+}
+
+type AdminSection = 'blog' | 'merch' | 'categories'
 
 interface AdminPageProps {
   onBack: () => void
@@ -44,6 +48,13 @@ export default function AdminPage({ onBack }: AdminPageProps) {
   const [editingMerch, setEditingMerch] = useState<MerchItem | null>(null)
   const [isCreatingMerch, setIsCreatingMerch] = useState(false)
 
+  // Category state
+  const [categories, setCategories] = useState<Category[]>([])
+  const [categoriesLoading, setCategoriesLoading] = useState(false)
+  const [newCatSlug, setNewCatSlug] = useState('')
+  const [newCatLabel, setNewCatLabel] = useState('')
+  const [addingCat, setAddingCat] = useState(false)
+
   const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
@@ -54,7 +65,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
   const verifyToken = async (t: string) => {
     try {
       const res = await fetch('/api/admin/verify', { headers: { Authorization: `Bearer ${t}` } })
-      if (res.ok) { setToken(t); setIsAuthenticated(true); fetchAllBlogs(t); fetchAllMerch(t) }
+      if (res.ok) { setToken(t); setIsAuthenticated(true); fetchAllBlogs(t); fetchAllMerch(t); fetchCategories(t) }
       else localStorage.removeItem('ftrn_admin_token')
     } catch { localStorage.removeItem('ftrn_admin_token') }
   }
@@ -72,7 +83,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
         const data = await res.json()
         setToken(data.token); setIsAuthenticated(true)
         localStorage.setItem('ftrn_admin_token', data.token)
-        fetchAllBlogs(data.token); fetchAllMerch(data.token); toast.success('Login berhasil!')
+        fetchAllBlogs(data.token); fetchAllMerch(data.token); fetchCategories(data.token); toast.success('Login berhasil!')
       } else { toast.error('Password salah!') }
     } catch { toast.error('Gagal login') } finally { setLoginLoading(false) }
   }
@@ -82,6 +93,7 @@ export default function AdminPage({ onBack }: AdminPageProps) {
     localStorage.removeItem('ftrn_admin_token')
     setBlogs([]); setEditingBlog(null); setIsCreatingBlog(false)
     setMerch([]); setEditingMerch(null); setIsCreatingMerch(false)
+    setCategories([])
     onBack()
   }
 
@@ -191,6 +203,56 @@ export default function AdminPage({ onBack }: AdminPageProps) {
     } catch { toast.error('Gagal') }
   }
 
+  // Category CRUD
+  const fetchCategories = async (t?: string) => {
+    setCategoriesLoading(true)
+    try {
+      const res = await fetch('/api/merch-categories')
+      if (res.ok) setCategories(await res.json())
+    } catch { /* */ } finally { setCategoriesLoading(false) }
+  }
+
+  const handleAddCategory = async () => {
+    if (!newCatSlug.trim() || !newCatLabel.trim()) return
+    setAddingCat(true)
+    try {
+      const res = await fetch('/api/merch-categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          slug: newCatSlug.toLowerCase().replace(/[^a-z0-9-]/g, '').replace(/\s+/g, '-'),
+          label: newCatLabel.trim(),
+          order: categories.length + 1,
+        }),
+      })
+      if (res.ok) {
+        toast.success('Kategori ditambahkan!')
+        setNewCatSlug('')
+        setNewCatLabel('')
+        fetchCategories()
+      } else {
+        const err = await res.json()
+        toast.error(err.error || 'Gagal menambah kategori')
+      }
+    } catch { toast.error('Gagal') } finally { setAddingCat(false) }
+  }
+
+  const handleDeleteCategory = async (catId: string, catLabel: string) => {
+    if (!confirm(`Hapus kategori "${catLabel}"? Merch yang sudah pakai kategori ini tidak akan terhapus.`)) return
+    try {
+      const res = await fetch(`/api/merch-categories/${catId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (res.ok) { toast.success('Kategori dihapus!'); fetchCategories() }
+      else toast.error('Gagal menghapus kategori')
+    } catch { toast.error('Gagal') }
+  }
+
+  // Build label lookup from DB categories
+  const categoryLabels: Record<string, string> = {}
+  categories.forEach(c => { categoryLabels[c.slug] = c.label })
+
   // Login
   if (!isAuthenticated) {
     return (
@@ -272,14 +334,6 @@ export default function AdminPage({ onBack }: AdminPageProps) {
     )
   }
 
-  const categoryLabels: Record<string, string> = {
-    tshirt: 'T-Shirt',
-    stiker: 'Stiker',
-    totebag: 'Totebag',
-    topi: 'Topi',
-    custom: 'Custom',
-  }
-
   // Dashboard
   return (
     <div className="px-6 pt-8 pb-6">
@@ -287,20 +341,24 @@ export default function AdminPage({ onBack }: AdminPageProps) {
         <div>
           <h2 className="text-lg font-light text-foreground/70 tracking-wide">Kelola Konten</h2>
           <p className="text-[10px] text-foreground/18 tracking-wider mt-0.5">
-            {activeSection === 'blog' ? `${blogs.length} artikel` : `${merch.length} merchandise`}
+            {activeSection === 'blog' ? `${blogs.length} artikel`
+              : activeSection === 'merch' ? `${merch.length} merchandise`
+              : `${categories.length} kategori`}
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => {
-              if (activeSection === 'blog') setIsCreatingBlog(true)
-              else setIsCreatingMerch(true)
-            }}
-            className="flex items-center gap-1.5 bg-primary/12 text-primary text-[11px] tracking-wider px-3.5 py-2 rounded-xl hover:bg-primary/22 transition-colors duration-500"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            Baru
-          </button>
+          {activeSection !== 'categories' && (
+            <button
+              onClick={() => {
+                if (activeSection === 'blog') setIsCreatingBlog(true)
+                else setIsCreatingMerch(true)
+              }}
+              className="flex items-center gap-1.5 bg-primary/12 text-primary text-[11px] tracking-wider px-3.5 py-2 rounded-xl hover:bg-primary/22 transition-colors duration-500"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Baru
+            </button>
+          )}
           <button onClick={handleLogout} className="p-2 text-foreground/10 hover:text-foreground/30 transition-colors duration-300">
             <LogOut className="w-4 h-4" />
           </button>
@@ -330,6 +388,17 @@ export default function AdminPage({ onBack }: AdminPageProps) {
         >
           <ShoppingBag className="w-3.5 h-3.5" />
           Merch
+        </button>
+        <button
+          onClick={() => setActiveSection('categories')}
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[11px] font-semibold tracking-wider transition-all duration-300 ${
+            activeSection === 'categories'
+              ? 'bg-primary/12 text-primary'
+              : 'text-foreground/25 hover:text-foreground/40'
+          }`}
+        >
+          <Tag className="w-3.5 h-3.5" />
+          Kategori
         </button>
       </div>
 
@@ -412,6 +481,71 @@ export default function AdminPage({ onBack }: AdminPageProps) {
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Categories section */}
+      {activeSection === 'categories' && (
+        <>
+          {/* Add new category */}
+          <div className="glass-zen-strong p-5 mb-4">
+            <p className="text-[10px] text-foreground/30 tracking-wider mb-3 font-semibold">Tambah Kategori Baru</p>
+            <div className="flex gap-2">
+              <input
+                value={newCatLabel}
+                onChange={(e) => {
+                  setNewCatLabel(e.target.value)
+                  if (!newCatSlug || newCatSlug === newCatLabel.toLowerCase().replace(/[^a-z0-9-]/g, '').replace(/\s+/g, '-')) {
+                    setNewCatSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '').replace(/\s+/g, '-'))
+                  }
+                }}
+                placeholder="Nama (contoh: Lanyard)"
+                className="flex-1 glass-zen-input px-3 py-2 text-xs text-foreground/65 placeholder:text-foreground/15 outline-none"
+              />
+              <input
+                value={newCatSlug}
+                onChange={(e) => setNewCatSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                placeholder="slug"
+                className="w-24 glass-zen-input px-3 py-2 text-xs text-foreground/65 placeholder:text-foreground/15 outline-none font-mono"
+              />
+              <button
+                onClick={handleAddCategory}
+                disabled={addingCat || !newCatSlug.trim() || !newCatLabel.trim()}
+                className="px-3 py-2 bg-primary/12 text-primary text-[11px] font-semibold tracking-wider rounded-lg hover:bg-primary/22 transition-colors duration-300 disabled:opacity-30"
+              >
+                {addingCat ? '...' : '+'}
+              </button>
+            </div>
+          </div>
+
+          {/* Category list */}
+          {categoriesLoading ? (
+            <div className="space-y-2">
+              {[1,2,3].map(i => <div key={i} className="glass-zen-card p-4 animate-pulse"><div className="h-4 bg-foreground/[0.03] rounded w-1/2" /></div>)}
+            </div>
+          ) : categories.length === 0 ? (
+            <div className="py-16 text-center">
+              <p className="text-foreground/18 text-sm">Belum ada kategori</p>
+              <p className="text-[10px] text-foreground/12 mt-1">Tambah kategori pertama di atas</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {categories.map((cat) => (
+                <div key={cat.id} className="glass-zen-card px-5 py-3.5 flex items-center gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-foreground/65 font-light">{cat.label}</p>
+                    <span className="text-[9px] text-foreground/20 tracking-wider font-mono">{cat.slug}</span>
+                  </div>
+                  <button
+                    onClick={() => handleDeleteCategory(cat.id, cat.label)}
+                    className="p-2 text-foreground/10 hover:text-destructive/55 transition-colors duration-300"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               ))}
             </div>

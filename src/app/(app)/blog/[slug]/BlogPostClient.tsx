@@ -81,12 +81,12 @@ export default function BlogPostClient({ blog }: BlogPostClientProps) {
   }
 
   return (
-    <div className="min-h-screen nature-bg relative flex flex-col">
+    <div className="relative flex flex-col">
       {/* Header — back nav */}
       <header className="glass-zen-header sticky top-0 z-50">
         <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link
-            href="/"
+            href="/blog"
             className="flex items-center gap-2 text-foreground/50 hover:text-foreground transition-colors duration-200"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -285,7 +285,7 @@ export default function BlogPostClient({ blog }: BlogPostClientProps) {
         {/* Back link */}
         <div className="px-6 pb-28">
           <Link
-            href="/"
+            href="/beranda"
             className="cta-button px-5 py-2.5 text-xs font-semibold inline-flex items-center gap-2"
           >
             <ArrowLeft className="w-3.5 h-3.5" />

@@ -20,14 +20,12 @@ interface MerchItem {
   updatedAt: string
 }
 
-const categories = ['Semua', 'tshirt', 'stiker', 'totebag', 'topi', 'custom']
-
-const categoryLabels: Record<string, string> = {
-  tshirt: 'T-Shirt',
-  stiker: 'Stiker',
-  totebag: 'Totebag',
-  topi: 'Topi',
-  custom: 'Custom',
+interface Category {
+  id: string
+  slug: string
+  label: string
+  order: number
+  createdAt: string
 }
 
 const modelTypeLabels: Record<string, string> = {
@@ -47,12 +45,14 @@ function formatPrice(price: number) {
 
 export default function MerchPage() {
   const [merch, setMerch] = useState<MerchItem[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState('Semua')
   const [selectedMerch, setSelectedMerch] = useState<MerchItem | null>(null)
 
   useEffect(() => {
     fetchMerch()
+    fetchCategories()
   }, [])
 
   const fetchMerch = async () => {
@@ -65,6 +65,19 @@ export default function MerchPage() {
       setLoading(false)
     }
   }
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch('/api/merch-categories')
+      if (res.ok) setCategories(await res.json())
+    } catch {
+      /* fallback to empty */
+    }
+  }
+
+  // Build label lookup from DB categories
+  const categoryLabels: Record<string, string> = {}
+  categories.forEach(c => { categoryLabels[c.slug] = c.label })
 
   const filtered = merch.filter((m) => {
     const matchCat = activeCategory === 'Semua' || m.category === activeCategory
@@ -117,17 +130,27 @@ export default function MerchPage() {
 
       {/* Category pills */}
       <div className="flex gap-2 overflow-x-auto no-scrollbar mb-6">
+        <button
+          onClick={() => setActiveCategory('Semua')}
+          className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-wide whitespace-nowrap transition-all duration-300 ${
+            activeCategory === 'Semua'
+              ? 'badge-matcha'
+              : 'text-foreground/20 hover:text-foreground/40'
+          }`}
+        >
+          Semua
+        </button>
         {categories.map((cat) => (
           <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
+            key={cat.id}
+            onClick={() => setActiveCategory(cat.slug)}
             className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-wide whitespace-nowrap transition-all duration-300 ${
-              activeCategory === cat
+              activeCategory === cat.slug
                 ? 'badge-matcha'
                 : 'text-foreground/20 hover:text-foreground/40'
             }`}
           >
-            {cat === 'Semua' ? 'Semua' : categoryLabels[cat] || cat}
+            {cat.label}
           </button>
         ))}
       </div>

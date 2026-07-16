@@ -115,7 +115,7 @@ export default async function BlogPostPage({
 
   if (!blog) {
     return (
-      <div className="min-h-screen nature-bg relative flex items-center justify-center">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center px-6">
           <div className="icon-circle w-16 h-16 mx-auto mb-4 flex items-center justify-center">
             <span className="text-2xl">🌿</span>
@@ -123,7 +123,7 @@ export default async function BlogPostPage({
           <h1 className="text-xl font-bold text-foreground mb-2">Artikel Tidak Ditemukan</h1>
           <p className="text-foreground/40 text-sm font-medium mb-6">Artikel yang Anda cari tidak tersedia.</p>
           <a
-            href="/"
+            href="/beranda"
             className="cta-button px-5 py-2.5 text-xs font-semibold inline-flex items-center gap-2"
           >
             ← Kembali ke Beranda
