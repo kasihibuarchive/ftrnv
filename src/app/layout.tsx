@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     locale: "id_ID",
     images: [
       {
-        url: "/ftrn-logo.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "FTRN #5 — Festival Teater Remaja Nusantara",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     title: "FTRN #5 — Festival Teater Remaja Nusantara",
     description:
       "Festival Teater Remaja Nusantara ke-5 · ISI Yogyakarta",
-    images: ["/ftrn-logo.png"],
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,

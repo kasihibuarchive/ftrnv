@@ -40,7 +40,7 @@ export async function generateMetadata({
     ? blog.coverImage.startsWith('/')
       ? `${siteUrl}${blog.coverImage}`
       : blog.coverImage
-    : `${siteUrl}/ftrn-logo.png`
+    : `${siteUrl}/og-image.png`
 
   const description = blog.excerpt || blog.content.replace(/[#*_>\[\]()]/g, '').slice(0, 160)
 
@@ -139,7 +139,7 @@ export default async function BlogPostPage({
     ? blog.coverImage.startsWith('/')
       ? `${siteUrl}${blog.coverImage}`
       : blog.coverImage
-    : `${siteUrl}/ftrn-logo.png`
+    : `${siteUrl}/og-image.png`
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -159,7 +159,7 @@ export default async function BlogPostPage({
       name: 'FTRN #5',
       logo: {
         '@type': 'ImageObject',
-        url: `${siteUrl}/ftrn-logo.png`,
+        url: `${siteUrl}/og-image.png`,
       },
     },
     mainEntityOfPage: {
