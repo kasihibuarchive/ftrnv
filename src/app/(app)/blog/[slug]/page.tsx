@@ -4,6 +4,10 @@ import BlogPostClient from './BlogPostClient'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ftrnv.vercel.app'
 
+// Always use self-hosted OG image for WhatsApp compatibility.
+// External hosts (imgbox.com etc.) timeout — WhatsApp scraper can't fetch them.
+const ogImageFallback = `${siteUrl}/og-image.png?v=2`
+
 // Fetch blog by slug server-side for metadata generation
 async function getBlogBySlug(slug: string) {
   try {
@@ -36,12 +40,6 @@ export async function generateMetadata({
   }
 
   const blogUrl = `${siteUrl}/blog/${blog.slug}`
-  const ogImage = blog.coverImage
-    ? blog.coverImage.startsWith('/')
-      ? `${siteUrl}${blog.coverImage}`
-      : blog.coverImage
-    : `${siteUrl}/og-image.png`
-
   const description = blog.excerpt || blog.content.replace(/[#*_>\[\]()]/g, '').slice(0, 160)
 
   return {
@@ -72,7 +70,7 @@ export async function generateMetadata({
       tags: [blog.category || 'teater', 'FTRN', 'festival'],
       images: [
         {
-          url: ogImage,
+          url: ogImageFallback,
           width: 1200,
           height: 630,
           alt: blog.title,
@@ -83,7 +81,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: blog.title,
       description,
-      images: [ogImage],
+      images: [ogImageFallback],
     },
   }
 }
@@ -135,18 +133,13 @@ export default async function BlogPostPage({
 
   // JSON-LD structured data for Google rich results
   const blogUrl = `${siteUrl}/blog/${blog.slug}`
-  const ogImage = blog.coverImage
-    ? blog.coverImage.startsWith('/')
-      ? `${siteUrl}${blog.coverImage}`
-      : blog.coverImage
-    : `${siteUrl}/og-image.png`
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: blog.title,
     description: blog.excerpt || blog.content.replace(/[#*_>\[\]()]/g, '').slice(0, 160),
-    image: ogImage,
+    image: ogImageFallback,
     url: blogUrl,
     datePublished: blog.createdAt,
     dateModified: blog.updatedAt,
@@ -159,7 +152,7 @@ export default async function BlogPostPage({
       name: 'FTRN #5',
       logo: {
         '@type': 'ImageObject',
-        url: `${siteUrl}/og-image.png`,
+        url: `${siteUrl}/og-image.png?v=2`,
       },
     },
     mainEntityOfPage: {
